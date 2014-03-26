@@ -157,6 +157,12 @@ nested group members will not be removed
 * -n, --name
     * comma separated list of group names to empty users of
 
+Known issues & Bugs
+------------------------------------------------------------------------
+
+* empty-groups is currently NOT implemented and will not empty the group.
+* any commands other than create-group has not yet been tested yet.
+
 Development
 ------------------------------------------------------------------------
 
