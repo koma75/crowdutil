@@ -1,0 +1,42 @@
+{
+  "name": "crowdutil",
+  "description": "atlassian crowd utility",
+  "keywords": [
+    "atlassian crowd",
+    "administration",
+    "utility",
+    "cli"
+  ],
+  "author": "Yasuhiro Okuno",
+  "version": "0.1.0",
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "directories": {
+    "lib": "./lib/crowdutil"
+  },
+  "main": "./lib/crowdutil/crowdUtil",
+  "bin": {
+    "crowdutil": "./bin/crowdutil"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "argv": "0.0.2",
+    "atlassian-crowd": "~0.4.4",
+    "async": "~0.2.10"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-coffee": "~0.10.1",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-coffeelint": "0.0.8",
+    "coffee-script": "~1.7.1",
+    "coffeelint": "~1.1.0",
+    "uglifyjs": "~2.3.6"
+  }
+}
