@@ -176,7 +176,7 @@ Known issues & Bugs
 ------------------------------------------------------------------------
 
 * has not been tested rigorousely yet.
-* no commadn 
+* no command line argument validity check
 
 Development
 ------------------------------------------------------------------------
