@@ -35,6 +35,28 @@ emptyGroup = (crowd, group) ->
       console.log res
       # TODO: now remove each member from the group
       # ignore each remove errors. only log.
+      # res [ 'uid1' , 'uid2' ]
+      async.each(res,
+        (user, uDone) ->
+          try
+            crhelp.rmUserFromGroup(crowd, user, group, (err) ->
+              if err
+                console.log err.message
+              else
+                console.log group + ' - ' + user
+              uDone() # ignore error
+            )
+          catch err
+            console.log err.message
+            uDone()
+          return
+        , (err) ->
+          if err
+            console.log err.meesage
+          else
+            console.log "DONE emptying " + group
+          return
+      )
     )
   catch err
     console.log err.message
