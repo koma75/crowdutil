@@ -19,7 +19,7 @@ Usage
 ### Installation
 
 ~~~
-> npm install crowdutil -g
+> npm install https://github.com/koma75/crowdutil.git -g
 ~~~
 
 or from local repo
