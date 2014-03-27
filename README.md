@@ -98,12 +98,15 @@ create a user in the specified directory.
     * last name of the user
 * -d, --dispname
     * display name of the user
+    * (will become optional in future, defaulting to first last)
 * -e, --email
     * email address of the user
 * -u, --uid
     * username/uid of the user
 * -p, --pass
     * password of the user
+    * (will become optional in future, defaulting to a random string)
+        * useful for delegated directories (i.e. LDAP authentication)
 
 ### create-group
 
@@ -171,6 +174,8 @@ nested group members will not be removed
       names specified in crowdutil.json file
 * -n, --name
     * comma separated list of group names to empty users of
+* -f, --force=[true|false]
+    * set true to supress prompt (not yet implemented)
 
 Known issues & Bugs
 ------------------------------------------------------------------------
