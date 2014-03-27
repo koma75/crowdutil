@@ -38,6 +38,21 @@ in the working directory** where you execute the command.
 Also you will need to setup the crowd server to accept remote REST commands
 from your machine.
 
+#### crowdutil.json
+
+crowdutil.json hosts the settings for the tool and must reside in the
+current working directory where you invoke the command.
+
+the setting file is a hash table in the following format:
+
+* "directories" key that hosts hash object of different connection targets.
+    * the value of this key has key-value where the key is the name of 
+      the directory
+        * this name is used to specify which application the crowdutil
+          will use to connect by the -D switch.
+    * value for each key is the application setting hash object 
+      according to [atlassian-crowd npm](https://www.npmjs.org/package/atlassian-crowd)
+
 #### Sample crowdutil.json
 
 ~~~
@@ -160,8 +175,8 @@ nested group members will not be removed
 Known issues & Bugs
 ------------------------------------------------------------------------
 
-* empty-groups is currently NOT implemented and will not empty the group.
-* any commands other than create-group has not yet been tested yet.
+* has not been tested rigorousely yet.
+* no commadn 
 
 Development
 ------------------------------------------------------------------------
@@ -186,6 +201,17 @@ accessed via the command.js script.
     * You can also choose to run "grunt watch:coffee_lib" which will only
       lint and compile the coffee-script files without minifying.
     * see the Gruntfile.coffee for all the possible tasks.
+
+### Versioning
+
+We will follow the [semver2.0](http://semver.org/) versioning scheme.  
+With initial development phase starting at 0.1.0 and increasing 
+minor/patch versions until we deploy the tool to production 
+(and reach 1.0.0).
+
+The interface relevant to versioning is whatever defined in this 
+document's "Usage" section (includes all subcommands, their cli arguments,
+the format of the configuration file "crowdutil.json").
 
 License
 ------------------------------------------------------------------------
