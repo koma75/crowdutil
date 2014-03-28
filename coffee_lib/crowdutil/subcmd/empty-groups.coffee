@@ -26,15 +26,33 @@
 ###
 
 crhelp = require '../helper/crhelper'
+help = require '../helper/helper'
 readline = require 'readline'
 async = require 'async'
+
+isOptOK = (opt) ->
+  rc = true
+
+  if(
+    typeof opt['options']['name'] != 'undefined' &&
+    opt['options']['name'].length != 0
+  )
+    for group in opt['options']['name']
+      if !help.isName(group, false)
+        console.log 'invalid group name:' + group
+        rc = false
+  else
+    console.log 'no groups supplied'
+    rc = false
+  if typeof opt['options']['force'] == 'undefined'
+    opt['options']['force'] = false
+
+  return rc
 
 emptyGroup = (crowd, group) ->
   try
     crhelp.findGroupMembers(crowd, group, (res) ->
       console.log res
-      # TODO: now remove each member from the group
-      # ignore each remove errors. only log.
       # res [ 'uid1' , 'uid2' ]
       async.each(res,
         (user, uDone) ->
@@ -66,7 +84,17 @@ exports.run = (options) ->
   console.log 'running : empty-groups\n\n\n'
   console.log options
 
+  if !isOptOK(options)
+    return
+
   crowd = options['crowd']
+
+  if options['options']['force']
+    console.log 'removing users'
+    for v in options['options']['name']
+      emptyGroup(crowd, v)
+    return
+
   rl = readline.createInterface({
     input: process.stdin
     output: process.stdout
