@@ -26,6 +26,31 @@
 ###
 
 crhelp = require '../helper/crhelper'
+help = require '../helper/helper'
+
+isOptOK = (opts) ->
+  rc = true
+
+  if !help.isName(opts['options']['first'])
+    rc = false
+    console.log 'first name not valid'
+  if !help.isName(opts['options']['last'])
+    rc = false
+    console.log 'last name not supplied'
+  if !help.isName(opts['options']['disp'])
+    console.log 'disp name not supplied'
+    opts['options']['disp'] = opts['options']['first'] +
+      ' ' + opts['options']['last']
+  if !help.isEmail(opts['options']['email'])
+    rc = false
+    console.log 'email not supplied or invalid'
+  if !help.isName(opts['options']['uid'])
+    rc = false
+    console.log 'uid not supplied'
+  if !help.isPass(opts['options']['pass'])
+    console.log 'password not supplied. using a random password.'
+    opts['options']['pass'] = help.randPass
+  return rc
 
 ###
 options = {
@@ -44,6 +69,10 @@ options = {
 exports.run = (options) ->
   console.log 'running : create-user\n\n\n'
   console.log options
+
+  if !isOptOK(options)
+    console.log 'parameter invalid!'
+    return
 
   crowd = options['crowd']
   crowd.user.create(

@@ -30,7 +30,8 @@
   "dependencies": {
     "argv": "0.0.2",
     "atlassian-crowd": "~0.4.4",
-    "async": "~0.2.10"
+    "async": "~0.2.10",
+    "validator": "^3.5.1"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

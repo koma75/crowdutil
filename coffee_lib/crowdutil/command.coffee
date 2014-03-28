@@ -51,13 +51,12 @@ connectCrowd = (opts, cfg) ->
       )
 
       # test connection
-      if false
-        opts['crowd'].ping( (err,res) ->
-          if err
-            throw err
-          else
-            console.log res
-        )
+      opts['crowd'].ping( (err,res) ->
+        if err
+          throw err
+        else
+          console.log res
+      )
     catch err
       throw err
   else

@@ -1,4 +1,4 @@
-/*
+###
   @license
   crowdutil
 
@@ -23,5 +23,42 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
- */
-(function(){var a,b,c;a=require("../helper/crhelper"),b=require("../helper/helper"),c=function(a){var c;return c=!0,b.isName(a.options.first)||(c=!1,console.log("first name not valid")),b.isName(a.options.last)||(c=!1,console.log("last name not supplied")),b.isName(a.options.disp)||(console.log("disp name not supplied"),a.options.disp=a.options.first+" "+a.options.last),b.isEmail(a.options.email)||(c=!1,console.log("email not supplied or invalid")),b.isName(a.options.uid)||(c=!1,console.log("uid not supplied")),b.isPass(a.options.pass)||(console.log("password not supplied. using a random password."),a.options.pass=b.randPass),c},exports.run=function(b){var d;return console.log("running : create-user\n\n\n"),console.log(b),c(b)?(d=b.crowd,d.user.create(b.options.first,b.options.last,b.options.dispname,b.options.email,b.options.uid,b.options.pass,function(c){if(c)return console.log(c.message);try{return a.findUser(d,{uid:b.options.uid},function(a){return console.log(a)})}catch(e){throw c=e}})):void console.log("parameter invalid!")}}).call(this);
+###
+
+validator = require 'validator'
+
+randPass = () ->
+  return encodeURIComponent(
+    require('crypto').randomBytes(18).toString('base64')
+  )
+
+isPass = (str) ->
+  if typeof str != 'string'
+    return false
+  if str.length == 0
+    return false
+  return true
+
+isName = (str) ->
+  if typeof str != 'string'
+    return false
+  if str.length == 0
+    return false
+  if !str.match(/^[a-zA-Z0-9_\-. ]$/)
+    return false
+  return true
+
+isEmail = (str) ->
+  if typeof str != 'string'
+    return false
+  if str.length == 0
+    return false
+  return validator.isEmail(str)
+
+###
+exports
+###
+exports.randPass = randPass
+exports.isEmail = isEmail
+exports.isName = isName
+exports.isPass = isPass
