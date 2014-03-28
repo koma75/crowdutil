@@ -1,4 +1,4 @@
-/*
+###
   @license
   crowdutil
 
@@ -21,7 +21,16 @@
   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN crowdECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
- */
-(function(){var a,b,c,d,e;b=require("argv"),a=require("atlassian-crowd"),c=require("./subcmd/cmdlist"),e=function(){return require(process.cwd()+"/crowdutil.json")},d=function(b,c,d){var e,f,g;if("string"==typeof b.options.directory)e=b.options.directory;else{if("string"!=typeof c.defaultDirectory)throw new Error("Directory not specified!");e=c.defaultDirectory}if("undefined"==typeof c.directories[e])throw g=new Error("Directory not defined.");try{b.crowd=new a(c.directories[e]),b.crowd.ping(function(a){if(a)throw a;return d()})}catch(h){throw f=h}},exports.run=function(){var a,f,g,h,i,j;console.log("\n\n\n\ncrowdutil: Atlassian Crowd Utility!\n\n\n\n"),j=c.list;for(g in j)i=j[g],b.mod(i.arg);h=b.run(),a=e();try{return d(h,a,function(){var a;try{require(c.list[h.mod].require).run(h)}catch(b){a=b,console.log(a.message)}})}catch(k){return f=k,console.log(f.message),-1}}}).call(this);
+###
+
+exports.run = (options) ->
+  console.log 'TEST CONNECTION...'
+  options['crowd'].ping( (err,res) ->
+    if err
+      throw err
+    else
+      console.log 'Connection Pass: ' + res
+  )
+

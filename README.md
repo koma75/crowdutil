@@ -23,7 +23,7 @@ Usage
 ### Installation
 
 ~~~
-> npm install https://github.com/koma75/crowdutil.git -g
+> npm install https://github.com/koma75/crowdutil/archive/v0.2.0.tar.gz -g
 ~~~
 
 or from local repo
@@ -100,6 +100,8 @@ create a user in the specified directory.
 * -D, --directory
     * target directory application. needs to match one of the directory
       names specified in crowdutil.json file
+    * optional: if defaultdirectory is defined in the crowdutil.json, 
+      this option can be ommited.
 * -f, --first
     * first name of the user
 * -l, --last
@@ -127,6 +129,8 @@ create a group in the specified directory
 * -D, --directory
     * target directory application. needs to match one of the directory
       names specified in crowdutil.json file
+    * optional: if defaultdirectory is defined in the crowdutil.json, 
+      this option can be ommited.
 * -n, --name
     * name of the group
 * -d, --desc
@@ -146,6 +150,8 @@ to all the  groups specified.
 * -D, --directory
     * target directory application. needs to match one of the directory
       names specified in crowdutil.json file
+    * optional: if defaultdirectory is defined in the crowdutil.json, 
+      this option can be ommited.
 * -n, --name
     * comma separated list of group names to add users to
 * -u, --uid
@@ -164,6 +170,8 @@ removed from all the groups specified.
 * -D, --directory
     * target directory application. needs to match one of the directory
       names specified in crowdutil.json file
+    * optional: if defaultdirectory is defined in the crowdutil.json, 
+      this option can be ommited.
 * -n, --name
     * comma separated list of group names to remove users from
 * -u, --uid
@@ -181,11 +189,27 @@ nested group members will not be removed
 * -D, --directory
     * target directory application. needs to match one of the directory
       names specified in crowdutil.json file
+    * optional: if defaultdirectory is defined in the crowdutil.json, 
+      this option can be ommited.
 * -n, --name
     * comma separated list of group names to empty users of
 * -f, --force=[true|false]
     * set true to supress prompt (not yet implemented)
     * optional: default to false
+
+### test-connection
+
+test connection to selected directory.
+
+~~~
+> crowdutil test-connection -D directory
+~~~
+
+* -D, --directory
+    * target directory application. needs to match one of the directory
+      names specified in crowdutil.json file
+    * optional: if defaultdirectory is defined in the crowdutil.json, 
+      this option can be ommited.
 
 Known issues & Bugs
 ------------------------------------------------------------------------

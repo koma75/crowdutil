@@ -52,6 +52,10 @@ require and mod will be generated automatically from the key of the list
 hash.
 ###
 list =
+  "test-connection":
+    arg:
+      description: 'test connection to selected Directory'
+      options: [ opt_dir ]
   "empty-groups":
     arg:
       description: 'empty group in selected Directory'

@@ -59,7 +59,7 @@ connectCrowd = (opts, cfg, callback) ->
     try
       # create connection based on settings
       opts['crowd'] = new AtlassianCrowd(
-        cfg['directories'][opts['options']['directory']]
+        cfg['directories'][directory]
       )
 
       # test connection
@@ -67,7 +67,6 @@ connectCrowd = (opts, cfg, callback) ->
         if err
           throw err
         else
-          console.log res
           callback()
       )
     catch err
