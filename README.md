@@ -11,6 +11,10 @@ Atlassian Crowd users and groups.
 
 Date        | Version   | Changes
 :--         | :--       | :--
+2014.04.xx  | 0.2.0     | parameter check implemented.
+            |           | some command line options changed to optional
+            |           | default directory option added
+            |           | Fixed program execution path.
 2014.03.24  | 0.1.0     | First Release
 
 Usage
@@ -52,6 +56,9 @@ the setting file is a hash table in the following format:
           will use to connect by the -D switch.
     * value for each key is the application setting hash object 
       according to [atlassian-crowd npm](https://www.npmjs.org/package/atlassian-crowd)
+* "defaultDirectory" key has a string specifying the default directory 
+  to use.  If this is specified and no -D option is provided, the directory
+  with the same name as defaultDirectory will be used.
 
 #### Sample crowdutil.json
 
@@ -76,7 +83,8 @@ the setting file is a hash table in the following format:
         "password": "pass123"
       }
     }
-  }
+  },
+  "defaultDirectory": "internal"
 }
 ~~~
 
@@ -98,14 +106,14 @@ create a user in the specified directory.
     * last name of the user
 * -d, --dispname
     * display name of the user
-    * (will become optional in future, defaulting to first last)
+    * optional: defaulting to first last
 * -e, --email
     * email address of the user
 * -u, --uid
     * username/uid of the user
 * -p, --pass
     * password of the user
-    * (will become optional in future, defaulting to a random string)
+    * optional: defaulting to a random string
         * useful for delegated directories (i.e. LDAP authentication)
 
 ### create-group
@@ -123,6 +131,7 @@ create a group in the specified directory
     * name of the group
 * -d, --desc
     * description of the group
+    * optional: default to an empty string
 
 ### add-to-groups
 
@@ -176,12 +185,12 @@ nested group members will not be removed
     * comma separated list of group names to empty users of
 * -f, --force=[true|false]
     * set true to supress prompt (not yet implemented)
+    * optional: default to false
 
 Known issues & Bugs
 ------------------------------------------------------------------------
 
 * has not been tested rigorousely yet.
-* no command line argument validity check
 
 Development
 ------------------------------------------------------------------------

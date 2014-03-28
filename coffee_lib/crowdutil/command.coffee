@@ -41,9 +41,21 @@ readConfig = () ->
 ###
 Connect to Crowd service and save connection object in opts['crowd']
 ###
-connectCrowd = (opts, cfg) ->
+connectCrowd = (opts, cfg, callback) ->
+  # Figure out the target directory.
+  # command line option -D taking precedance to default setting.
+  # if no -D option is provided, we check if there is a default directory
+  # directive in the configuration file.
+  if typeof opts['options']['directory'] == 'string'
+    directory = opts['options']['directory']
+  else
+    if typeof cfg['defaultDirectory'] == 'string'
+      directory = cfg['defaultDirectory']
+    else
+      throw new Error('Directory not specified!')
+
   # check if specified directory is valid
-  if typeof cfg['directories'][opts['options']['directory']] != 'undefined'
+  if typeof cfg['directories'][directory] != 'undefined'
     try
       # create connection based on settings
       opts['crowd'] = new AtlassianCrowd(
@@ -56,6 +68,7 @@ connectCrowd = (opts, cfg) ->
           throw err
         else
           console.log res
+          callback()
       )
     catch err
       throw err
@@ -86,15 +99,15 @@ exports.run = () ->
   cfg = readConfig()
 
   try
-    connectCrowd(opts, cfg)
+    connectCrowd(opts, cfg, () ->
+      # require the module for the specified command and execute
+      try
+        require(cmdlist.list[opts['mod']]['require']).run(opts)
+      catch err
+        console.log err.message
+      return
+    )
   catch err
     console.log err.message
     return -1
 
-  # require the module for the specified command and execute
-  try
-    require(cmdlist.list[opts['mod']]['require']).run(opts)
-  catch err
-    console.log err.message
-    return -1
-  return 0
