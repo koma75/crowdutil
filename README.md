@@ -23,13 +23,13 @@ Usage
 ### Installation
 
 ~~~
-> npm install https://github.com/koma75/crowdutil/archive/v0.2.0.tar.gz -g
+> npm install crowdutil
 ~~~
 
-or from local repo
+or directly from github
 
 ~~~
-> npm install /path/to/crowdutil/ -g
+> npm install https://github.com/koma75/crowdutil.git
 ~~~
 
 ### Initial setup
