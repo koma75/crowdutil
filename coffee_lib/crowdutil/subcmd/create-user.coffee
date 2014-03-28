@@ -31,25 +31,25 @@ help = require '../helper/helper'
 isOptOK = (opts) ->
   rc = true
 
-  if !help.isName(opts['options']['first'])
+  if !help.isName(opts['options']['first'], false)
     rc = false
     console.log 'first name not valid'
-  if !help.isName(opts['options']['last'])
+  if !help.isName(opts['options']['last'], false)
     rc = false
     console.log 'last name not supplied'
-  if !help.isName(opts['options']['disp'])
+  if !help.isName(opts['options']['dispname'], true)
     console.log 'disp name not supplied'
-    opts['options']['disp'] = opts['options']['first'] +
+    opts['options']['dispname'] = opts['options']['first'] +
       ' ' + opts['options']['last']
   if !help.isEmail(opts['options']['email'])
     rc = false
     console.log 'email not supplied or invalid'
-  if !help.isName(opts['options']['uid'])
+  if !help.isName(opts['options']['uid'], false)
     rc = false
     console.log 'uid not supplied'
   if !help.isPass(opts['options']['pass'])
     console.log 'password not supplied. using a random password.'
-    opts['options']['pass'] = help.randPass
+    opts['options']['pass'] = help.randPass()
   return rc
 
 ###

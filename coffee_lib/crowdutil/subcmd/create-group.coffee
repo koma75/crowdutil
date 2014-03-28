@@ -26,10 +26,26 @@
 ###
 
 crhelp = require '../helper/crhelper'
+help = require '../helper/helper'
+
+isOptOK = (opts) ->
+  rc = true
+
+  if !help.isName(opts['options']['name'], false)
+    console.log 'invalid group name'
+    rc = false
+  if typeof opts['options']['desc'] != 'string'
+    # just put an empty string
+    opts['options']['desc'] = ''
+
+  return rc
 
 exports.run = (options) ->
   console.log 'running : create-group\n\n\n'
   console.log options
+
+  if !isOptOK(options)
+    return
 
   crowd = options['crowd']
   crowd.groups.create(

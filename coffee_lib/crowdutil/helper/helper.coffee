@@ -39,12 +39,17 @@ isPass = (str) ->
     return false
   return true
 
-isName = (str) ->
+isName = (str, allowSpace) ->
+  if allowSpace
+    pattern = /^[a-zA-Z0-9_\-. ]*$/
+  else
+    pattern = /^[a-zA-Z0-9_\-.]*$/
+
   if typeof str != 'string'
     return false
   if str.length == 0
     return false
-  if !str.match(/^[a-zA-Z0-9_\-. ]$/)
+  if !str.match(pattern)
     return false
   return true
 

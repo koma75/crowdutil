@@ -26,11 +26,44 @@
 ###
 
 crhelp = require '../helper/crhelper'
+help = require '../helper/helper'
 async = require 'async'
+
+isOptOK = (opt) ->
+  rc = true
+
+  if(
+    typeof opt['options']['name'] != 'undefined' &&
+    opt['options']['name'].length != 0
+  )
+    for group in opt['options']['name']
+      if !help.isName(group, false)
+        console.log 'invalid group name:' + group
+        rc = false
+  else
+    console.log 'no groups supplied'
+    rc = false
+
+  if(
+    typeof opt['options']['uid'] != 'undefined' &&
+    opt['options']['uid'].length != 0
+  )
+    for user in opt['options']['uid']
+      if !help.isName(user, false)
+        console.log 'invalid uid:' + user
+        rc = false
+  else
+    console.log 'no users supplied'
+    rc = false
+
+  return rc
 
 exports.run = (options) ->
   console.log 'running : rm-from-groups\n\n\n'
   console.log options
+
+  if !isOptOK(options)
+    return
 
   crowd = options['crowd']
 
