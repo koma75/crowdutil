@@ -19,7 +19,7 @@ Usage
 ### Installation
 
 ~~~
-> npm install https://github.com/koma75/crowdutil.git -g
+> npm install https://github.com/koma75/crowdutil/archive/v0.1.0.tar.gz -g
 ~~~
 
 or from local repo
