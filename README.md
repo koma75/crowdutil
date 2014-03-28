@@ -11,7 +11,7 @@ Atlassian Crowd users and groups.
 
 Date        | Version   | Changes
 :--         | :--       | :--
-2014.04.xx  | 0.2.0     | parameter check implemented.
+2014.03.28  | 0.2.0     | parameter check implemented.
             |           | some command line options changed to optional
             |           | default directory option added
             |           | Fixed program execution path.
