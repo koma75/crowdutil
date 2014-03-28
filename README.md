@@ -11,6 +11,7 @@ Atlassian Crowd users and groups.
 
 Date        | Version   | Changes
 :--         | :--       | :--
+2014.03.28  | 0.2.1     | documentation fix.
 2014.03.28  | 0.2.0     | parameter check implemented.
             |           | some command line options changed to optional
             |           | default directory option added
