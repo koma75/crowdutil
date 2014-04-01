@@ -38,10 +38,10 @@ isOptOK = (opt) ->
   )
     for group in opt['options']['name']
       if !help.isName(group, false)
-        console.log 'invalid group name:' + group
+        logger.warn 'invalid group name:' + group
         rc = false
   else
-    console.log 'no groups supplied'
+    logger.warn 'no groups supplied'
     rc = false
 
   if(
@@ -50,17 +50,17 @@ isOptOK = (opt) ->
   )
     for user in opt['options']['uid']
       if !help.isName(user, false)
-        console.log 'invalid uid:' + user
+        logger.warn 'invalid uid:' + user
         rc = false
   else
-    console.log 'no users supplied'
+    logger.warn 'no users supplied'
     rc = false
 
   return rc
 
 exports.run = (options) ->
-  console.log 'running : add-to-groups\n\n\n'
-  console.log options
+  logger.trace 'running : add-to-groups\n\n\n'
+  logger.debug options
 
   if !isOptOK(options)
     return
@@ -75,13 +75,13 @@ exports.run = (options) ->
           try
             crhelp.addUserToGroup(crowd, user, group, (err) ->
               if err
-                console.log err.message
+                logger.warn err.message
               else
-                console.log group + ' + ' + user
+                logger.info group + ' + ' + user
               uDone() # ignore error
             )
           catch err
-            console.log err.message
+            logger.error err.message
             uDone()
           return
         , (err) ->
@@ -93,8 +93,8 @@ exports.run = (options) ->
     , (err) ->
       # all group iterations done
       if err
-        console.log err.message
-      console.log 'DONE'
+        logger.error err.message
+      logger.info 'DONE'
       return
   )
 

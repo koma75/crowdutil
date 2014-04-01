@@ -28,6 +28,7 @@
 # requires
 
 argv = require 'argv'
+log4js = require 'log4js'
 AtlassianCrowd = require 'atlassian-crowd'
 cmdlist = require './subcmd/cmdlist'
 
@@ -77,6 +78,37 @@ connectCrowd = (opts, cfg, callback) ->
   return
 
 ###
+Setup global.logger
+###
+initLogger = (opts) ->
+  logConfig =
+    appenders: [
+      {
+        type: 'file'
+        filename: './crowdutil.log'
+        maxLogSize: 20480
+        backups: 2
+        category: 'main'
+      }
+      {
+        type: 'console'
+        category: 'main'
+      }
+    ]
+    replaceConsole: true
+  log4js.configure(logConfig)
+  global.logger = log4js.getLogger('main')
+  if(
+    typeof opts['options']['verbose'] == 'boolean' &&
+    opts['options']['verbose'] == true
+  )
+    logger.setLevel('TRACE')
+    logger.debug 'log level set to trace'
+  else
+    logger.setLevel('INFO')
+  return
+
+###
 cli entrypoint
 command format:
   crowdutil command options
@@ -97,16 +129,18 @@ exports.run = () ->
 
   cfg = readConfig()
 
+  initLogger(opts)
+
   try
     connectCrowd(opts, cfg, () ->
       # require the module for the specified command and execute
       try
         require(cmdlist.list[opts['mod']]['require']).run(opts)
       catch err
-        console.log err.message
+        logger.error err.message
       return
     )
   catch err
-    console.log err.message
+    logger.error(err.message)
     return -1
 

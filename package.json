@@ -2,7 +2,8 @@
   "name": "crowdutil",
   "description": "atlassian crowd utility",
   "keywords": [
-    "atlassian crowd",
+    "atlassian",
+    "crowd",
     "administration",
     "utility",
     "cli"
@@ -31,7 +32,8 @@
     "argv": "0.0.2",
     "atlassian-crowd": "~0.4.4",
     "async": "~0.2.10",
-    "validator": "^3.5.1"
+    "validator": "^3.5.1",
+    "log4js": "^0.6.12"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

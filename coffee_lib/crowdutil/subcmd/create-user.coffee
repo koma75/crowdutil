@@ -33,22 +33,22 @@ isOptOK = (opts) ->
 
   if !help.isName(opts['options']['first'], false)
     rc = false
-    console.log 'first name not valid'
+    logger.error 'first name not valid'
   if !help.isName(opts['options']['last'], false)
     rc = false
-    console.log 'last name not supplied'
+    logger.error 'last name not supplied'
   if !help.isName(opts['options']['dispname'], true)
-    console.log 'disp name not supplied'
+    logger.info 'disp name not supplied'
     opts['options']['dispname'] = opts['options']['first'] +
       ' ' + opts['options']['last']
   if !help.isEmail(opts['options']['email'])
     rc = false
-    console.log 'email not supplied or invalid'
+    logger.error 'email not supplied or invalid'
   if !help.isName(opts['options']['uid'], false)
     rc = false
-    console.log 'uid not supplied'
+    logger.error 'uid not supplied'
   if !help.isPass(opts['options']['pass'])
-    console.log 'password not supplied. using a random password.'
+    logger.info 'password not supplied. using a random password.'
     opts['options']['pass'] = help.randPass()
   return rc
 
@@ -67,11 +67,11 @@ options = {
   crowd: {} }
 ###
 exports.run = (options) ->
-  console.log 'running : create-user\n\n\n'
-  console.log options
+  logger.trace 'running : create-user\n\n\n'
+  logger.debug options
 
   if !isOptOK(options)
-    console.log 'parameter invalid!'
+    logger.error 'parameter invalid!'
     return
 
   crowd = options['crowd']
@@ -84,14 +84,14 @@ exports.run = (options) ->
     options['options']['pass'],
     (err) ->
       if err
-        console.log err.message
+        logger.error err.message
       else
         # check if user really was created
         try
           crhelp.findUser(crowd, {
             uid: options['options']['uid']
           }, (res) ->
-            console.log res
+            logger.info res
           )
         catch err
           throw err

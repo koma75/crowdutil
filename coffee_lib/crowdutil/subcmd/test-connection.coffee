@@ -26,11 +26,11 @@
 ###
 
 exports.run = (options) ->
-  console.log 'TEST CONNECTION...'
+  logger.info 'TEST CONNECTION...'
   options['crowd'].ping( (err,res) ->
     if err
       throw err
     else
-      console.log 'Connection Pass: ' + res
+      logger.info 'Connection Pass: ' + res
   )
 
