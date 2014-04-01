@@ -103,6 +103,8 @@ create a user in the specified directory.
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json, 
       this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
 * -f, --first
     * first name of the user
 * -l, --last
@@ -132,6 +134,8 @@ create a group in the specified directory
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json, 
       this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
 * -n, --name
     * name of the group
 * -d, --desc
@@ -153,6 +157,8 @@ to all the  groups specified.
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json, 
       this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
 * -n, --name
     * comma separated list of group names to add users to
 * -u, --uid
@@ -173,6 +179,8 @@ removed from all the groups specified.
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json, 
       this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
 * -n, --name
     * comma separated list of group names to remove users from
 * -u, --uid
@@ -192,6 +200,8 @@ nested group members will not be removed
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json, 
       this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
 * -n, --name
     * comma separated list of group names to empty users of
 * -f, --force=[true|false]
@@ -211,6 +221,8 @@ test connection to selected directory.
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json, 
       this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
 
 Known issues & Bugs
 ------------------------------------------------------------------------
