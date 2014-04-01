@@ -60,6 +60,11 @@ the setting file is a hash table in the following format:
 * "defaultDirectory" key has a string specifying the default directory 
   to use.  If this is specified and no -D option is provided, the directory
   with the same name as defaultDirectory will be used.
+* "logConfig" key may hold the configuration object to pass to 
+  [log4js](https://www.npmjs.org/package/log4js) logging library.
+    * if ommitted, the default values will be used
+    * appenders MUST have category: "main" to be used by crowdutil, otherwise
+      it will be ignored.
 
 #### Sample crowdutil.json
 
@@ -86,6 +91,21 @@ the setting file is a hash table in the following format:
     }
   },
   "defaultDirectory": "internal"
+  "logConfig": {
+    "appenders": [
+      {
+        "type": "file",
+        "filename": "./crowdutil.log",
+        "maxLogSize": 20480,
+        "backups": 2,
+        "category": "main"
+      }, {
+        "type": "console",
+        "category": "main"
+      }
+    ],
+    "replaceConsole": true
+  }
 }
 ~~~
 

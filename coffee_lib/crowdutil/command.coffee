@@ -80,22 +80,26 @@ connectCrowd = (opts, cfg, callback) ->
 ###
 Setup global.logger
 ###
-initLogger = (opts) ->
-  logConfig =
-    appenders: [
-      {
-        type: 'file'
-        filename: './crowdutil.log'
-        maxLogSize: 20480
-        backups: 2
-        category: 'main'
-      }
-      {
-        type: 'console'
-        category: 'main'
-      }
-    ]
-    replaceConsole: true
+initLogger = (opts, cfg) ->
+  if typeof cfg['logConfig'] != 'undefined'
+    logConfig = cfg['logConfig']
+  else
+    logConfig =
+      appenders: [
+        {
+          type: 'file'
+          filename: './crowdutil.log'
+          maxLogSize: 20480
+          backups: 2
+          category: 'main'
+        }
+        {
+          type: 'console'
+          category: 'main'
+        }
+      ]
+      replaceConsole: true
+
   log4js.configure(logConfig)
   global.logger = log4js.getLogger('main')
   if(
