@@ -275,6 +275,24 @@ accessed via the command.js script.
       lint and compile the coffee-script files without minifying.
     * see the Gruntfile.coffee for all the possible tasks.
 
+### Pull-requests
+
+* feature branches will be used for individual change-sets.
+    * branch names shall be feature/featurename
+    * we may use a develop branch to merge several feature branches
+      before we send pull requests to master.
+* pull requests in github will be used for review of a feature branch
+  before merging
+    * for smooth merging, please re-base the feature branch to the latest
+      master and make sure there are no conflicts right before sending
+      a pull request.
+    * set references to issues if relevant with the pull request
+      by adding a line in the comment in the form of "resolves #issuenum" 
+      where issuenum is the relevant issue number.
+* master branches may be altered by owner for purposes of releases (i.e.
+  bumping versions in package.json, fixing README), or for documentation
+  fixes.
+
 ### Versioning
 
 We will follow the [semver2.0](http://semver.org/) versioning scheme.  
