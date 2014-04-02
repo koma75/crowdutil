@@ -25,14 +25,14 @@ Usage
 
 ### Installation
 
-~~~
-> npm install crowdutil
+~~~Shell
+npm install crowdutil
 ~~~
 
 or directly from github
 
-~~~
-> npm install https://github.com/koma75/crowdutil.git
+~~~Shell
+npm install https://github.com/koma75/crowdutil.git
 ~~~
 
 ### Initial setup
@@ -70,7 +70,7 @@ the setting file is a hash table in the following format:
 
 #### Sample crowdutil.json
 
-~~~
+~~~JSON
 {
   "directories": {
     "internal": {
@@ -115,8 +115,8 @@ the setting file is a hash table in the following format:
 
 create a user in the specified directory.
 
-~~~
-> crowdutil create-user -D directory -f firstname -l lastname -d dispname \
+~~~Shell
+crowdutil create-user -D directory -f firstname -l lastname -d dispname \
   -e user@example.com -u username -p password
 ~~~
 
@@ -147,8 +147,8 @@ create a user in the specified directory.
 
 create a group in the specified directory
 
-~~~
-> crowdutil create-group -D directory -n groupname -d "group description"
+~~~Shell
+crowdutil create-group -D directory -n groupname -d "group description"
 ~~~
 
 * -D, --directory
@@ -169,8 +169,8 @@ create a group in the specified directory
 add multiple users to a set of groups.  All users specified will be added
 to all the  groups specified.
 
-~~~
-> crowdutil add-to-groups -D directory -n group1,group2,group3 \
+~~~Shell
+crowdutil add-to-groups -D directory -n group1,group2,group3 \
   -u user1,user2,user3,user4
 ~~~
 
@@ -191,8 +191,8 @@ to all the  groups specified.
 remove multiple users from a set of groups.  All users specified will be
 removed from all the groups specified.
 
-~~~
-> crowdutil rm-from-groups -D directory -n group1,group2,group3 \
+~~~Shell
+crowdutil rm-from-groups -D directory -n group1,group2,group3 \
   -u user1,user2,user3,user4
 ~~~
 
@@ -213,8 +213,8 @@ removed from all the groups specified.
 empty out the specified groups so no users are direct members of the group.
 nested group members will not be removed
 
-~~~
-> crowdutil empty-groups -D directory -n group1,group2,group3
+~~~Shell
+crowdutil empty-groups -D directory -n group1,group2,group3
 ~~~
 
 * -D, --directory
@@ -234,8 +234,8 @@ nested group members will not be removed
 
 test connection to selected directory.
 
-~~~
-> crowdutil test-connection -D directory
+~~~Shell
+crowdutil test-connection -D directory
 ~~~
 
 * -D, --directory
