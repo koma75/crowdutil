@@ -32,7 +32,7 @@ findGroup = (crowd, opts, callback) ->
   query = 'name="' + name + '"'
   crowd.search('group', query, (err, res) ->
     if err
-      console.log err.message
+      logger.warn err.message
     else
       callback(res)
   )
@@ -50,7 +50,7 @@ findUser = (crowd, opts, callback) ->
   query = query + ' and email="' + email + '"'
   crowd.search('user', query, (err, res) ->
     if err
-      console.log err.message
+      logger.warn err.message
     else
       callback(res)
   )
@@ -62,7 +62,7 @@ listUsersGroup = (crowd, uid, callback) ->
   else
     crowd.user.groups(uid, (err, res) ->
       if err
-        console.log err.message
+        logger.warn err.message
       else
         callback(res)
     )
@@ -74,7 +74,7 @@ findGroupMembers = (crowd, group, callback) ->
   else
     crowd.groups.directmembers(group, (err, res) ->
       if err
-        console.log err.message
+        logger.warn err.message
       else
         callback(res)
     )

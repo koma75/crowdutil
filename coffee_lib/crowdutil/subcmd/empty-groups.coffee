@@ -39,10 +39,10 @@ isOptOK = (opt) ->
   )
     for group in opt['options']['name']
       if !help.isName(group, false)
-        console.log 'invalid group name:' + group
+        logger.error 'invalid group name:' + group
         rc = false
   else
-    console.log 'no groups supplied'
+    logger.error 'no groups supplied'
     rc = false
   if typeof opt['options']['force'] == 'undefined'
     opt['options']['force'] = false
@@ -52,37 +52,37 @@ isOptOK = (opt) ->
 emptyGroup = (crowd, group) ->
   try
     crhelp.findGroupMembers(crowd, group, (res) ->
-      console.log res
+      logger.debug res
       # res [ 'uid1' , 'uid2' ]
       async.each(res,
         (user, uDone) ->
           try
             crhelp.rmUserFromGroup(crowd, user, group, (err) ->
               if err
-                console.log err.message
+                logger.warn err.message
               else
-                console.log group + ' - ' + user
+                logger.info group + ' - ' + user
               uDone() # ignore error
             )
           catch err
-            console.log err.message
+            logger.warn err.message
             uDone()
           return
         , (err) ->
           if err
-            console.log err.meesage
+            logger.warn err.meesage
           else
-            console.log "DONE emptying " + group
+            logger.info "DONE emptying " + group
           return
       )
     )
   catch err
-    console.log err.message
+    logger.warn err.message
   return
 
 exports.run = (options) ->
-  console.log 'running : empty-groups\n\n\n'
-  console.log options
+  logger.trace 'running : empty-groups\n\n\n'
+  logger.debug options
 
   if !isOptOK(options)
     return
@@ -90,7 +90,7 @@ exports.run = (options) ->
   crowd = options['crowd']
 
   if options['options']['force']
-    console.log 'removing users'
+    logger.info 'removing users'
     for v in options['options']['name']
       emptyGroup(crowd, v)
     return
@@ -103,22 +103,22 @@ exports.run = (options) ->
 
   rl.setPrompt('> ')
 
-  console.log(
+  logger.warn(
     "Are you sure you want to empty the following groups?:"
   )
   for v in options['options']['name']
-    console.log("  * " + v)
+    logger.warn("  * " + v)
 
   rl.prompt()
 
   rl.on('line',
     (answer) ->
       if answer.trim() == "yes"
-        console.log 'removing users'
+        logger.info 'removing users'
         for v in options['options']['name']
           emptyGroup(crowd, v)
       else
-        console.log 'abort'
+        logger.info 'abort'
       rl.close()
   )
 

@@ -60,6 +60,11 @@ the setting file is a hash table in the following format:
 * "defaultDirectory" key has a string specifying the default directory 
   to use.  If this is specified and no -D option is provided, the directory
   with the same name as defaultDirectory will be used.
+* "logConfig" key may hold the configuration object to pass to 
+  [log4js](https://www.npmjs.org/package/log4js) logging library.
+    * if ommitted, the default values will be used
+    * appenders MUST have category: "crowdutil" to be used by crowdutil, 
+      otherwise it will be ignored.
 
 #### Sample crowdutil.json
 
@@ -85,7 +90,22 @@ the setting file is a hash table in the following format:
       }
     }
   },
-  "defaultDirectory": "internal"
+  "defaultDirectory": "internal",
+  "logConfig": {
+    "appenders": [
+      {
+        "type": "file",
+        "filename": "./crowdutil.log",
+        "maxLogSize": 20480,
+        "backups": 2,
+        "category": "crowdutil"
+      }, {
+        "type": "console",
+        "category": "crowdutil"
+      }
+    ],
+    "replaceConsole": true
+  }
 }
 ~~~
 
@@ -103,6 +123,8 @@ create a user in the specified directory.
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json, 
       this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
 * -f, --first
     * first name of the user
 * -l, --last
@@ -132,6 +154,8 @@ create a group in the specified directory
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json, 
       this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
 * -n, --name
     * name of the group
 * -d, --desc
@@ -153,6 +177,8 @@ to all the  groups specified.
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json, 
       this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
 * -n, --name
     * comma separated list of group names to add users to
 * -u, --uid
@@ -173,6 +199,8 @@ removed from all the groups specified.
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json, 
       this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
 * -n, --name
     * comma separated list of group names to remove users from
 * -u, --uid
@@ -192,6 +220,8 @@ nested group members will not be removed
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json, 
       this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
 * -n, --name
     * comma separated list of group names to empty users of
 * -f, --force=[true|false]
@@ -211,6 +241,8 @@ test connection to selected directory.
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json, 
       this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
 
 Known issues & Bugs
 ------------------------------------------------------------------------

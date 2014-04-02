@@ -32,7 +32,7 @@ isOptOK = (opts) ->
   rc = true
 
   if !help.isName(opts['options']['name'], false)
-    console.log 'invalid group name'
+    logger.warn 'invalid group name'
     rc = false
   if typeof opts['options']['desc'] != 'string'
     # just put an empty string
@@ -41,8 +41,8 @@ isOptOK = (opts) ->
   return rc
 
 exports.run = (options) ->
-  console.log 'running : create-group\n\n\n'
-  console.log options
+  logger.trace 'running : create-group\n\n\n'
+  logger.debug options
 
   if !isOptOK(options)
     return
@@ -53,7 +53,7 @@ exports.run = (options) ->
     options['options']['desc'],
     (err) ->
       if err
-        console.log err.message
+        logger.warn err.message
       else
         # check if group is created as intended
         try
@@ -63,7 +63,7 @@ exports.run = (options) ->
               name: options['options']['name']
             },
             (res) ->
-              console.log res
+              logger.debug res
           )
         catch err
           throw err

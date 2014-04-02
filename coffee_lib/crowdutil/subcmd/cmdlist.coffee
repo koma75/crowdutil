@@ -34,6 +34,12 @@ opt_dir =
   type: 'string'
   description: 'select the directory'
   example: "'script --directory=value' or 'script -D value'"
+opt_verb =
+  name: 'verbose'
+  short: 'v'
+  type: 'boolean'
+  description: 'verbose logging'
+  example: "'script --verbose=[true|false]' or 'script -v [true|false]'"
 
 ###
 list of commands available to the main script
@@ -55,12 +61,13 @@ list =
   "test-connection":
     arg:
       description: 'test connection to selected Directory'
-      options: [ opt_dir ]
+      options: [ opt_dir , opt_verb]
   "empty-groups":
     arg:
       description: 'empty group in selected Directory'
       options: [
         opt_dir
+        opt_verb
         {
           name: 'name'
           short: 'n'
@@ -81,6 +88,7 @@ list =
       description: 'remove user from groups in selected Directory'
       options: [
         opt_dir
+        opt_verb
         {
           name: 'name'
           short: 'n'
@@ -101,6 +109,7 @@ list =
       description: 'add users to groups in selected Directory'
       options: [
         opt_dir
+        opt_verb
         {
           name: 'name'
           short: 'n'
@@ -121,6 +130,7 @@ list =
       description: 'Create group in selected Directory'
       options: [
         opt_dir
+        opt_verb
         {
           name: 'name'
           short: 'n'
@@ -141,6 +151,7 @@ list =
       description: 'Create user in selected Directory'
       options: [
         opt_dir
+        opt_verb
         {
           name: 'first'
           short: 'f'
