@@ -63,8 +63,8 @@ the setting file is a hash table in the following format:
 * "logConfig" key may hold the configuration object to pass to 
   [log4js](https://www.npmjs.org/package/log4js) logging library.
     * if ommitted, the default values will be used
-    * appenders MUST have category: "main" to be used by crowdutil, otherwise
-      it will be ignored.
+    * appenders MUST have category: "crowdutil" to be used by crowdutil, 
+      otherwise it will be ignored.
 
 #### Sample crowdutil.json
 
@@ -90,7 +90,7 @@ the setting file is a hash table in the following format:
       }
     }
   },
-  "defaultDirectory": "internal"
+  "defaultDirectory": "internal",
   "logConfig": {
     "appenders": [
       {
@@ -98,10 +98,10 @@ the setting file is a hash table in the following format:
         "filename": "./crowdutil.log",
         "maxLogSize": 20480,
         "backups": 2,
-        "category": "main"
+        "category": "crowdutil"
       }, {
         "type": "console",
-        "category": "main"
+        "category": "crowdutil"
       }
     ],
     "replaceConsole": true

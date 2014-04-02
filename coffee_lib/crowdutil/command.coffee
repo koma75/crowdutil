@@ -91,17 +91,17 @@ initLogger = (opts, cfg) ->
           filename: './crowdutil.log'
           maxLogSize: 20480
           backups: 2
-          category: 'main'
+          category: 'crowdutil'
         }
         {
           type: 'console'
-          category: 'main'
+          category: 'crowdutil'
         }
       ]
       replaceConsole: true
 
   log4js.configure(logConfig)
-  global.logger = log4js.getLogger('main')
+  global.logger = log4js.getLogger('crowdutil')
   if(
     typeof opts['options']['verbose'] == 'boolean' &&
     opts['options']['verbose'] == true
@@ -133,7 +133,7 @@ exports.run = () ->
 
   cfg = readConfig()
 
-  initLogger(opts)
+  initLogger(opts, cfg)
 
   try
     connectCrowd(opts, cfg, () ->
