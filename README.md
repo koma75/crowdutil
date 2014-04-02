@@ -10,7 +10,9 @@ Atlassian Crowd users and groups.
 ### Versions
 
 Date        | Version   | Changes
-:--         | :--       | :--
+:--         | --:       | :--
+2014.04.02  | 0.3.0     | logging feature implemented using log4js
+            |           | added --verbose mode.
 2014.03.28  | 0.2.1     | documentation fix.
 2014.03.28  | 0.2.0     | parameter check implemented.
             |           | some command line options changed to optional
