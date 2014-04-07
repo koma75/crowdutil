@@ -30,7 +30,7 @@ Operetta implementation
 ###
 
 defaultOpts = (cmd) ->
-  cmd.parameters(['-D', '--directory'], "target directory")
+  cmd.parameters(['-D', '--directory'], "target directory [optional]")
   cmd.options(['-v', '--verbose'], "verbose mode")
   return
 
@@ -72,6 +72,9 @@ start = (cfg, callback) ->
     'test-connect',
     'test connection to selected Directory',
     (cmd) ->
+      cmd
+        .banner = "crowdutil: test-connect\n" +
+          "test connection to selected directory.\n\n"
       defaultOpts(cmd)
       cmd.start(
         (opts) ->
@@ -89,6 +92,9 @@ start = (cfg, callback) ->
     'create-user',
     'create user in selected Directory',
     (cmd) ->
+      cmd
+        .banner = "crowdutil: test-connect\n" +
+          "create user in selected directory\n\n"
       defaultOpts(cmd)
       cmd.parameters(['-f','--first'],
         "user's first name")
@@ -118,6 +124,9 @@ start = (cfg, callback) ->
     'create-group',
     'create group in selected Directory',
     (cmd) ->
+      cmd
+        .banner = "crowdutil: test-connect\n" +
+          "create group in selected directory.\n\n"
       defaultOpts(cmd)
       cmd.parameters(['-n','--name'],
         "group name")
@@ -139,6 +148,9 @@ start = (cfg, callback) ->
     'add-to-groups',
     'add users to groups',
     (cmd) ->
+      cmd
+        .banner = "crowdutil: test-connect\n" +
+          "add list of users to list of groups.\n\n"
       defaultOpts(cmd)
       cmd.parameters(['-g','--group'],
         "comma separated list of groups to add users to")
@@ -160,6 +172,9 @@ start = (cfg, callback) ->
     'rm-from-groups',
     'remove users from groups',
     (cmd) ->
+      cmd
+        .banner = "crowdutil: test-connect\n" +
+          "remove list of users from list of groups.\n\n"
       defaultOpts(cmd)
       cmd.parameters(['-g','--group'],
         "comma separated list of groups to remove users from")
@@ -181,6 +196,10 @@ start = (cfg, callback) ->
     'empty-groups',
     'empty the specified group',
     (cmd) ->
+      cmd
+        .banner = "crowdutil: test-connect\n" +
+          "remove all direct members from the list of groups.\n" +
+          "If no -f option is supplied, you must answer 'yes' to proceed.\n\n"
       defaultOpts(cmd)
       cmd.parameters(['-g','--group'],
         "comma separated list of groups to empty out")
