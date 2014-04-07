@@ -11,8 +11,10 @@ Atlassian Crowd users and groups.
 
 Date        | Version   | Changes
 :--         | --:       | :--
-2014.04.02  | 0.3.1     | fixed --help command
+2014.04.02  | 0.3.2     | fixed --help command
             |           | fixed vague command options ("-n, --name")
+            |           | fixed debug logging of Objects
+            |           | fixed command name of test-connection to test-connect, to fit inside the help
 2014.04.02  | 0.3.0     | logging feature implemented using log4js
             |           | added --verbose mode.
 2014.03.28  | 0.2.1     | documentation fix.
