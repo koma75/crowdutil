@@ -33,6 +33,6 @@ exports.run = (options) ->
     if err
       logger.error err.message
     else
-      logger.info 'Connection Pass: ' + res
+      logger.info 'Connection Pass: \n' + JSON.stringify(res, null, 2)
   )
 

@@ -66,7 +66,7 @@ exports.run = (options) ->
               name: options['-n'][0]
             },
             (res) ->
-              logger.debug res
+              logger.debug JSON.stringify(res)
           )
         catch err
           logger.warn err.message

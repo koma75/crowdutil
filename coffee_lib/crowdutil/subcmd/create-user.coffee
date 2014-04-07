@@ -100,7 +100,7 @@ exports.run = (options) ->
           crhelp.findUser(crowd, {
             uid: options['-u'][0]
           }, (res) ->
-            logger.info res
+            logger.info JSON.stringify(res)
           )
         catch err
           logger.warn err.message
