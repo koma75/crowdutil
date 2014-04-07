@@ -11,6 +11,8 @@ Atlassian Crowd users and groups.
 
 Date        | Version   | Changes
 :--         | --:       | :--
+2014.04.02  | 0.3.1     | fixed --help command
+            |           | fixed vage command options ("-n, --name")
 2014.04.02  | 0.3.0     | logging feature implemented using log4js
             |           | added --verbose mode.
 2014.03.28  | 0.2.1     | documentation fix.
@@ -170,7 +172,7 @@ add multiple users to a set of groups.  All users specified will be added
 to all the  groups specified.
 
 ~~~Shell
-crowdutil add-to-groups -D directory -n group1,group2,group3 \
+crowdutil add-to-groups -D directory -g group1,group2,group3 \
   -u user1,user2,user3,user4
 ~~~
 
@@ -181,7 +183,7 @@ crowdutil add-to-groups -D directory -n group1,group2,group3 \
       this option can be ommited.
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
-* -n, --name
+* -g, --group
     * comma separated list of group names to add users to
 * -u, --uid
     * comma separated list of usernames/uids to add to the groups
@@ -192,7 +194,7 @@ remove multiple users from a set of groups.  All users specified will be
 removed from all the groups specified.
 
 ~~~Shell
-crowdutil rm-from-groups -D directory -n group1,group2,group3 \
+crowdutil rm-from-groups -D directory -g group1,group2,group3 \
   -u user1,user2,user3,user4
 ~~~
 
@@ -203,7 +205,7 @@ crowdutil rm-from-groups -D directory -n group1,group2,group3 \
       this option can be ommited.
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
-* -n, --name
+* -g, --group
     * comma separated list of group names to remove users from
 * -u, --uid
     * comma separated list of usernames/uids to remove from the groups
@@ -214,7 +216,7 @@ empty out the specified groups so no users are direct members of the group.
 nested group members will not be removed
 
 ~~~Shell
-crowdutil empty-groups -D directory -n group1,group2,group3
+crowdutil empty-groups -D directory -g group1,group2,group3
 ~~~
 
 * -D, --directory
@@ -224,10 +226,10 @@ crowdutil empty-groups -D directory -n group1,group2,group3
       this option can be ommited.
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
-* -n, --name
+* -g, --group
     * comma separated list of group names to empty users of
-* -f, --force=[true|false]
-    * set true to supress prompt (not yet implemented)
+* -f, --force
+    * supress prompt (not yet implemented)
     * optional: default to false
 
 ### test-connection

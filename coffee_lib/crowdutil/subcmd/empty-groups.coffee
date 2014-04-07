@@ -33,19 +33,18 @@ async = require 'async'
 isOptOK = (opt) ->
   rc = true
 
-  if(
-    typeof opt['options']['name'] != 'undefined' &&
-    opt['options']['name'].length != 0
-  )
-    for group in opt['options']['name']
+  help.opSplitCsv(opt, '-g')
+  if opt['-g'].length != 0
+    for group in opt['-g']
       if !help.isName(group, false)
         logger.error 'invalid group name:' + group
         rc = false
   else
     logger.error 'no groups supplied'
     rc = false
-  if typeof opt['options']['force'] == 'undefined'
-    opt['options']['force'] = false
+
+  if !help.opIsType(opt, '-f', 'boolean')
+    opt['-f'] = [ false ]
 
   return rc
 
@@ -89,9 +88,9 @@ exports.run = (options) ->
 
   crowd = options['crowd']
 
-  if options['options']['force']
+  if options['-f'][0]
     logger.info 'removing users'
-    for v in options['options']['name']
+    for v in options['-g']
       emptyGroup(crowd, v)
     return
 
@@ -106,7 +105,7 @@ exports.run = (options) ->
   logger.warn(
     "Are you sure you want to empty the following groups?:"
   )
-  for v in options['options']['name']
+  for v in options['-g']
     logger.warn("  * " + v)
 
   rl.prompt()
@@ -115,7 +114,7 @@ exports.run = (options) ->
     (answer) ->
       if answer.trim() == "yes"
         logger.info 'removing users'
-        for v in options['options']['name']
+        for v in options['-g']
           emptyGroup(crowd, v)
       else
         logger.info 'abort'

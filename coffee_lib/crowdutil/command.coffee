@@ -27,7 +27,6 @@
 
 # requires
 
-argv = require 'argv'
 log4js = require 'log4js'
 AtlassianCrowd = require 'atlassian-crowd'
 cmdlist = require './subcmd/cmdlist'
@@ -42,13 +41,16 @@ readConfig = () ->
 ###
 Connect to Crowd service and save connection object in opts['crowd']
 ###
-connectCrowd = (opts, cfg, callback) ->
+connectCrowd = (opts, cfg) ->
   # Figure out the target directory.
   # command line option -D taking precedance to default setting.
   # if no -D option is provided, we check if there is a default directory
   # directive in the configuration file.
-  if typeof opts['options']['directory'] == 'string'
-    directory = opts['options']['directory']
+  if(
+    typeof opts['-D'] == 'object' &&
+    typeof opts['-D'][0] == 'string'
+  )
+    directory = opts['-D'][0]
   else
     if typeof cfg['defaultDirectory'] == 'string'
       directory = cfg['defaultDirectory']
@@ -61,14 +63,6 @@ connectCrowd = (opts, cfg, callback) ->
       # create connection based on settings
       opts['crowd'] = new AtlassianCrowd(
         cfg['directories'][directory]
-      )
-
-      # test connection
-      opts['crowd'].ping( (err,res) ->
-        if err
-          throw err
-        else
-          callback()
       )
     catch err
       throw err
@@ -103,14 +97,33 @@ initLogger = (opts, cfg) ->
   log4js.configure(logConfig)
   global.logger = log4js.getLogger('crowdutil')
   if(
-    typeof opts['options']['verbose'] == 'boolean' &&
-    opts['options']['verbose'] == true
+    typeof opts['-v'] == 'object' &&
+    typeof opts['-v'][0] == 'boolean' &&
+    opts['-v'][0] == true
   )
     logger.setLevel('TRACE')
     logger.debug 'log level set to trace'
   else
     logger.setLevel('INFO')
   return
+
+init = (cfg, opts) ->
+  rc = true
+  try
+    initLogger(opts, cfg)
+  catch err
+    if err
+      console.log err.message
+      rc = false
+
+  try
+    connectCrowd(opts, cfg)
+  catch err
+    if err
+      logger.debug err.message
+      rc = false
+
+  return rc
 
 ###
 cli entrypoint
@@ -122,29 +135,9 @@ commands
   command execution.
 ###
 exports.run = () ->
-  console.log "\n\n\n\ncrowdutil: Atlassian Crowd Utility!\n\n\n\n"
-
-  # load all sub-command option settings into argv
-  for k,v of cmdlist.list
-    argv.mod v['arg']
-
-  # parse command line options
-  opts = argv.run()
-
   cfg = readConfig()
 
-  initLogger(opts, cfg)
+  cmdlist.start(cfg, init)
 
-  try
-    connectCrowd(opts, cfg, () ->
-      # require the module for the specified command and execute
-      try
-        require(cmdlist.list[opts['mod']]['require']).run(opts)
-      catch err
-        logger.error err.message
-      return
-    )
-  catch err
-    logger.error(err.message)
-    return -1
+  return
 

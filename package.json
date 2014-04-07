@@ -9,7 +9,7 @@
     "cli"
   ],
   "author": "Yasuhiro Okuno",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
   "directories": {
     "lib": "./lib/crowdutil"
   },
-  "main": "./lib/crowdutil/crowdUtil",
+  "main": "./lib/crowdutil/command",
   "bin": {
     "crowdutil": "./bin/crowdutil"
   },
@@ -29,11 +29,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "argv": "0.0.2",
     "atlassian-crowd": "~0.4.4",
     "async": "~0.2.10",
     "validator": "^3.5.1",
-    "log4js": "^0.6.12"
+    "log4js": "^0.6.12",
+    "operetta": "0.0.5"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
