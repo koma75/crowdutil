@@ -116,6 +116,9 @@ init = (cfg, opts) ->
       console.log err.message
       rc = false
 
+  logger.info "==============================================="
+  logger.info "crowdutil: Atlassian CROWD cli utility tool"
+
   try
     connectCrowd(opts, cfg)
   catch err
