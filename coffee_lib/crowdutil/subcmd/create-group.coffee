@@ -31,12 +31,15 @@ help = require '../helper/helper'
 isOptOK = (opts) ->
   rc = true
 
-  if !help.isName(opts['options']['name'], false)
+  if(
+    !help.opIsType(opts, '-n', 'string') ||
+    !help.isName(opts['-n'][0], false)
+  )
     logger.warn 'invalid group name'
     rc = false
-  if typeof opts['options']['desc'] != 'string'
+  if !help.opIsType(opts, '-d', 'string')
     # just put an empty string
-    opts['options']['desc'] = ''
+    opts['-d'] = ['']
 
   return rc
 
@@ -49,8 +52,8 @@ exports.run = (options) ->
 
   crowd = options['crowd']
   crowd.groups.create(
-    options['options']['name'],
-    options['options']['desc'],
+    options['-n'][0],
+    options['-d'][0],
     (err) ->
       if err
         logger.warn err.message
@@ -60,11 +63,11 @@ exports.run = (options) ->
           crhelp.findGroup(
             crowd,
             {
-              name: options['options']['name']
+              name: options['-n'][0]
             },
             (res) ->
               logger.debug res
           )
         catch err
-          throw err
+          logger.warn err.message
   )

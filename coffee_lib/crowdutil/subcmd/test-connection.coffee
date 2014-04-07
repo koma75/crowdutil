@@ -27,9 +27,11 @@
 
 exports.run = (options) ->
   logger.info 'TEST CONNECTION...'
+  logger.debug options
+
   options['crowd'].ping( (err,res) ->
     if err
-      throw err
+      logger.error err.message
     else
       logger.info 'Connection Pass: ' + res
   )

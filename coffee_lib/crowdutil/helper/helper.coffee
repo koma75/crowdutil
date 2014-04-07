@@ -61,9 +61,40 @@ isEmail = (str) ->
   return validator.isEmail(str)
 
 ###
+operetta helper
+###
+
+opIsAvail = (opt, flag) ->
+  rc = false
+  if typeof opt[flag] != 'undefined'
+    rc = true
+  return rc
+
+opIsType = (opt, flag, type) ->
+  rc = false
+  if(
+    typeof opt[flag] == 'object' &&
+    typeof opt[flag][0] == type
+  )
+    rc = true
+  return rc
+
+opSplitCsv = (opt, flag) ->
+  arr = []
+  if opIsAvail(opt, flag)
+    for csv in opt[flag]
+      arr = arr.concat(csv.split(","))
+  
+  opt[flag] = arr
+  return
+
+###
 exports
 ###
 exports.randPass = randPass
 exports.isEmail = isEmail
 exports.isName = isName
 exports.isPass = isPass
+exports.opIsAvail = opIsAvail
+exports.opIsType = opIsType
+exports.opSplitCsv = opSplitCsv

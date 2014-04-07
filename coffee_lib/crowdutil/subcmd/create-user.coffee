@@ -31,40 +31,48 @@ help = require '../helper/helper'
 isOptOK = (opts) ->
   rc = true
 
-  if !help.isName(opts['options']['first'], false)
+  if(
+    !help.opIsType(opts, '-f', 'string') ||
+    !help.isName(opts['-f'][0], false)
+  )
     rc = false
     logger.error 'first name not valid'
-  if !help.isName(opts['options']['last'], false)
+  if(
+    !help.opIsType(opts, '-l', 'string') ||
+    !help.isName(opts['-l'][0], false)
+  )
     rc = false
     logger.error 'last name not supplied'
-  if !help.isName(opts['options']['dispname'], true)
+  if(
+    !help.opIsType(opts, '-d', 'string') ||
+    !help.isName(opts['-d'][0], true)
+  )
     logger.info 'disp name not supplied'
-    opts['options']['dispname'] = opts['options']['first'] +
-      ' ' + opts['options']['last']
-  if !help.isEmail(opts['options']['email'])
+    opts['-d'] = []
+    opts['-d'][0] = opts['-f'][0] +
+      ' ' + opts['-l'][0]
+  if(
+    !help.opIsType(opts, '-e', 'string') ||
+    !help.isEmail(opts['-e'][0])
+  )
     rc = false
     logger.error 'email not supplied or invalid'
-  if !help.isName(opts['options']['uid'], false)
+  if(
+    !help.opIsType(opts, '-u', 'string') ||
+    !help.isName(opts['-u'][0], false)
+  )
     rc = false
     logger.error 'uid not supplied'
-  if !help.isPass(opts['options']['pass'])
+  if(
+    !help.opIsType(opts, 'p', 'string') ||
+    !help.isPass(opts['-p'][0])
+  )
     logger.info 'password not supplied. using a random password.'
-    opts['options']['pass'] = help.randPass()
+    opts['-p'] = []
+    opts['-p'][0] = help.randPass()
   return rc
 
 ###
-options = {
-  targets: [],
-  options:
-   { directory: 'internal',
-     first: 'fname',
-     last: 'lname',
-     dispname: 'y o',
-     email: 'email',
-     uid: 'j01234',
-     pass: 'aaa' },
-  mod: 'create-user',
-  crowd: {} }
 ###
 exports.run = (options) ->
   logger.trace 'running : create-user\n\n\n'
@@ -73,15 +81,16 @@ exports.run = (options) ->
   if !isOptOK(options)
     logger.error 'parameter invalid!'
     return
+  logger.debug 'creating user with:\n' + JSON.stringify(options,null,2)
 
   crowd = options['crowd']
   crowd.user.create(
-    options['options']['first'],
-    options['options']['last'],
-    options['options']['dispname'],
-    options['options']['email'],
-    options['options']['uid'],
-    options['options']['pass'],
+    options['-f'][0],
+    options['-l'][0],
+    options['-d'][0],
+    options['-e'][0],
+    options['-u'][0],
+    options['-p'][0],
     (err) ->
       if err
         logger.error err.message
@@ -89,10 +98,10 @@ exports.run = (options) ->
         # check if user really was created
         try
           crhelp.findUser(crowd, {
-            uid: options['options']['uid']
+            uid: options['-u'][0]
           }, (res) ->
             logger.info res
           )
         catch err
-          throw err
+          logger.warn err.message
     )

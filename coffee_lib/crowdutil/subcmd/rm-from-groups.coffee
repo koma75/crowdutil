@@ -32,29 +32,27 @@ async = require 'async'
 isOptOK = (opt) ->
   rc = true
 
-  if(
-    typeof opt['options']['name'] != 'undefined' &&
-    opt['options']['name'].length != 0
-  )
-    for group in opt['options']['name']
+  help.opSplitCsv(opt, '-g')
+  if opt['-g'].length != 0
+    for group in opt['-g']
       if !help.isName(group, false)
         logger.error 'invalid group name:' + group
         rc = false
   else
     logger.error 'no groups supplied'
     rc = false
+  logger.debug 'groups: \n' + JSON.stringify(opt['-g'], null, 2)
 
-  if(
-    typeof opt['options']['uid'] != 'undefined' &&
-    opt['options']['uid'].length != 0
-  )
-    for user in opt['options']['uid']
+  help.opSplitCsv(opt, '-u')
+  if opt['-u'].length != 0
+    for user in opt['-u']
       if !help.isName(user, false)
         logger.error 'invalid uid:' + user
         rc = false
   else
     logger.error 'no users supplied'
     rc = false
+  logger.debug 'users: \n' + JSON.stringify(opt['-u'], null, 2)
 
   return rc
 
@@ -67,11 +65,13 @@ exports.run = (options) ->
 
   crowd = options['crowd']
 
-  async.each(options['options']['name'],
+  async.each(options['-g'],
     (group, gDone) ->
+      logger.trace 'processing ' + group
       # Iterate over users
-      async.each(options['options']['uid'],
+      async.each(options['-u'],
         (user, uDone) ->
+          logger.trace 'remove ' + user + ' from ' + group
           try
             crhelp.rmUserFromGroup(crowd, user, group, (err) ->
               if err
@@ -86,6 +86,7 @@ exports.run = (options) ->
           return
         , (err) ->
           # all user iterations done for a group
+          logger.trace 'all users in ' + group + ' done.'
           gDone(err)
           return
       ) # /USER ITERATION

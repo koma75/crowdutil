@@ -26,180 +26,193 @@
 ###
 
 ###
-default option used for all commands
+Operetta implementation
 ###
-opt_dir =
-  name: 'directory'
-  short: 'D'
-  type: 'string'
-  description: 'select the directory'
-  example: "'script --directory=value' or 'script -D value'"
-opt_verb =
-  name: 'verbose'
-  short: 'v'
-  type: 'boolean'
-  description: 'verbose logging'
-  example: "'script --verbose=[true|false]' or 'script -v [true|false]'"
+
+defaultOpts = (cmd) ->
+  cmd.parameters(['-D', '--directory'], "target directory")
+  cmd.options(['-v', '--verbose'], "verbose mode")
+  return
 
 ###
-list of commands available to the main script
-list format:
-list[command-name] = Object
-  where Object holds information about the command
-Object is of the following form
-  require: PATH TO THE COMMAND IMPLEMENTATION
-  arg:
-    mod: COMMAND NAME RECOGNIZED BY argv MODULE
-    description: DESCRIPTION
-    options: [
-      ARRAY OF COMMAND LINE OPTIONS TO PASS TO argv MODULE
-    ]
-require and mod will be generated automatically from the key of the list
-hash.
+cfg: Config file
+callback(cfg, opts): common initialization function. connects to crowd
+to add a new command, use the following snippet:
+
+  operetta.command(
+    'command-name',
+    'command description',
+    (cmd) ->
+      defaultOpts(cmd)  # add default set of flags(-D and -v)
+      cmd.parameters(['-p','--param'],
+        "parameter flag which takes input")
+      cmd.options(['-o','--option'],
+        "options flag which takes no input")
+      cmd.start(
+        (opts) ->
+          if callback(cfg, opts)
+            require('./command-name').run(opts)
+          else
+            logger.error 'initialization failed'
+          return
+      )
+      return
+  )
+
+change the command-name, command description and the parameters/options.
+leave everything else intact!!
+
 ###
-list =
-  "test-connection":
-    arg:
-      description: 'test connection to selected Directory'
-      options: [ opt_dir , opt_verb]
-  "empty-groups":
-    arg:
-      description: 'empty group in selected Directory'
-      options: [
-        opt_dir
-        opt_verb
-        {
-          name: 'name'
-          short: 'n'
-          type: 'csv,string'
-          description: "group to empty out"
-          example: "'script --name=val1,val2' or 'script -n val1,val2'"
-        }
-        {
-          name: 'force'
-          short: 'f'
-          type: 'boolean'
-          description: "group to empty out"
-          example: "'script --force=true' or 'script -f 1'"
-        }
-      ]
-  "rm-from-groups":
-    arg:
-      description: 'remove user from groups in selected Directory'
-      options: [
-        opt_dir
-        opt_verb
-        {
-          name: 'name'
-          short: 'n'
-          type: 'csv,string'
-          description: "group name"
-          example: "'script --name=val1,val2' or 'script -n val1,val2'"
-        }
-        {
-          name: 'uid'
-          short: 'u'
-          type: 'csv,string'
-          description: "uid to remove from group"
-          example: "'script --uid=val1,val2' or 'script -u val1,val2'"
-        }
-      ]
-  "add-to-groups":
-    arg:
-      description: 'add users to groups in selected Directory'
-      options: [
-        opt_dir
-        opt_verb
-        {
-          name: 'name'
-          short: 'n'
-          type: 'csv,string'
-          description: "group name"
-          example: "'script --name=val1,val2' or 'script -n val1,val2'"
-        }
-        {
-          name: 'uid'
-          short: 'u'
-          type: 'csv,string'
-          description: "uid to add to group"
-          example: "'script --uid=val1,val2' or 'script -u val1,val2'"
-        }
-      ]
-  "create-group":
-    arg:
-      description: 'Create group in selected Directory'
-      options: [
-        opt_dir
-        opt_verb
-        {
-          name: 'name'
-          short: 'n'
-          type: 'string'
-          description: "group name"
-          example: "'script --name=value' or 'script -n value'"
-        }
-        {
-          name: 'desc'
-          short: 'd'
-          type: 'string'
-          description: "group description"
-          example: "'script --desc=value' or 'script -d value'"
-        }
-      ]
-  "create-user":
-    arg:
-      description: 'Create user in selected Directory'
-      options: [
-        opt_dir
-        opt_verb
-        {
-          name: 'first'
-          short: 'f'
-          type: 'string'
-          description: "user's first name"
-          example: "'script --first=value' or 'script -f value'"
-        }
-        {
-          name: 'last'
-          short: 'l'
-          type: 'string'
-          description: "user's last name"
-          example: "'script --last=value' or 'script -l value'"
-        }
-        {
-          name: 'dispname'
-          short: 'd'
-          type: 'string'
-          description: "user's display name"
-          example: "'script --dispname=value' or 'script -d value'"
-        }
-        {
-          name: 'email'
-          short: 'e'
-          type: 'string'
-          description: "user's email address"
-          example: "'script --email=value' or 'script -e value'"
-        }
-        {
-          name: 'uid'
-          short: 'u'
-          type: 'string'
-          description: "user's login ID"
-          example: "'script --uid=value' or 'script -u value'"
-        }
-        {
-          name: 'pass'
-          short: 'p'
-          type: 'string'
-          description: "user's password"
-          example: "'script --pass=value' or 'script -p value'"
-        }
-      ]
+start = (cfg, callback) ->
+  Operetta = require('operetta').Operetta
+  operetta = new Operetta()
 
-# generate the require and mod value
-for k,v of list
-  list[k]['arg']['mod'] = k
-  list[k]['require'] = './subcmd/' + k
+  # TEST COMMAND
+  operetta.command(
+    'test-connect',
+    'test connection to selected Directory',
+    (cmd) ->
+      defaultOpts(cmd)
+      cmd.start(
+        (opts) ->
+          if callback(cfg, opts)
+            require('./test-connection').run(opts)
+          else
+            logger.error 'initialization failed'
+          return
+      )
+      return
+  )
 
-exports.list = list
+  # CREATE USER
+  operetta.command(
+    'create-user',
+    'create user in selected Directory',
+    (cmd) ->
+      defaultOpts(cmd)
+      cmd.parameters(['-f','--first'],
+        "user's first name")
+      cmd.parameters(['-l','--last'],
+        "user's last name")
+      cmd.parameters(['-d','--dispname'],
+        "user's display name [optional]")
+      cmd.parameters(['-e','--email'],
+        "user's email address")
+      cmd.parameters(['-u','--uid'],
+        "user's login ID")
+      cmd.parameters(['-p','--pass'],
+        "user's password [optional]")
+      cmd.start(
+        (opts) ->
+          if callback(cfg, opts)
+            require('./create-user').run(opts)
+          else
+            logger.error 'initialization failed'
+          return
+      )
+      return
+  )
+
+  # CREATE GROUP
+  operetta.command(
+    'create-group',
+    'create group in selected Directory',
+    (cmd) ->
+      defaultOpts(cmd)
+      cmd.parameters(['-n','--name'],
+        "group name")
+      cmd.parameters(['-d','--desc'],
+        "description of the group")
+      cmd.start(
+        (opts) ->
+          if callback(cfg, opts)
+            require('./create-group').run(opts)
+          else
+            logger.error 'initialization failed'
+          return
+      )
+      return
+  )
+
+  # ADD USERS TO GROUPS
+  operetta.command(
+    'add-to-groups',
+    'add users to groups',
+    (cmd) ->
+      defaultOpts(cmd)
+      cmd.parameters(['-g','--group'],
+        "comma separated list of groups to add users to")
+      cmd.parameters(['-u','--uid'],
+        "comma separated list of users to add to groups")
+      cmd.start(
+        (opts) ->
+          if callback(cfg, opts)
+            require('./add-to-groups').run(opts)
+          else
+            logger.error 'initialization failed'
+          return
+      )
+      return
+  )
+
+  # REMOVE USERS FROM GROUPS
+  operetta.command(
+    'rm-from-groups',
+    'remove users from groups',
+    (cmd) ->
+      defaultOpts(cmd)
+      cmd.parameters(['-g','--group'],
+        "comma separated list of groups to remove users from")
+      cmd.parameters(['-u','--uid'],
+        "comma separated list of users to remove from groups")
+      cmd.start(
+        (opts) ->
+          if callback(cfg, opts)
+            require('./rm-from-groups').run(opts)
+          else
+            logger.error 'initialization failed'
+          return
+      )
+      return
+  )
+
+  # EMPTY GROUPS
+  operetta.command(
+    'empty-groups',
+    'empty the specified group',
+    (cmd) ->
+      defaultOpts(cmd)
+      cmd.parameters(['-g','--group'],
+        "comma separated list of groups to empty out")
+      cmd.options(['-f','--force'],
+        "force emptying the group")
+      cmd.start(
+        (opts) ->
+          if callback(cfg, opts)
+            require('./empty-groups').run(opts)
+          else
+            logger.error 'initialization failed'
+          return
+      )
+      return
+  )
+
+  operetta
+    .banner = "crowdutil. Atlassian Crowd utility command line tool\n\n"
+  operetta.options(
+    ['-V','--version'],
+    "display version info"
+  )
+  operetta.on(
+    '-V',
+    (value) ->
+      pjson = require '../../../package.json'
+      console.log pjson.name + " version " + pjson.version
+      return
+  )
+  operetta.start()
+
+  return
+
+exports.start = start
 

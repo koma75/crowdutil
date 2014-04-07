@@ -30,31 +30,30 @@ help = require '../helper/helper'
 async = require 'async'
 
 isOptOK = (opt) ->
+  logger.trace 'checking opt'
   rc = true
 
-  if(
-    typeof opt['options']['name'] != 'undefined' &&
-    opt['options']['name'].length != 0
-  )
-    for group in opt['options']['name']
+  help.opSplitCsv(opt, '-g')
+  if opt['-g'].length != 0
+    for group in opt['-g']
       if !help.isName(group, false)
         logger.warn 'invalid group name:' + group
         rc = false
   else
     logger.warn 'no groups supplied'
     rc = false
+  logger.debug '-g :\n' + JSON.stringify(opt['-g'], null, 2)
 
-  if(
-    typeof opt['options']['uid'] != 'undefined' &&
-    opt['options']['uid'].length != 0
-  )
-    for user in opt['options']['uid']
+  help.opSplitCsv(opt, '-u')
+  if opt['-u'].length != 0
+    for user in opt['-u']
       if !help.isName(user, false)
         logger.warn 'invalid uid:' + user
         rc = false
   else
     logger.warn 'no users supplied'
     rc = false
+  logger.debug '-u :\n' + JSON.stringify(opt['-u'], null, 2)
 
   return rc
 
@@ -67,11 +66,13 @@ exports.run = (options) ->
 
   crowd = options['crowd']
 
-  async.each(options['options']['name'],
+  async.each(options['-g'],
     (group, gDone) ->
       # Iterate over users
-      async.each(options['options']['uid'],
+      logger.trace 'Group: ' + group
+      async.each(options['-u'],
         (user, uDone) ->
+          logger.trace group + ' + ' + user
           try
             crhelp.addUserToGroup(crowd, user, group, (err) ->
               if err
@@ -86,6 +87,7 @@ exports.run = (options) ->
           return
         , (err) ->
           # all user iterations done for a group
+          logger.trace 'all users for group ' + group + ' Done'
           gDone(err)
           return
       ) # /USER ITERATION
