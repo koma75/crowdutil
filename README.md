@@ -232,12 +232,12 @@ crowdutil empty-groups -D directory -g group1,group2,group3
     * supress prompt (not yet implemented)
     * optional: default to false
 
-### test-connection
+### test-connect
 
 test connection to selected directory.
 
 ~~~Shell
-crowdutil test-connection -D directory
+crowdutil test-connect -D directory
 ~~~
 
 * -D, --directory
