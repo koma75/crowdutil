@@ -234,6 +234,74 @@ crowdutil empty-groups -D directory -g group1,group2,group3
     * supress prompt (not yet implemented)
     * optional: default to false
 
+### batch-exec
+
+empty out the specified groups so no users are direct members of the group.
+nested group members will not be removed
+
+~~~Shell
+crowdutil batch-exec -D directory -b path/to/batchfile.csv
+~~~
+
+* -D, --directory
+    * target directory application. needs to match one of the directory
+      names specified in crowdutil.json file
+    * optional: if defaultdirectory is defined in the crowdutil.json, 
+      this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
+* -b, --batch
+    * path to batch file.
+
+#### batchfile format
+
+Basic format of the batch file is based on 
+[Jglr](https://www.npmjs.org/package/jglr)
+
+The following cmmands can be used:
+
+* create-user
+    * create a user
+    * params: first,last,disp,uid,email,pass
+        * first: first name
+        * last: last name
+        * disp: display name (optional)
+        * uid: user ID
+        * email: email address
+        * pass: password (optional)
+* create-group
+    * create a group
+    * params: name,desc
+        * name
+        * desc
+* add-to-group
+    * add a user to group
+    * params: user,groupname
+        * user
+        * groupname
+* rm-from-group
+    * remove a user from group
+    * params: user,groupname
+        * user
+        * groupname
+* empty-group
+    * empty specified group
+    * params: groupname
+        * groupname
+* deactivate-user
+    * deactivate a user and optionally remove from all groups
+    * params: uid,rmfromgroupFlag
+        * uid
+        * rmfromgroupFlag
+            * if rmfromgroupFlag is set to 1 or true, the user will be 
+              removed from all groups.
+* seq
+    * wait for commands to finish and set to sequential execution mode
+* par
+    * wait for commands to finish and set to parallel execution mode
+* wait
+    * wait for commands to finish
+
 ### test-connect
 
 test connection to selected directory.
