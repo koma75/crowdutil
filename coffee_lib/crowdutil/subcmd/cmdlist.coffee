@@ -43,6 +43,9 @@ to add a new command, use the following snippet:
     'command-name',
     'command description',
     (cmd) ->
+      cmd
+        .banner = "crowdutil: command-name\n" +
+          "command description.\n\n"
       defaultOpts(cmd)  # add default set of flags(-D and -v)
       cmd.parameters(['-p','--param'],
         "parameter flag which takes input")
@@ -209,6 +212,28 @@ start = (cfg, callback) ->
         (opts) ->
           if callback(cfg, opts)
             require('./empty-groups').run(opts)
+          else
+            logger.error 'initialization failed'
+          return
+      )
+      return
+  )
+
+  # BATCH EXECUTE
+  operetta.command(
+    'batch-exec',
+    'execute according to batch file',
+    (cmd) ->
+      cmd
+        .banner = "crowdutil: batch-exec\n" +
+          "execute according to given batch file.\n\n"
+      defaultOpts(cmd)  # add default set of flags(-D and -v)
+      cmd.parameters(['-b','--batch'],
+        "path to the batch file to execute")
+      cmd.start(
+        (opts) ->
+          if callback(cfg, opts)
+            require('./batch-exec').run(opts)
           else
             logger.error 'initialization failed'
           return
