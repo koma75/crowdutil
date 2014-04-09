@@ -331,7 +331,7 @@ create-user,john,doe,joed,joed@example.com
 Valid:
 
 ~~~
-create-user,dirname,john,doe,john doe,joed,joed@example.com,
+create-user,,john,doe,,joed,joed@example.com,
 ~~~
 
 ### test-connect
