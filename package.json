@@ -34,7 +34,7 @@
     "validator": "^3.5.1",
     "log4js": "^0.6.12",
     "operetta": "0.0.5",
-    "jglr": "^0.1.1"
+    "jglr": "^0.2.0"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

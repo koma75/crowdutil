@@ -101,8 +101,8 @@ exports.run = (options) ->
   jglr.registerCmd('empty-group', empty_group)
   jglr.registerCmd('deactivate-user', deactivate_user)
 
-  myNext = (hasNext) ->
-    if hasNext
-      jglr.dispatchNext(myNext)
-  
-  jglr.dispatchNext(myNext)
+  jglr.dispatch(
+    (err) ->
+      logger.info "finished processing #{options['-b'][0]}"
+      return
+  )
