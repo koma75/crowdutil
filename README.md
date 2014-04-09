@@ -262,7 +262,10 @@ The following cmmands can be used:
 
 * create-user
     * create a user
-    * params: first,last,disp,uid,email,pass
+    * params: directory,first,last,disp,uid,email,pass
+        * directory: target crowd directory (optional)
+            * if ommitted it will default to the -D option
+              or the defaultDirectory specified in crowdutil.json
         * first: first name
         * last: last name
         * disp: display name (optional)
@@ -271,26 +274,41 @@ The following cmmands can be used:
         * pass: password (optional)
 * create-group
     * create a group
-    * params: name,desc
+    * params: directory,name,desc
+        * directory: target crowd directory (optional)
+            * if ommitted it will default to the -D option
+              or the defaultDirectory specified in crowdutil.json
         * name
         * desc
 * add-to-group
     * add a user to group
-    * params: user,groupname
+    * params: directory,user,groupname
+        * directory: target crowd directory (optional)
+            * if ommitted it will default to the -D option
+              or the defaultDirectory specified in crowdutil.json
         * user
         * groupname
 * rm-from-group
     * remove a user from group
-    * params: user,groupname
+    * params: directory,user,groupname
+        * directory: target crowd directory (optional)
+            * if ommitted it will default to the -D option
+              or the defaultDirectory specified in crowdutil.json
         * user
         * groupname
 * empty-group
     * empty specified group
-    * params: groupname
+    * params: directory,groupname
+        * directory: target crowd directory (optional)
+            * if ommitted it will default to the -D option
+              or the defaultDirectory specified in crowdutil.json
         * groupname
 * deactivate-user
     * deactivate a user and optionally remove from all groups
-    * params: uid,rmfromgroupFlag
+    * params: directory,uid,rmfromgroupFlag
+        * directory: target crowd directory (optional)
+            * if ommitted it will default to the -D option
+              or the defaultDirectory specified in crowdutil.json
         * uid
         * rmfromgroupFlag
             * if rmfromgroupFlag is set to 1 or true, the user will be 
@@ -301,6 +319,20 @@ The following cmmands can be used:
     * wait for commands to finish and set to parallel execution mode
 * wait
     * wait for commands to finish
+
+for any (optional) parameters, it should be left blank, but not skipped.
+
+Invalid:
+
+~~~
+create-user,john,doe,joed,joed@example.com
+~~~
+
+Valid:
+
+~~~
+create-user,dirname,john,doe,john doe,joed,joed@example.com,
+~~~
 
 ### test-connect
 
