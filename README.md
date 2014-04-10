@@ -46,8 +46,34 @@ for crowd (with login information) to supply to the tool.
 The config file is a json file "crowdutil.json" and **needs to be present
 in the working directory** where you execute the command.
 
-Also you will need to setup the crowd server to accept remote REST commands
-from your machine.
+#### CROWD setup
+
+You will need to set up an application in CROWD for each directory you
+would like to manage through crowdutil.
+
+See [Atlassian Crowd Documentation (Adding an Application)](https://confluence.atlassian.com/display/CROWD/Adding+an+Application#AddinganApplication-add) for details.
+
+1. Login to your CROWD server using an administrator account
+2. Select the Application menu
+3. Add Application for each directory
+    1. Details
+        * Select Generic Application for Application Type 
+        * Type the name
+        * set the password to use.
+    2. Connection
+        * URL should be the host name of one of your hosts you will use 
+          crowdutil on.
+    3. Directories
+        * Select one directory to associate to
+    4. Authentication
+        * leave blank
+    5. Confirmation
+        * confirm and add application
+4. Go to Search Applications and select the application you have made
+5. select the Remote Addresses Tab
+6. add all the remote addresses (IP or resolvable Hostname) that you 
+   plan to use crowdutil on.
+7. repeat steps 3-6 for all target directories.
 
 #### crowdutil.json
 
@@ -63,6 +89,8 @@ the setting file is a hash table in the following format:
           will use to connect by the -D switch.
     * value for each key is the application setting hash object 
       according to [atlassian-crowd npm](https://www.npmjs.org/package/atlassian-crowd)
+        * the application name must match one of the application names
+          you have setup in the "CROWD setup" section.
 * "defaultDirectory" key has a string specifying the default directory 
   to use.  If this is specified and no -D option is provided, the directory
   with the same name as defaultDirectory will be used.
