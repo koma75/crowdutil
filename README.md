@@ -290,15 +290,15 @@ The following cmmands can be used:
 
 * create-user
     * create a user
-    * params: directory,first,last,disp,uid,email,pass
+    * params: directory,first,last,disp,email,uid,pass
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
               or the defaultDirectory specified in crowdutil.json
         * first: first name
         * last: last name
         * disp: display name (optional)
-        * uid: user ID
         * email: email address
+        * uid: user ID
         * pass: password (optional)
 * create-group
     * create a group
@@ -348,18 +348,24 @@ The following cmmands can be used:
 * wait
     * wait for commands to finish
 
-for any (optional) parameters, it should be left blank, but not skipped.
+Any (optional) parameters should be left blank, but not skipped (except
+optional parameters at the very end).  All excess parameters are ignored.
 
 Invalid:
 
 ~~~
-create-user,john,doe,joed,joed@example.com
+create-user,john,doe,joed@example.com,joed
 ~~~
 
 Valid:
 
 ~~~
-create-user,,john,doe,,joed,joed@example.com,
+create-user,,john,doe,,joed@example.com,joed
+           ^         ^                      ^
+           these cannot be skipped.       trailing options can be skipped
+empty-group,,groupname,foo,bar,baz,,,
+           ^          ^ these are all ignored
+           cannot be skipped
 ~~~
 
 ### test-connect

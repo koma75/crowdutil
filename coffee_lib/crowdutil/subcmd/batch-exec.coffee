@@ -27,8 +27,36 @@
 
 fs = require 'fs'
 crhelp = require '../helper/crhelper'
+AtlassianCrowd = require 'atlassian-crowd'
 help = require '../helper/helper'
+
 Jglr = require 'jglr'
+
+defaultCrowd = null
+crowds = {}
+
+setupCROWD = () ->
+  logger.trace "setupCROWD"
+  cfg = require process.cwd() + '/crowdutil.json'
+  for directory,options of cfg['directories']
+    logger.debug(
+      "setupCROWD: adding #{directory}\n#{JSON.stringify(options,null,2)}"
+    )
+    try
+      crowds[directory] = new AtlassianCrowd(
+        options
+      )
+    catch err
+      logger.warn err.message
+
+getCROWD = (directory) ->
+  logger.trace "getCROWD: #{directory}"
+  if typeof crowds[directory] == 'object'
+    logger.debug "batch-exec: using #{directory}"
+    return crowds[directory]
+  else
+    logger.debug "batch-exec: using default directory"
+    return defaultCrowd
 
 isOptOK = (opts) ->
   rc = true
@@ -43,39 +71,151 @@ isOptOK = (opts) ->
   return rc
 
 create_user = (cmds, done) ->
-  logger.trace "create-user"
+  logger.trace "batch-exec: create-user"
   logger.debug "cmds = : \n#{JSON.stringify(cmds, null, 2)}"
-  done()
+
+  err = false
+
+  # CHECK CMDS
+  # cmds[0] command
+  # cmds[1] Directory
+  # cmds[2] first name
+  # cmds[3] last name
+  # cmds[4] disp name
+  # cmds[5] email
+  # cmds[6] uid
+  # cmds[7] password
+  if cmds.length < 7
+    logger.warn "batch-exec: not enough parameters"
+
+  if(
+    typeof cmds[2] != 'string' ||
+    !help.isName(cmds[2], false)
+  )
+    logger.warn "batch-exec: first name not valid"
+    err = true
+  if(
+    typeof cmds[3] != 'string' ||
+    !help.isName(cmds[3], false)
+  )
+    logger.warn "batch-exec: last name not valid"
+    err = true
+  if(
+    typeof cmds[4] != 'string' ||
+    !help.isName(cmds[4], true)
+  )
+    logger.info "batch-exec: display name not supplied"
+    cmds[4] = "#{cmds[2]} #{cmds[3]}"
+  if(
+    typeof cmds[5] != 'string' ||
+    !help.isEmail(cmds[5])
+  )
+    logger.warn "batch-exec: email not valid"
+    err = true
+  if(
+    typeof cmds[6] != 'string' ||
+    !help.isName(cmds[6], false)
+  )
+    logger.warn "batch-exec: uid not valid"
+    err = true
+  if(
+    typeof cmds[7] != 'string' ||
+    !help.isPass(cmds[7])
+  )
+    logger.info "batch-exec: password not supplied"
+    cmds[7] = help.randPass()
+
+  if err
+    setTimeout(() ->
+      done()
+      return
+    ,0)
+  else
+    # select the crowd application
+    crowd = getCROWD(cmds[1])
+
+    # Run the command
+    crowd.user.create(
+      cmds[2],
+      cmds[3],
+      cmds[4],
+      cmds[5],
+      cmds[6],
+      cmds[7],
+      (err) ->
+        if err
+          logger.error(
+            "create user #{cmds[6]}(#{cmds[5]}) failed: #{err.message}"
+          )
+        else
+          logger.info "user #{cmds[6]}(#{cmds[5]}) created"
+        done()
+      )
+
   return
 
 create_group = (cmds, done) ->
-  logger.trace "create-group"
+  logger.trace "batch-exec: create-group"
   logger.debug "cmds = : \n#{JSON.stringify(cmds, null, 2)}"
-  done()
+  # CHECK CMDS
+  # cmds[0] command
+  # cmds[1] Directory
+  # cmds[2] Group name
+  # cmds[3] Group Description
+  if cmds.length < 3
+    logger.warn "batch-exec: not enough parameters"
+  setTimeout(done,0)
   return
 
 add_to_group = (cmds, done) ->
-  logger.trace "add-to-group"
+  logger.trace "batch-exec: add-to-group"
   logger.debug "cmds = : \n#{JSON.stringify(cmds, null, 2)}"
-  done()
+  # CHECK CMDS
+  # cmds[0] command
+  # cmds[1] Directory
+  # cmds[2] UID
+  # cmds[3] Group name
+  if cmds.length < 4
+    logger.warn "batch-exec: not enough parameters"
+  setTimeout(done,0)
   return
 
 rm_from_group = (cmds, done) ->
-  logger.trace "rm-from-group"
+  logger.trace "batch-exec: rm-from-group"
   logger.debug "cmds = : \n#{JSON.stringify(cmds, null, 2)}"
-  done()
+  # CHECK CMDS
+  # cmds[0] command
+  # cmds[1] Directory
+  # cmds[2] UID
+  # cmds[3] Group name
+  if cmds.length < 4
+    logger.warn "batch-exec: not enough parameters"
+  setTimeout(done,0)
   return
 
 empty_group = (cmds, done) ->
-  logger.trace "empty-group"
+  logger.trace "batch-exec: empty-group"
   logger.debug "cmds = : \n#{JSON.stringify(cmds, null, 2)}"
-  done()
+  # CHECK CMDS
+  # cmds[0] command
+  # cmds[1] Directory
+  # cmds[2] Group name
+  if cmds.length < 3
+    logger.warn "batch-exec: not enough parameters"
+  setTimeout(done,0)
   return
 
 deactivate_user = (cmds, done) ->
-  logger.trace "deactivate-user"
+  logger.trace "batch-exec: deactivate-user"
   logger.debug "cmds = : \n#{JSON.stringify(cmds, null, 2)}"
-  done()
+  # CHECK CMDS
+  # cmds[0] command
+  # cmds[1] Directory
+  # cmds[2] UID
+  # cmds[3] Remove from group flag true if [true|1|yes]. false otherwise
+  if cmds.length < 3
+    logger.warn "batch-exec: not enough parameters"
+  setTimeout(done,0)
   return
 
 exports.run = (options) ->
@@ -87,7 +227,8 @@ exports.run = (options) ->
     return
   logger.debug "executing batch!"
 
-  crowd = options['crowd']
+  defaultCrowd = options['crowd']
+  setupCROWD()
 
   jglr = new Jglr.Jglr({'logger': global.logger})
 
