@@ -246,4 +246,5 @@ exports.run = (options) ->
     (err) ->
       logger.info "finished processing #{options['-b'][0]}"
       return
+    , true
   )
