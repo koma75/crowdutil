@@ -107,6 +107,14 @@ deactivate_user = (cmds, done) ->
   setTimeout(done,0)
   return
 
+CommandList =
+  'create-user': require('./batch-exec/create-user').run
+  'create-group': create_group
+  'add-to-group': add_to_group
+  'rm-from-group': rm_from_group
+  'empty-group': empty_group
+  'deactivate-user': deactivate_user
+
 exports.run = (options) ->
   logger.trace 'running : batch-exec'
   logger.debug "options: \n#{JSON.stringify(options, null, 2)}"
@@ -133,30 +141,9 @@ exports.run = (options) ->
   #
   # Register the batch commands
   #
-  jglr.registerCmd(
-    'create-user',
-    require('./batch-exec/create-user').run
-  )
-  jglr.registerCmd(
-    'create-group',
-    create_group
-  )
-  jglr.registerCmd(
-    'add-to-group',
-    add_to_group
-  )
-  jglr.registerCmd(
-    'rm-from-group',
-    rm_from_group
-  )
-  jglr.registerCmd(
-    'empty-group',
-    empty_group
-  )
-  jglr.registerCmd(
-    'deactivate-user',
-    deactivate_user
-  )
+  for cmdName,callback of CommandList
+    logger.debug "register callback for #{cmdName}"
+    jglr.registerCmd(cmdName, callback)
 
   #
   # Execute the batch file!
