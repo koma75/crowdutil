@@ -109,6 +109,56 @@ rmUserFromGroup = (crowd, uid, group, callback) ->
     )
   return
 
+#
+# Initialize Global variables
+#
+if typeof global.crowdutil == 'undefined'
+  global.crowdutil = {}
+
+if typeof global.crowdutil.crhelper == 'undefined'
+  global.crowdutil.crhelper = {}
+
+if typeof global.crowdutil.crhelper.defaultCrowd == 'undefined'
+  global.crowdutil.crhelper.defaultCrowd = null
+
+if typeof global.crowdutil.crhelper.crowds == 'undefined'
+  global.crowdutil.crhelper.crowds = {}
+
+setupCROWD = () ->
+  #
+  # Setup Global for Batch execution helper
+  #
+  crowds = global.crowdutil.crhelper.crowds
+  logger.trace "setupCROWD"
+  cfg = require process.cwd() + '/crowdutil.json'
+  for directory,options of cfg['directories']
+    logger.debug(
+      "setupCROWD: adding #{directory}\n#{JSON.stringify(options,null,2)}"
+    )
+    try
+      crowds[directory] = new AtlassianCrowd(
+        options
+      )
+    catch err
+      logger.warn err.message
+
+getCROWD = (directory) ->
+  defaultCrowd = global.crowdutil.crhelper.defaultCrowd
+  crowds = global.crowdutil.crhelper.crowds
+
+  logger.trace "getCROWD: #{directory}"
+  if typeof crowds[directory] == 'object'
+    logger.debug "getCROWD: using #{directory}"
+    return crowds[directory]
+  else
+    logger.debug "getCROWD: using default directory"
+    return defaultCrowd
+
+setDefaultCrowd = (crowd) ->
+  if typeof crowd == 'object'
+    global.crowdutil.crhelper.defaultCrowd = crowd
+  return
+
 ###
 exports
 ###
@@ -118,3 +168,6 @@ exports.listUsersGroup = listUsersGroup
 exports.findGroupMembers = findGroupMembers
 exports.addUserToGroup = addUserToGroup
 exports.rmUserFromGroup = rmUserFromGroup
+exports.setupCROWD = setupCROWD
+exports.getCROWD = getCROWD
+exports.setDefaultCrowd = setDefaultCrowd

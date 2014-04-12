@@ -27,36 +27,9 @@
 
 fs = require 'fs'
 crhelp = require '../helper/crhelper'
-AtlassianCrowd = require 'atlassian-crowd'
 help = require '../helper/helper'
 
 Jglr = require 'jglr'
-
-defaultCrowd = null
-crowds = {}
-
-setupCROWD = () ->
-  logger.trace "setupCROWD"
-  cfg = require process.cwd() + '/crowdutil.json'
-  for directory,options of cfg['directories']
-    logger.debug(
-      "setupCROWD: adding #{directory}\n#{JSON.stringify(options,null,2)}"
-    )
-    try
-      crowds[directory] = new AtlassianCrowd(
-        options
-      )
-    catch err
-      logger.warn err.message
-
-getCROWD = (directory) ->
-  logger.trace "getCROWD: #{directory}"
-  if typeof crowds[directory] == 'object'
-    logger.debug "batch-exec: using #{directory}"
-    return crowds[directory]
-  else
-    logger.debug "batch-exec: using default directory"
-    return defaultCrowd
 
 isOptOK = (opts) ->
   rc = true
@@ -69,90 +42,6 @@ isOptOK = (opts) ->
     logger.error "invalid file: #{opts['-b']}"
 
   return rc
-
-create_user = (cmds, done) ->
-  logger.trace "batch-exec: create-user"
-  logger.debug "cmds = : \n#{JSON.stringify(cmds, null, 2)}"
-
-  err = false
-
-  # CHECK CMDS
-  # cmds[0] command
-  # cmds[1] Directory
-  # cmds[2] first name
-  # cmds[3] last name
-  # cmds[4] disp name
-  # cmds[5] email
-  # cmds[6] uid
-  # cmds[7] password
-  if cmds.length < 7
-    logger.warn "batch-exec: not enough parameters"
-
-  if(
-    typeof cmds[2] != 'string' ||
-    !help.isName(cmds[2], false)
-  )
-    logger.warn "batch-exec: first name not valid"
-    err = true
-  if(
-    typeof cmds[3] != 'string' ||
-    !help.isName(cmds[3], false)
-  )
-    logger.warn "batch-exec: last name not valid"
-    err = true
-  if(
-    typeof cmds[4] != 'string' ||
-    !help.isName(cmds[4], true)
-  )
-    logger.info "batch-exec: display name not supplied"
-    cmds[4] = "#{cmds[2]} #{cmds[3]}"
-  if(
-    typeof cmds[5] != 'string' ||
-    !help.isEmail(cmds[5])
-  )
-    logger.warn "batch-exec: email not valid"
-    err = true
-  if(
-    typeof cmds[6] != 'string' ||
-    !help.isName(cmds[6], false)
-  )
-    logger.warn "batch-exec: uid not valid"
-    err = true
-  if(
-    typeof cmds[7] != 'string' ||
-    !help.isPass(cmds[7])
-  )
-    logger.info "batch-exec: password not supplied"
-    cmds[7] = help.randPass()
-
-  if err
-    setTimeout(() ->
-      done()
-      return
-    ,0)
-  else
-    # select the crowd application
-    crowd = getCROWD(cmds[1])
-
-    # Run the command
-    crowd.user.create(
-      cmds[2],
-      cmds[3],
-      cmds[4],
-      cmds[5],
-      cmds[6],
-      cmds[7],
-      (err) ->
-        if err
-          logger.error(
-            "create user #{cmds[6]}(#{cmds[5]}) failed: #{err.message}"
-          )
-        else
-          logger.info "user #{cmds[6]}(#{cmds[5]}) created"
-        done()
-      )
-
-  return
 
 create_group = (cmds, done) ->
   logger.trace "batch-exec: create-group"
@@ -227,21 +116,51 @@ exports.run = (options) ->
     return
   logger.debug "executing batch!"
 
-  defaultCrowd = options['crowd']
-  setupCROWD()
+  #
+  # Setup crhelper so all the possible crowd connections are ready
+  #
+  crhelp.setDefaultCrowd(options['crowd'])
+  crhelp.setupCROWD()
 
+  #
+  # Initialize the batch execution framework
+  #
   jglr = new Jglr.Jglr({'logger': global.logger})
 
   jglr.load(options['-b'][0])
   logger.debug(jglr)
 
-  jglr.registerCmd('create-user', create_user)
-  jglr.registerCmd('create-group', create_group)
-  jglr.registerCmd('add-to-group', add_to_group)
-  jglr.registerCmd('rm-from-group', rm_from_group)
-  jglr.registerCmd('empty-group', empty_group)
-  jglr.registerCmd('deactivate-user', deactivate_user)
+  #
+  # Register the batch commands
+  #
+  jglr.registerCmd(
+    'create-user',
+    require('./batch-exec/create-user').run
+  )
+  jglr.registerCmd(
+    'create-group',
+    create_group
+  )
+  jglr.registerCmd(
+    'add-to-group',
+    add_to_group
+  )
+  jglr.registerCmd(
+    'rm-from-group',
+    rm_from_group
+  )
+  jglr.registerCmd(
+    'empty-group',
+    empty_group
+  )
+  jglr.registerCmd(
+    'deactivate-user',
+    deactivate_user
+  )
 
+  #
+  # Execute the batch file!
+  #
   jglr.dispatch(
     (err) ->
       logger.info "finished processing #{options['-b'][0]}"
