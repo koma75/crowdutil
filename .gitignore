@@ -1,6 +1,7 @@
 lib-cov
 *.seed
 *.log
+*.log.*
 *.csv
 *.dat
 *.out
@@ -16,4 +17,3 @@ npm-debug.log
 node_modules
 crowdutil.json
 *.jgl
-crowdutil.log.1
