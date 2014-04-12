@@ -107,7 +107,9 @@ initLogger = (opts, cfg) ->
     logger.setLevel('INFO')
   return
 
-init = (cfg, opts) ->
+init = (opts) ->
+  cfg = readConfig()
+
   rc = true
   try
     initLogger(opts, cfg)
@@ -138,9 +140,7 @@ commands
   command execution.
 ###
 exports.run = () ->
-  cfg = readConfig()
-
-  cmdlist.start(cfg, init)
+  cmdlist.start(init)
 
   return
 
