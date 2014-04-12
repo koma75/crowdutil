@@ -7,23 +7,6 @@ About
 crowdutil is a set of utility command-line tool to help administer
 Atlassian Crowd users and groups.
 
-### Versions
-
-Date        | Version   | Changes
-:--         | --:       | :--
-2014.04.02  | 0.3.2     | fixed --help command
-            |           | fixed vague command options ("-n, --name")
-            |           | fixed debug logging of Objects
-            |           | fixed command name of test-connection to test-connect, to fit inside the help
-2014.04.02  | 0.3.0     | logging feature implemented using log4js
-            |           | added --verbose mode.
-2014.03.28  | 0.2.1     | documentation fix.
-2014.03.28  | 0.2.0     | parameter check implemented.
-            |           | some command line options changed to optional
-            |           | default directory option added
-            |           | Fixed program execution path.
-2014.03.24  | 0.1.0     | First Release
-
 Usage
 ------------------------------------------------------------------------
 
@@ -438,14 +421,17 @@ accessed via the command.js script.
 * pull requests in github will be used for review of a feature branch
   before merging
     * for smooth merging, please re-base the feature branch to the latest
-      master and make sure there are no conflicts right before sending
-      a pull request.
+      master, or merge all the latest changes in master to the feature branch
+      and make sure there are no conflicts right before sending a pull request.
     * set references to issues if relevant with the pull request
       by adding a line in the comment in the form of "resolves #issuenum" 
       where issuenum is the relevant issue number.
 * master branches may be altered by owner for purposes of releases (i.e.
-  bumping versions in package.json, fixing README), or for documentation
-  fixes.
+  bumping versions in package.json, fixing README), or for minor fixes (i.e.
+  minor bug fix, small code refactoring etc.)
+* since it is not a large project, the develop branch is not used unless
+  multiple features are being developed simultaneousely and features are
+  directly merged into master branch via pull requests.
 
 ### Versioning
 
@@ -457,6 +443,24 @@ minor/patch versions until we deploy the tool to production
 The interface relevant to versioning is whatever defined in this 
 document's "Usage" section (includes all subcommands, their cli arguments,
 the format of the configuration file "crowdutil.json").
+
+Change History
+------------------------------------------------------------------------
+
+Date        | Version   | Changes
+:--         | --:       | :--
+2014.04.02  | 0.3.2     | fixed --help command
+            |           | fixed vague command options ("-n, --name")
+            |           | fixed debug logging of Objects
+            |           | fixed command name of test-connection to test-connect, to fit inside the help
+2014.04.02  | 0.3.0     | logging feature implemented using log4js
+            |           | added --verbose mode.
+2014.03.28  | 0.2.1     | documentation fix.
+2014.03.28  | 0.2.0     | parameter check implemented.
+            |           | some command line options changed to optional
+            |           | default directory option added
+            |           | Fixed program execution path.
+2014.03.24  | 0.1.0     | First Release
 
 License
 ------------------------------------------------------------------------
