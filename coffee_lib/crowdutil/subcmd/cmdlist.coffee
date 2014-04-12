@@ -35,8 +35,7 @@ defaultOpts = (cmd) ->
   return
 
 ###
-cfg: Config file
-callback(cfg, opts): common initialization function. connects to crowd
+callback(opts): common initialization function. connects to crowd
 to add a new command, use the following snippet:
 
   operetta.command(
@@ -50,7 +49,7 @@ to add a new command, use the following snippet:
         "options flag which takes no input")
       cmd.start(
         (opts) ->
-          if callback(cfg, opts)
+          if callback(opts)
             require('./command-name').run(opts)
           else
             logger.error 'initialization failed'
@@ -63,7 +62,7 @@ change the command-name, command description and the parameters/options.
 leave everything else intact!!
 
 ###
-start = (cfg, callback) ->
+start = (callback) ->
   Operetta = require('operetta').Operetta
   operetta = new Operetta()
 
@@ -78,7 +77,7 @@ start = (cfg, callback) ->
       defaultOpts(cmd)
       cmd.start(
         (opts) ->
-          if callback(cfg, opts)
+          if callback(opts)
             require('./test-connection').run(opts)
           else
             logger.error 'initialization failed'
@@ -110,7 +109,7 @@ start = (cfg, callback) ->
         "user's password [optional]")
       cmd.start(
         (opts) ->
-          if callback(cfg, opts)
+          if callback(opts)
             require('./create-user').run(opts)
           else
             logger.error 'initialization failed'
@@ -134,7 +133,7 @@ start = (cfg, callback) ->
         "description of the group")
       cmd.start(
         (opts) ->
-          if callback(cfg, opts)
+          if callback(opts)
             require('./create-group').run(opts)
           else
             logger.error 'initialization failed'
@@ -158,7 +157,7 @@ start = (cfg, callback) ->
         "comma separated list of users to add to groups")
       cmd.start(
         (opts) ->
-          if callback(cfg, opts)
+          if callback(opts)
             require('./add-to-groups').run(opts)
           else
             logger.error 'initialization failed'
@@ -182,7 +181,7 @@ start = (cfg, callback) ->
         "comma separated list of users to remove from groups")
       cmd.start(
         (opts) ->
-          if callback(cfg, opts)
+          if callback(opts)
             require('./rm-from-groups').run(opts)
           else
             logger.error 'initialization failed'
@@ -207,10 +206,30 @@ start = (cfg, callback) ->
         "force emptying the group")
       cmd.start(
         (opts) ->
-          if callback(cfg, opts)
+          if callback(opts)
             require('./empty-groups').run(opts)
           else
             logger.error 'initialization failed'
+          return
+      )
+      return
+  )
+
+  # INIT CONFIG
+  operetta.command(
+    'create-config',
+    'create a sample config file',
+    (cmd) ->
+      cmd
+        .banner = "crowdutil: create-config\n" +
+          "create a sample config file.\n\n"
+      cmd.parameters(['-o','--out'],
+        "output filename (default to crowdutil.json). stdout to print")
+      cmd.options(['-f','--force'],
+        "force overwriting file.")
+      cmd.start(
+        (opts) ->
+          require('./create-config').run(opts)
           return
       )
       return

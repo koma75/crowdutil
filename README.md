@@ -77,35 +77,36 @@ the setting file is a hash table in the following format:
 ~~~JSON
 {
   "directories": {
-    "internal": {
+    "test": {
       "crowd": {
         "base": "http://localhost:8059/crowd/"
       },
       "application": {
-        "name": "my application",
+        "name": "test application",
         "password": "pass123"
       }
     },
-    "external": {
+    "sample1": {
       "crowd": {
         "base": "http://localhost:8059/crowd/"
       },
       "application": {
-        "name": "my external application",
+        "name": "sample application 1",
         "password": "pass123"
       }
     }
   },
-  "defaultDirectory": "internal",
+  "defaultDirectory": "test",
   "logConfig": {
     "appenders": [
       {
         "type": "file",
         "filename": "./crowdutil.log",
-        "maxLogSize": 20480,
+        "maxLogSize": "204800",
         "backups": 2,
         "category": "crowdutil"
-      }, {
+      },
+      {
         "type": "console",
         "category": "crowdutil"
       }
@@ -249,6 +250,21 @@ crowdutil test-connect -D directory
       this option can be ommited.
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
+
+### create-config
+
+Create a sample configuration file
+
+~~~Shell
+crowdutil create-config -o sample.json
+~~~
+
+* -o, --out
+    * output filename. defaults to crowdutil.json if set without any value
+    * set to stdout to print the results to console
+* -f, --force
+    * force overwriting the file.  If not set, the command will not overwrite
+      any files.
 
 Known issues & Bugs
 ------------------------------------------------------------------------
