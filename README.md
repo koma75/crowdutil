@@ -405,12 +405,12 @@ accessed via the command.js script.
 
 1. Initially, you will need to run "npm install" to install devDependencies.
     * Also install grunt-cli globally or set the path to the local install.
-2. Run "grunt coffee:lib" to compile all coffee-script into the lib directory.
-3. While in development, you can run "grunt" to start the watch task, which 
-   will compile any changes.
-    * You can also choose to run "grunt watch:coffee_lib" which will only
+2. Run "npm run build" to compile all coffee-script into the lib directory.
+3. While in development, you can run "npm run watch" to start the watch task,
+   which will compile any changes.
+    * You can also choose to run "npm run watch-test" which will only
       lint and compile the coffee-script files without minifying.
-    * see the Gruntfile.coffee for all the possible tasks.
+    * see the Gruntfile.coffee and package.json for all the possible tasks.
 
 ### Pull-requests
 
