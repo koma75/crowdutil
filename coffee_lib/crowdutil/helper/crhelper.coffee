@@ -122,31 +122,33 @@ if typeof global.crowdutil.crhelper.defaultCrowd == 'undefined'
   global.crowdutil.crhelper.defaultCrowd = null
 
 if typeof global.crowdutil.crhelper.crowds == 'undefined'
-  global.crowdutil.crhelper.crowds = {}
+  global.crowdutil.crhelper.crowds = {"some": true}
 
 setupCROWD = () ->
   #
   # Setup Global for Batch execution helper
   #
-  crowds = global.crowdutil.crhelper.crowds
   logger.trace "setupCROWD"
   cfg = require process.cwd() + '/crowdutil.json'
+  AtlassianCrowd = require 'atlassian-crowd'
   for directory,options of cfg['directories']
     logger.debug(
       "setupCROWD: adding #{directory}\n#{JSON.stringify(options,null,2)}"
     )
     try
-      crowds[directory] = new AtlassianCrowd(
+      global.crowdutil.crhelper.crowds[directory] = new AtlassianCrowd(
         options
       )
     catch err
       logger.warn err.message
+  logger.debug "#{JSON.stringify(global.crowdutil.crhelper)}"
 
 getCROWD = (directory) ->
   defaultCrowd = global.crowdutil.crhelper.defaultCrowd
   crowds = global.crowdutil.crhelper.crowds
 
   logger.trace "getCROWD: #{directory}"
+  logger.debug "getCROWD: #{JSON.stringify(crowds)}"
   if typeof crowds[directory] == 'object'
     logger.debug "getCROWD: using #{directory}"
     return crowds[directory]

@@ -25,8 +25,8 @@
   THE SOFTWARE.
 ###
 
-crhelp = require '../helper/crhelper'
-help = require '../helper/helper'
+crhelp = require '../../helper/crhelper'
+help = require '../../helper/helper'
 
 isOptOK = (cmds) ->
   rc = true
