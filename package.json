@@ -26,7 +26,11 @@
     "crowdutil": "./bin/crowdutil"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/grunt coffeelint coffee uglify",
+    "build-test": "./node_modules/.bin/grunt coffeelint coffee",
+    "watch": "./node_modules/.bin/grunt watch",
+    "watch-test": "./node_modules/.bin/grunt watch:coffee_lib"
   },
   "dependencies": {
     "atlassian-crowd": "~0.4.4",
