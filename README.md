@@ -466,6 +466,9 @@ Change History
 
 Date        | Version   | Changes
 :--         | --:       | :--
+2014.04.15  | 0.4.0     | added batch-exec command
+            |           | added create-config command
+            |           | fixed a few README documentation errors
 2014.04.02  | 0.3.2     | fixed --help command
             |           | fixed vague command options ("-n, --name")
             |           | fixed debug logging of Objects
