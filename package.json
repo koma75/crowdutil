@@ -26,14 +26,19 @@
     "crowdutil": "./bin/crowdutil"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/grunt coffeelint coffee uglify",
+    "build-test": "./node_modules/.bin/grunt coffeelint coffee",
+    "watch": "./node_modules/.bin/grunt watch",
+    "watch-test": "./node_modules/.bin/grunt watch:coffee_lib"
   },
   "dependencies": {
     "atlassian-crowd": "~0.4.4",
     "async": "~0.2.10",
     "validator": "^3.5.1",
     "log4js": "^0.6.12",
-    "operetta": "0.0.5"
+    "operetta": "0.0.5",
+    "jglr": "^0.3.1"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
