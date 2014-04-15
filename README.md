@@ -248,8 +248,7 @@ crowdutil empty-groups -D directory -g group1,group2,group3
 
 ### batch-exec
 
-empty out the specified groups so no users are direct members of the group.
-nested group members will not be removed
+Execute the specifies batch file (a csv based batch file).
 
 ~~~Shell
 crowdutil batch-exec -D directory -b path/to/batchfile.csv
@@ -267,6 +266,8 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
 * -f, --force
     * if set, batch-exec will try to continue processing the batch
       even on errors.
+    * optional: if not set, the batch execution will stop as error 
+      is reported from the dispatched command.
 
 #### batchfile format
 
