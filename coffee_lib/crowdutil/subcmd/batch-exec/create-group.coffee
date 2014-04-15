@@ -34,13 +34,9 @@ isOptOK = (cmds) ->
   # CHECK CMDS
   # cmds[0] command
   # cmds[1] Directory
-  # cmds[2] first name
-  # cmds[3] last name
-  # cmds[4] disp name
-  # cmds[5] email
-  # cmds[6] uid
-  # cmds[7] password
-  if cmds.length < 7
+  # cmds[2] Group name
+  # cmds[3] Group Description
+  if cmds.length < 3
     logger.warn "batch-exec: not enough parameters"
     rc = false
 
@@ -48,51 +44,25 @@ isOptOK = (cmds) ->
     typeof cmds[2] != 'string' ||
     !help.isName(cmds[2], false)
   )
-    logger.warn "batch-exec: first name not valid"
+    logger.warn "batch-exec: group name not valid"
     rc = false
   if(
-    typeof cmds[3] != 'string' ||
-    !help.isName(cmds[3], false)
+    typeof cmds[3] != 'string'
   )
-    logger.warn "batch-exec: last name not valid"
-    rc = false
-  if(
-    typeof cmds[4] != 'string' ||
-    !help.isName(cmds[4], true)
-  )
-    logger.info "batch-exec: display name not supplied"
-    cmds[4] = "#{cmds[2]} #{cmds[3]}"
-  if(
-    typeof cmds[5] != 'string' ||
-    !help.isEmail(cmds[5])
-  )
-    logger.warn "batch-exec: email not valid"
-    rc = false
-  if(
-    typeof cmds[6] != 'string' ||
-    !help.isName(cmds[6], false)
-  )
-    logger.warn "batch-exec: uid not valid"
-    rc = false
-  if(
-    typeof cmds[7] != 'string' ||
-    !help.isPass(cmds[7])
-  )
-    logger.info "batch-exec: password not supplied"
-    cmds[7] = help.randPass()
+    cmds[3] = ''
 
   return rc
 
 exports.run = (cmds, done) ->
-  logger.trace "batch-exec: create-user"
+  logger.trace "batch-exec: create-group"
   logger.debug "cmds = : \n#{JSON.stringify(cmds, null, 2)}"
 
   err = false
 
   if !isOptOK(cmds)
     setTimeout(() ->
-      logger.error "batch-exec: create-user parameter error"
-      done(new Error("batch-exec: create-user parameter error"))
+      logger.error "batch-exec:create-group param error"
+      done(new Error("batch-exec:create-group param error"))
       return
     ,0)
   else
@@ -100,19 +70,15 @@ exports.run = (cmds, done) ->
     crowd = crhelp.getCROWD(cmds[1])
 
     # Run the command
-    crowd.user.create(
+    crowd.groups.create(
       cmds[2],
       cmds[3],
-      cmds[4],
-      cmds[5],
-      cmds[6],
-      cmds[7],
       (err) ->
         if err
           logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
           done(err)
         else
           done()
-      )
+    )
 
   return

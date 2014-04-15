@@ -91,7 +91,11 @@ exports.run = (options) ->
   if options['-f'][0]
     logger.info 'removing users'
     for v in options['-g']
-      emptyGroup(crowd, v)
+      crhelp.emptyGroup(crowd, v, 3, (err) ->
+        if err
+          logger.warn err.message
+        return
+      )
     return
 
   rl = readline.createInterface({

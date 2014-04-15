@@ -229,6 +229,8 @@ start = (callback) ->
       defaultOpts(cmd)  # add default set of flags(-D and -v)
       cmd.parameters(['-b','--batch'],
         "path to the batch file to execute")
+      cmd.options(['-f','--force'],
+        "ignore errors and continue processing the batch")
       cmd.start(
         (opts) ->
           if callback(opts)

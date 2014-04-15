@@ -40,80 +40,21 @@ isOptOK = (opts) ->
   )
     rc = false
     logger.error "invalid file: #{opts['-b']}"
+  if !help.opIsType(opts, '-f', 'boolean')
+    opts['-f'] = [ false ]
 
   return rc
 
-create_group = (cmds, done) ->
-  logger.trace "batch-exec: create-group"
-  logger.debug "cmds = : \n#{JSON.stringify(cmds, null, 2)}"
-  # CHECK CMDS
-  # cmds[0] command
-  # cmds[1] Directory
-  # cmds[2] Group name
-  # cmds[3] Group Description
-  if cmds.length < 3
-    logger.warn "batch-exec: not enough parameters"
-  setTimeout(done,0)
-  return
-
-add_to_group = (cmds, done) ->
-  logger.trace "batch-exec: add-to-group"
-  logger.debug "cmds = : \n#{JSON.stringify(cmds, null, 2)}"
-  # CHECK CMDS
-  # cmds[0] command
-  # cmds[1] Directory
-  # cmds[2] UID
-  # cmds[3] Group name
-  if cmds.length < 4
-    logger.warn "batch-exec: not enough parameters"
-  setTimeout(done,0)
-  return
-
-rm_from_group = (cmds, done) ->
-  logger.trace "batch-exec: rm-from-group"
-  logger.debug "cmds = : \n#{JSON.stringify(cmds, null, 2)}"
-  # CHECK CMDS
-  # cmds[0] command
-  # cmds[1] Directory
-  # cmds[2] UID
-  # cmds[3] Group name
-  if cmds.length < 4
-    logger.warn "batch-exec: not enough parameters"
-  setTimeout(done,0)
-  return
-
-empty_group = (cmds, done) ->
-  logger.trace "batch-exec: empty-group"
-  logger.debug "cmds = : \n#{JSON.stringify(cmds, null, 2)}"
-  # CHECK CMDS
-  # cmds[0] command
-  # cmds[1] Directory
-  # cmds[2] Group name
-  if cmds.length < 3
-    logger.warn "batch-exec: not enough parameters"
-  setTimeout(done,0)
-  return
-
-deactivate_user = (cmds, done) ->
-  logger.trace "batch-exec: deactivate-user"
-  logger.debug "cmds = : \n#{JSON.stringify(cmds, null, 2)}"
-  # CHECK CMDS
-  # cmds[0] command
-  # cmds[1] Directory
-  # cmds[2] UID
-  # cmds[3] Remove from group flag true if [true|1|yes]. false otherwise
-  if cmds.length < 3
-    logger.warn "batch-exec: not enough parameters"
-  setTimeout(done,0)
-  return
-
 CommandList =
   'create-user': require('./batch-exec/create-user').run
-  'create-group': create_group
-  'add-to-group': add_to_group
-  'rm-from-group': rm_from_group
-  'empty-group': empty_group
-  'deactivate-user': deactivate_user
+  'create-group': require('./batch-exec/create-group').run
+  'add-to-group': require('./batch-exec/add-to-group').run
+  'rm-from-group': require('./batch-exec/rm-from-group').run
+  'empty-group': require('./batch-exec/empty-group').run
+  'activate-user': require('./batch-exec/activate-user').run
+  'deactivate-user': require('./batch-exec/deactivate-user').run
+  'remove-user': require('./batch-exec/remove-user').run
+  'remove-group': require('./batch-exec/remove-group').run
 
 exports.run = (options) ->
   logger.trace 'running : batch-exec'
@@ -150,7 +91,9 @@ exports.run = (options) ->
   #
   jglr.dispatch(
     (err) ->
+      if err
+        logger.error err.message
       logger.info "finished processing #{options['-b'][0]}"
       return
-    , true
+    , !options['-f'][0]
   )

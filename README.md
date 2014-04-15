@@ -264,6 +264,9 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
     * optional: verbose mode.  outputs more info to console and log file
 * -b, --batch
     * path to batch file.
+* -f, --force
+    * if set, batch-exec will try to continue processing the batch
+      even on errors.
 
 #### batchfile format
 
@@ -315,7 +318,7 @@ The following cmmands can be used:
             * if ommitted it will default to the -D option
               or the defaultDirectory specified in crowdutil.json
         * groupname
-* deactivate-user
+* deactivate-user [NOT IMPLEMENTED]
     * deactivate a user and optionally remove from all groups
     * params: directory,uid,rmfromgroupFlag
         * directory: target crowd directory (optional)
@@ -325,10 +328,24 @@ The following cmmands can be used:
         * rmfromgroupFlag
             * if rmfromgroupFlag is set to 1 or true, the user will be 
               removed from all groups.
+* remove-group
+    * remove group from target directory
+    * params: directory,groupname
+        * directory: target crowd directory (optional)
+            * if ommitted it will default to the -D option
+              or the defaultDirectory specified in crowdutil.json
+        * groupname
 * seq
     * wait for commands to finish and set to sequential execution mode
 * par
     * wait for commands to finish and set to parallel execution mode
+    * params: numParallel
+        * numParallel (optional)
+            * any integer value to set how many parallel connections to 
+              CROWD is allowed.  Defaults to 10.
+            * WARNING: if this number is set higher than the database 
+              connection pool or the capacity of CROWD web interface, 
+              the batch process may fail.
 * wait
     * wait for commands to finish
 
