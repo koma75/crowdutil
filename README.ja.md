@@ -4,86 +4,86 @@ crowdutil
 About
 ------------------------------------------------------------------------
 
-crowdutil �� Atlassian CROWD �̃��[�U�[����уO���[�v�Ǘ������邽�߂�
-�R�}���h���C���c�[���ł��B
+crowdutil は Atlassian CROWD のユーザーおよびグループ管理をするための
+コマンドラインツールです。
 
-���p���@
+利用方法
 ------------------------------------------------------------------------
 
-### �C���X�g�[��
+### インストール
 
 ~~~Shell
 npm install crowdutil
 ~~~
 
-���́Agithub���璼��
+又は、githubから直接
 
 ~~~Shell
 npm install https://github.com/koma75/crowdutil.git
 ~~~
 
-### �����Z�b�g�A�b�v
+### 初期セットアップ
 
-�c�[���𗘗p���邽�߂ɂ͂܂��ݒ�t�@�C�����쐬����K�v������܂��B
-�ݒ�t�@�C���̖��O�́ucrowdutil.json�v�ŁA�R�}���h���C���c�[�������s����
-��ƃf�B���N�g���ɑ��݂��Ȃ���΂Ȃ�܂���B�T���v����crowdutil.json 
-�t�@�C���� `crowdutil create-config -o crowdutil.json` �Ő����\�ł��B
+ツールを利用するためにはまず設定ファイルを作成する必要があります。
+設定ファイルの名前は「crowdutil.json」で、コマンドラインツールを実行した
+作業ディレクトリに存在しなければなりません。サンプルのcrowdutil.json 
+ファイルは `crowdutil create-config -o crowdutil.json` で生成可能です。
 
 #### CROWD setup
 
-CROWD�ɐڑ����邽�߂ɂ́A�ݒ�Ώۂ̃f�B���N�g������CROWD�A�v���P�[�V������
-�o�^���Acrowdutil�����s����}�V����IP�A�h���X���z�X�g�������O�ɓo�^���Ă���
-�K�v������܂��B
+CROWDに接続するためには、設定対象のディレクトリ毎にCROWDアプリケーションを
+登録し、crowdutilを実行するマシンのIPアドレスかホスト名を事前に登録しておく
+必要があります。
 
-�ݒ���@�̏ڍׂɂ��Ă� [Atlassian Crowd Documentation (Adding an Application)](https://confluence.atlassian.com/display/CROWD/Adding+an+Application#AddinganApplication-add) ���Q�Ƃ��Ă��������B
+設定方法の詳細については [Atlassian Crowd Documentation (Adding an Application)](https://confluence.atlassian.com/display/CROWD/Adding+an+Application#AddinganApplication-add) を参照してください。
 
-1. CROWD�ɊǗ��҃��[�U�[�Ń��O�C��
-2. Application���j���[��I��
-3. �ݒ���s���Ώۂ̃f�B���N�g�����ɃA�v���P�[�V�������쐬
+1. CROWDに管理者ユーザーでログイン
+2. Applicationメニューを選択
+3. 設定を行う対象のディレクトリ毎にアプリケーションを作成
     1. Details
-        * Generic Application ��I��
-        * ���O����́icrowdutil.json�t�@�C���őΏۂ��w�肷��ۂɗ��p���܂��j
-        * �p�X���[�h�����
+        * Generic Application を選択
+        * 名前を入力（crowdutil.jsonファイルで対象を指定する際に利用します）
+        * パスワードを入力
     2. Connection
-        * URL ��crowdutil�𗘗p����}�V���̃z�X�g�������
+        * URL はcrowdutilを利用するマシンのホスト名を入力
     3. Directories
-        * ���̃A�v���P�[�V�����Ɋ֘A�t����f�B���N�g����I���i�P�̂݁j
+        * このアプリケーションに関連付けるディレクトリを選択（１つのみ）
     4. Authentication
-        * ��
+        * 空欄
     5. Confirmation
-        * ���e�m�F���쐬
-4. Search Applications �Ɉړ����A�쐬�����A�v���P�[�V������I�� 
-5. Remote Addresses �^�u��I��
-6. crowdutil�𗘗p����}�V����IP�A�h���X���̓z�X�g����S�Ēǉ�
-7. 3����6�̃X�e�b�v�𑀍�Ώۂ̃f�B���N�g�����ɌJ��Ԃ����{
+        * 内容確認し作成
+4. Search Applications に移動し、作成したアプリケーションを選択 
+5. Remote Addresses タブを選択
+6. crowdutilを利用するマシンのIPアドレス又はホスト名を全て追加
+7. 3から6のステップを操作対象のディレクトリ毎に繰り返し実施
 
 #### crowdutil.json
 
-crowdutil.json �t�@�C���ɂ̓c�[���̐ݒ���L�q���܂��Bcrowdutil�̓R�}���h��
-���s������ƃf�B���N�g�����ɂ��� crowdutil.json �t�@�C���������œǂݍ���
-���p���܂��B
+crowdutil.json ファイルにはツールの設定を記述します。crowdutilはコマンドを
+実行した作業ディレクトリ内にある crowdutil.json ファイルを自動で読み込み
+利用します。
 
-�ݒ�t�@�C����JSON�t�@�C���ňȉ��̃L�[���L�ڂ���܂�
+設定ファイルはJSONファイルで以下のキーが記載されます
 the setting file is a hash table in the following format:
 
-* "directories" �L�[�ȉ��ɗ��p����Crowd�̃f�B���N�g�����̐ڑ��ݒ���
-  �i�[����܂�
-    * ���̒���key-value�y�A��key��crowdutil�R�}���h�ŗ��p����f�B���N�g���w��
-      �̂��߂̖��O���L�ڂ��܂�
-    * ���̒���key-value�y�A��value�ɂ�[atlassian-crowd npm](https://www.npmjs.org/package/atlassian-crowd) �ŗ��p����CROWD�̃A�v���P�[�V�����ڑ��ݒ��
-      �L�ڂ��܂��B
-        * ���̒��ɂ��� application name �́ACROWD�ō쐬�����A�v���P�[�V����
-          �̖��O����͂��܂��B
-* "defaultDirectory" �L�[�ɂ̓f�t�H���g�ŗ��p����f�B���N�g���̃L�[��
-  ���͂��܂��i��Ldirectories���ɂ���key�̂ǂꂩ�����́j�B
-    * -D�R�}���h�I�v�V�������ȗ������ꍇ�A���̒l�Ŏw�肳�ꂽ�f�B���N�g��
-      �����p����܂��B
-* "logConfig" �L�[�ɂ�[log4js](https://www.npmjs.org/package/log4js)�ŗ��p����
-  �ݒ����͂��Ă��������B
-    * �ȗ��\�B
-    * appenders�̒l�͕K�� "crowdutil" �Ƃ��邱��
+* "directories" キー以下に利用するCrowdのディレクトリ毎の接続設定情報が
+  格納されます
+    * この中のkey-valueペアのkeyはcrowdutilコマンドで利用するディレクトリ指定
+      のための名前を記載します
+    * この中のkey-valueペアのvalueには[atlassian-crowd npm](https://www.npmjs.org/package/atlassian-crowd) で利用するCROWDのアプリケーション接続設定を
+      記載します。
+        * この中にある application name は、CROWDで作成したアプリケーション
+          の名前を入力します。
+* "defaultDirectory" キーにはデフォルトで利用するディレクトリのキーを
+  入力します（上記directories内にあるkeyのどれか一つを入力）。
+    * -Dコマンドオプションを省略した場合、この値で指定されたディレクトリ
+      が利用されます。
+* "logConfig" キーには[log4js](https://www.npmjs.org/package/log4js)で利用する
+  設定を入力してください。
+    * 省略可能。
+    * appendersの値は必ず "crowdutil" とすること
 
-#### crowdutil.json �̃T���v��
+#### crowdutil.json のサンプル
 
 ~~~JSON
 {
@@ -129,7 +129,7 @@ the setting file is a hash table in the following format:
 
 ### create-user
 
-�Ώۃf�B���N�g���Ƀ��[�U�[���쐬
+対象ディレクトリにユーザーを作成
 
 ~~~Shell
 crowdutil create-user -D directory -f firstname -l lastname -d dispname \
@@ -137,52 +137,52 @@ crowdutil create-user -D directory -f firstname -l lastname -d dispname \
 ~~~
 
 * -D, --directory
-    * �ݒ�����{����f�B���N�g���Bcrowdutil.json�t�@�C����directories���ɂ���
-      key �̂ǂꂩ�ƈ�v����K�v����B
-    * �ȗ��\�F �ȗ������ꍇ�� crowdutil.json �t�@�C���� defaultDirectory
-      �ɂĎw�肵���f�B���N�g�������p����܂�
+    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+      key のどれかと一致する必要あり。
+    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+      にて指定したディレクトリが利用されます
 * -v, --verbose
-    * �ȗ��\: �f�o�b�O�o�͂��o�͂���悤�ɂȂ�܂�
+    * 省略可能: デバッグ出力を出力するようになります
 * -f, --first
-    * ���[�U�[�̖��O
+    * ユーザーの名前
 * -l, --last
-    * ���[�U�[�̕c��
+    * ユーザーの苗字
 * -d, --dispname
-    * ���[�U�[�̕\����
-    * �ȗ��\: �ȗ����� first last �ɂȂ�܂�
+    * ユーザーの表示名
+    * 省略可能: 省略時は first last になります
 * -e, --email
-    * ���[�U�[��e-mail�A�h���X
+    * ユーザーのe-mailアドレス
 * -u, --uid
-    * ���[�U�[ID
+    * ユーザーID
 * -p, --pass
-    * ���[�U�[�̃p�X���[�h
-    * �ȗ��\: �ȗ����̓����_�������̕�����ɂȂ�܂��B
+    * ユーザーのパスワード
+    * 省略可能: 省略時はランダム生成の文字列になります。
 
 ### create-group
 
-�Ώۃf�B���N�g���ɃO���[�v���쐬
+対象ディレクトリにグループを作成
 
 ~~~Shell
 crowdutil create-group -D directory -n groupname -d "group description"
 ~~~
 
 * -D, --directory
-    * �ݒ�����{����f�B���N�g���Bcrowdutil.json�t�@�C����directories���ɂ���
-      key �̂ǂꂩ�ƈ�v����K�v����B
-    * �ȗ��\�F �ȗ������ꍇ�� crowdutil.json �t�@�C���� defaultDirectory
-      �ɂĎw�肵���f�B���N�g�������p����܂�
+    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+      key のどれかと一致する必要あり。
+    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+      にて指定したディレクトリが利用されます
 * -v, --verbose
-    * �ȗ��\: �f�o�b�O�o�͂��o�͂���悤�ɂȂ�܂�
+    * 省略可能: デバッグ出力を出力するようになります
 * -n, --name
-    * �O���[�v��
+    * グループ名
 * -d, --desc
-    * �O���[�v�̐�����
-    * �ȗ��\
+    * グループの説明文
+    * 省略可能
 
 ### add-to-groups
 
-�����̃��[�U�[�𕡐��̃O���[�v�Ɉ�Ēǉ��B�S���[�U�[�͂��ꂼ��S�O���[�v��
-�ǉ�����܂��B
+複数のユーザーを複数のグループに一斉追加。全ユーザーはそれぞれ全グループに
+追加されます。
 
 ~~~Shell
 crowdutil add-to-groups -D directory -g group1,group2,group3 \
@@ -190,21 +190,21 @@ crowdutil add-to-groups -D directory -g group1,group2,group3 \
 ~~~
 
 * -D, --directory
-    * �ݒ�����{����f�B���N�g���Bcrowdutil.json�t�@�C����directories���ɂ���
-      key �̂ǂꂩ�ƈ�v����K�v����B
-    * �ȗ��\�F �ȗ������ꍇ�� crowdutil.json �t�@�C���� defaultDirectory
-      �ɂĎw�肵���f�B���N�g�������p����܂�
+    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+      key のどれかと一致する必要あり。
+    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+      にて指定したディレクトリが利用されます
 * -v, --verbose
-    * �ȗ��\: �f�o�b�O�o�͂��o�͂���悤�ɂȂ�܂�
+    * 省略可能: デバッグ出力を出力するようになります
 * -g, --group
-    * �J���}��؂�̃O���[�v���̃��X�g
+    * カンマ区切りのグループ名のリスト
 * -u, --uid
-    * �J���}��؂��uid�̃��X�g
+    * カンマ区切りのuidのリスト
 
 ### rm-from-groups
 
-�����̃��[�U�[�𕡐��̃O���[�v�����č폜�B�S���[�U�[�͑S�O���[�v����
-�폜����܂��i���ڃ����o�̂݁j
+複数のユーザーを複数のグループから一斉削除。全ユーザーは全グループから
+削除されます（直接メンバのみ）
 
 ~~~Shell
 crowdutil rm-from-groups -D directory -g group1,group2,group3 \
@@ -212,72 +212,72 @@ crowdutil rm-from-groups -D directory -g group1,group2,group3 \
 ~~~
 
 * -D, --directory
-    * �ݒ�����{����f�B���N�g���Bcrowdutil.json�t�@�C����directories���ɂ���
-      key �̂ǂꂩ�ƈ�v����K�v����B
-    * �ȗ��\�F �ȗ������ꍇ�� crowdutil.json �t�@�C���� defaultDirectory
-      �ɂĎw�肵���f�B���N�g�������p����܂�
+    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+      key のどれかと一致する必要あり。
+    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+      にて指定したディレクトリが利用されます
 * -v, --verbose
-    * �ȗ��\: �f�o�b�O�o�͂��o�͂���悤�ɂȂ�܂�
+    * 省略可能: デバッグ出力を出力するようになります
 * -g, --group
-    * �J���}��؂�̃O���[�v���̃��X�g
+    * カンマ区切りのグループ名のリスト
 * -u, --uid
-    * �J���}��؂��uid�̃��X�g
+    * カンマ区切りのuidのリスト
 
 ### empty-groups
 
-�w�肵���O���[�v�̒��ڃ����o�[��S�č폜
+指定したグループの直接メンバーを全て削除
 
 ~~~Shell
 crowdutil empty-groups -D directory -g group1,group2,group3
 ~~~
 
 * -D, --directory
-    * �ݒ�����{����f�B���N�g���Bcrowdutil.json�t�@�C����directories���ɂ���
-      key �̂ǂꂩ�ƈ�v����K�v����B
-    * �ȗ��\�F �ȗ������ꍇ�� crowdutil.json �t�@�C���� defaultDirectory
-      �ɂĎw�肵���f�B���N�g�������p����܂�
+    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+      key のどれかと一致する必要あり。
+    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+      にて指定したディレクトリが利用されます
 * -v, --verbose
-    * �ȗ��\: �f�o�b�O�o�͂��o�͂���悤�ɂȂ�܂�
+    * 省略可能: デバッグ出力を出力するようになります
 * -g, --group
-    * �J���}��؂�̃O���[�v���̃��X�g
+    * カンマ区切りのグループ名のリスト
     * comma separated list of group names to empty users of
 * -f, --force
-    * �m�F�����Ɏ��{���܂�
-    * �ȗ��\: �ȗ����͍폜�̑O�Ɋm�F����܂��B
-        * �m�F���ꂽ�ꍇ�� "yes" �Ɠ��͂��邱�ƂŎ��s����܂�
+    * 確認せずに実施します
+    * 省略可能: 省略時は削除の前に確認されます。
+        * 確認された場合は "yes" と入力することで実行されます
 
 ### batch-exec
 
-CSV�i�J���}��؂�j�t�@�C���x�[�X�̃o�b�`�t�@�C������͂��A�o�b�`���������{
+CSV（カンマ区切り）ファイルベースのバッチファイルを入力し、バッチ処理を実施
 
 ~~~Shell
 crowdutil batch-exec -D directory -b path/to/batchfile.csv
 ~~~
 
 * -D, --directory
-    * �ݒ�����{����f�B���N�g���Bcrowdutil.json�t�@�C����directories���ɂ���
-      key �̂ǂꂩ�ƈ�v����K�v����B
-    * �ȗ��\�F �ȗ������ꍇ�� crowdutil.json �t�@�C���� defaultDirectory
-      �ɂĎw�肵���f�B���N�g�������p����܂�
+    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+      key のどれかと一致する必要あり。
+    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+      にて指定したディレクトリが利用されます
 * -v, --verbose
-    * �ȗ��\: �f�o�b�O�o�͂��o�͂���悤�ɂȂ�܂�
+    * 省略可能: デバッグ出力を出力するようになります
 * -b, --batch
-    * �o�b�`�t�@�C���̃t�@�C���ւ̃p�X
+    * バッチファイルのファイルへのパス
     * path to batch file.
 * -f, --force
-    * �o�b�`���̃R�}���h�ɃG���[�������Ă��������p�����܂�
-    * �ȗ��\: �ȗ����̓o�b�`���̃R�}���h�̃G���[�����m�����ꍇ�A
-      �ȍ~�̃o�b�`���R�}���h�̔��s���~���A�I�����܂��B
+    * バッチ内のコマンドにエラーがあっても処理を継続します
+    * 省略可能: 省略時はバッチ内のコマンドのエラーを検知した場合、
+      以降のバッチ内コマンドの発行を停止し、終了します。
 
 #### batchfile format
 
-�o�b�`�t�@�C���̌`���� [Jglr](https://www.npmjs.org/package/jglr) ��
-�t�H�[�}�b�g�ɏ������܂��B
+バッチファイルの形式は [Jglr](https://www.npmjs.org/package/jglr) の
+フォーマットに準拠します。
 
-�ȉ��̃R�}���h�����p�\�ł��F
+以下のコマンドが利用可能です：
 
 * create-user
-    * ���[�U�[���쐬
+    * ユーザーを作成
     * params: directory,first,last,disp,email,uid,pass
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
@@ -289,7 +289,7 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
         * uid: user ID
         * pass: password (optional)
 * create-group
-    * �O���[�v���쐬
+    * グループを作成
     * params: directory,name,desc
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
@@ -297,7 +297,7 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
         * name
         * desc
 * add-to-group
-    * ���[�U�[���O���[�v�ɒǉ�
+    * ユーザーをグループに追加
     * params: directory,user,groupname
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
@@ -305,7 +305,7 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
         * user
         * groupname
 * rm-from-group
-    * ���[�U�[���O���[�v����폜
+    * ユーザーをグループから削除
     * params: directory,user,groupname
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
@@ -313,14 +313,14 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
         * user
         * groupname
 * empty-group
-    * �O���[�v����S�Ẵ��[�U�[���폜
+    * グループから全てのユーザーを削除
     * params: directory,groupname
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
               or the defaultDirectory specified in crowdutil.json
         * groupname
-* deactivate-user [������]
-    * ���[�U�[���A�N�e�B�u��
+* deactivate-user [未実装]
+    * ユーザーを非アクティブ化
     * params: directory,uid,rmfromgroupFlag
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
@@ -330,81 +330,81 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
             * if rmfromgroupFlag is set to 1 or true, the user will be 
               removed from all groups.
 * remove-group
-    * �O���[�v���폜
+    * グループを削除
     * params: directory,groupname
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
               or the defaultDirectory specified in crowdutil.json
         * groupname
 * seq
-    * ���̍s�ȑO�̃R�}���h���I������̂�҂��A�ȍ~�̃R�}���h��1�s����
-      �V�[�P���V�����Ɏ��s
+    * この行以前のコマンドが終了するのを待ち、以降のコマンドは1行ずつ
+      シーケンシャルに実行
 * par
-    * ���̍s�ȑO�̃R�}���h���I������̂�҂��A�ȍ~�̃R�}���h�͕����
-      �������s�i�f�t�H���g�͂P�O����j
+    * この行以前のコマンドが終了するのを待ち、以降のコマンドは並列で
+      複数実行（デフォルトは１０並列）
     * params: numParallel
         * numParallel (optional)
-            * ������s����R�}���h�ő吔���w��B
-            * ���ӁF CROWD����t�\�Ȑڑ�������o�b�N�G���h��DB�̐ڑ�
-              ������𒴂����ꍇ�A�R�}���h�����s����\��������܂�
+            * 並列実行するコマンド最大数を指定。
+            * 注意： CROWDが受付可能な接続すうやバックエンドのDBの接続
+              数上限を超えた場合、コマンドが失敗する可能性があります
 * wait
-    * ���̍s�ȑO�̃R�}���h���I������̂�҂��܂�
+    * この行以前のコマンドが終了するのを待ちます
 
-�e�o�b�`�t�@�C�����̃R�}���h�̃p�����[�^�̓I�v�V���i���ȏꍇ�ł��X�L�b�v��
-�ł��܂���B���A�R�}���h�̎d�l��蒴�߂���]��̃p�����[�^�͑S�Ė�������܂��B
+各バッチファイル内のコマンドのパラメータはオプショナルな場合でもスキップは
+できません。又、コマンドの仕様より超過する余剰のパラメータは全て無視されます。
 
-�s���ȗ�:
+不正な例:
 
 ~~~
 create-user,john,doe,joed@example.com,joed
 ~~~
 
-����ȗ�:
+正常な例:
 
 ~~~
 create-user,,john,doe,,joed@example.com,joed
            ^         ^                      ^
-           �X�L�b�v�͏o���܂���.       �Ō�̃I�v�V�����͏ȗ��\
+           スキップは出来ません.       最後のオプションは省略可能
 empty-group,,groupname,foo,bar,baz,,,
-           ^          ^ ��������ȍ~�̗]��p�����[�^�͖���
-           �X�L�b�v�͏o���܂���B
+           ^          ^ ここから以降の余剰パラメータは無視
+           スキップは出来ません。
 ~~~
 
 ### test-connect
 
-�Ώۃf�B���N�g���ւ̐ڑ��e�X�g�����{
+対象ディレクトリへの接続テストを実施
 
 ~~~Shell
 crowdutil test-connect -D directory
 ~~~
 
 * -D, --directory
-    * �ݒ�����{����f�B���N�g���Bcrowdutil.json�t�@�C����directories���ɂ���
-      key �̂ǂꂩ�ƈ�v����K�v����B
-    * �ȗ��\�F �ȗ������ꍇ�� crowdutil.json �t�@�C���� defaultDirectory
-      �ɂĎw�肵���f�B���N�g�������p����܂�
+    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+      key のどれかと一致する必要あり。
+    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+      にて指定したディレクトリが利用されます
 * -v, --verbose
-    * �ȗ��\: �f�o�b�O�o�͂��o�͂���悤�ɂȂ�܂�
+    * 省略可能: デバッグ出力を出力するようになります
 
 ### create-config
 
-�T���v���̐ݒ�t�@�C���𐶐�
+サンプルの設定ファイルを生成
 
 ~~~Shell
 crowdutil create-config -o sample.json
 ~~~
 
 * -o, --out
-    * �o�̓t�@�C�����B�f�t�H���g�� crowdutil.json�ɂȂ�܂�
-    * stdout �Ɛݒ肷�邱�ƂŕW���o�͂ɏo�͂��܂��B
+    * 出力ファイル名。デフォルトは crowdutil.jsonになります
+    * stdout と設定することで標準出力に出力します。
 * -f, --force
-    * ���̃t���O��ݒ肵���ꍇ�A�t�@�C�����㏑�����܂��B�w�肵�Ȃ��ꍇ��
-      �����̃t�@�C�����L��ꍇ�͏㏑�����܂���B
+    * このフラグを設定した場合、ファイルを上書きします。指定しない場合は
+      同名のファイルが有る場合は上書きしません。
 
 Known issues & Bugs
 ------------------------------------------------------------------------
 
-* �Ђƒʂ蓮��m�F�͂��Ă��܂����A����e�X�g�s�\���ł��B
+* ひと通り動作確認はしていますが、現状テスト不十分です。
 
 Change History
 ------------------------------------------------------------------------
