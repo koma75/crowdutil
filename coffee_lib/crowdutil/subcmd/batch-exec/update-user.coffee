@@ -65,7 +65,7 @@ isOptOK = (cmds) ->
     logger.warn "batch-exec: first name not valid"
     rc = false
   if(
-    typeof cmds[5] != 'string' &&
+    typeof cmds[5] == 'string' &&
     cmds[5].trim().length > 0 &&
     !help.isName(cmds[5], false)
   )
@@ -112,7 +112,7 @@ exports.run = (cmds, done) ->
       update['display-name'] = cmds[6]
     if typeof cmds[7] == 'string' && cmds[7].trim().length > 0
       update['email'] = cmds[7]
-    if typeof cmds[3] == 'string'
+    if typeof cmds[3] == 'string' && cmds[3].trim().length > 0
       if cmds[3] == 'true'
         update['active'] = true
       if cmds[3] == 'false'
