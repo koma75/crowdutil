@@ -158,6 +158,35 @@ crowdutil create-user -D directory -f firstname -l lastname -d dispname \
     * ユーザーのパスワード
     * 省略可能: 省略時はランダム生成の文字列になります。
 
+### update-user
+
+対象ディレクトリの指定ユーザー情報を更新する。指定のない値は変更しなません。
+
+~~~Shell
+crowdutil update-user -D directory -f firstname -l lastname -d dispname \
+  -e user@example.com -u username -a [true|false]
+~~~
+
+* -D, --directory
+    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+      key のどれかと一致する必要あり。
+    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+      にて指定したディレクトリが利用されます
+* -v, --verbose
+    * 省略可能: デバッグ出力を出力するようになります
+* -f, --first
+    * 省略可能: ユーザーの名前
+* -l, --last
+    * 省略可能: ユーザーの苗字
+* -d, --dispname
+    * 省略可能: ユーザーの表示名
+* -e, --email
+    * 省略可能: ユーザーのe-mailアドレス
+* -u, --uid
+    * 更新対象のユーザーID
+* -a, --active
+    * 省略可能: アクティブか非アクティブかの状態
+
 ### create-group
 
 対象ディレクトリにグループを作成
@@ -288,6 +317,18 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
         * email: email address
         * uid: user ID
         * pass: password (optional)
+* update-user
+    * ユーザー情報を更新する
+    * params: directory,active,first,last,disp,email,uid
+        * directory: target crowd directory (optional)
+            * if ommitted it will default to the -D option
+              or the defaultDirectory specified in crowdutil.json
+        * active: state of the user. [true|false], (optional)
+        * first: first name (optional)
+        * last: last name (optional)
+        * disp: display name (optional)
+        * email: email address (optional)
+        * uid: user ID to update
 * create-group
     * グループを作成
     * params: directory,name,desc
@@ -319,16 +360,6 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
             * if ommitted it will default to the -D option
               or the defaultDirectory specified in crowdutil.json
         * groupname
-* deactivate-user [未実装]
-    * ユーザーを非アクティブ化
-    * params: directory,uid,rmfromgroupFlag
-        * directory: target crowd directory (optional)
-            * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
-        * uid
-        * rmfromgroupFlag
-            * if rmfromgroupFlag is set to 1 or true, the user will be 
-              removed from all groups.
 * remove-group
     * グループを削除
     * params: directory,groupname
