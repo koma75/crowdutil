@@ -164,7 +164,8 @@ setupCROWD = () ->
   #
   logger.trace "setupCROWD"
   cfg = require process.cwd() + '/crowdutil.json'
-  AtlassianCrowd = require 'atlassian-crowd'
+  AtlassianCrowd = require '../../atlassian-crowd-ext/atlassian-crowd-ext'
+
   for directory,options of cfg['directories']
     logger.debug(
       "setupCROWD: adding #{directory}\n#{JSON.stringify(options,null,2)}"

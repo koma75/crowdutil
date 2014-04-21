@@ -28,7 +28,7 @@
 # requires
 
 log4js = require 'log4js'
-AtlassianCrowd = require 'atlassian-crowd'
+AtlassianCrowd = require '../atlassian-crowd-ext/atlassian-crowd-ext'
 cmdlist = require './subcmd/cmdlist'
 
 ###
