@@ -47,6 +47,7 @@ isOptOK = (opts) ->
 
 CommandList =
   'create-user': require('./batch-exec/create-user').run
+  'update-user': require('./batch-exec/update-user').run
   'create-group': require('./batch-exec/create-group').run
   'add-to-group': require('./batch-exec/add-to-group').run
   'rm-from-group': require('./batch-exec/rm-from-group').run

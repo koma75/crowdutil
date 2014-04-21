@@ -159,6 +159,36 @@ crowdutil create-user -D directory -f firstname -l lastname -d dispname \
     * optional: defaulting to a random string
         * useful for delegated directories (i.e. LDAP authentication)
 
+### update-user
+
+update a user in the specified directory.  Any non-specified value
+will be unchanged.
+
+~~~Shell
+crowdutil update-user -D directory -f firstname -l lastname -d dispname \
+  -e user@example.com -u username -a [true|false]
+~~~
+
+* -D, --directory
+    * target directory application. needs to match one of the directory
+      names specified in crowdutil.json file
+    * optional: if defaultdirectory is defined in the crowdutil.json, 
+      this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
+* -f, --first
+    * first name of the user (optional)
+* -l, --last
+    * last name of the user (optional)
+* -d, --dispname
+    * display name of the user (optional)
+* -e, --email
+    * email address of the user (optional)
+* -u, --uid
+    * username/uid of the user to update
+* -a, --active
+    * active/inactive state of the user (optional)
+
 ### create-group
 
 create a group in the specified directory
@@ -278,16 +308,28 @@ The following cmmands can be used:
 
 * create-user
     * create a user
-    * params: directory,first,last,disp,email,uid,pass
+    * params: directory,uid,pass,first,last,disp,email
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
               or the defaultDirectory specified in crowdutil.json
+        * uid: user ID
+        * pass: password (optional)
         * first: first name
         * last: last name
         * disp: display name (optional)
         * email: email address
-        * uid: user ID
-        * pass: password (optional)
+* update-user
+    * update a user
+    * params: directory,uid,active,first,last,disp,email
+        * directory: target crowd directory (optional)
+            * if ommitted it will default to the -D option
+              or the defaultDirectory specified in crowdutil.json
+        * uid: user ID to update
+        * active: state of the user. [true|false], (optional)
+        * first: first name (optional)
+        * last: last name (optional)
+        * disp: display name (optional)
+        * email: email address (optional)
 * create-group
     * create a group
     * params: directory,name,desc
@@ -319,16 +361,6 @@ The following cmmands can be used:
             * if ommitted it will default to the -D option
               or the defaultDirectory specified in crowdutil.json
         * groupname
-* deactivate-user [NOT IMPLEMENTED]
-    * deactivate a user and optionally remove from all groups
-    * params: directory,uid,rmfromgroupFlag
-        * directory: target crowd directory (optional)
-            * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
-        * uid
-        * rmfromgroupFlag
-            * if rmfromgroupFlag is set to 1 or true, the user will be 
-              removed from all groups.
 * remove-group
     * remove group from target directory
     * params: directory,groupname

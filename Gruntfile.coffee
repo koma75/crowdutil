@@ -39,5 +39,8 @@ module.exports = (grunt)->
       lib:
         files:
           src: ['coffee_lib/**/*.coffee']
+        options:
+          max_line_length:
+            level: 'warn'
 
   return
