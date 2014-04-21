@@ -143,6 +143,43 @@ emptyGroup = (crowd, group, limit, callback) ->
     callback(err)
   return
 
+updateUser = (crowd, uid, update, callback) ->
+  # if nothing is detected as changed, don't bother updating
+  changed = false
+
+  # MUST NOT change username since this creates a lot of confusion
+  # with uid based links
+  delete update.name
+
+  # find the user
+  crowd.user.find(uid, (err, userInfo) ->
+    if err
+      callback(err)
+    else
+      # update user info with update object
+      logger.debug "found #{uid}:\n#{JSON.stringify(userInfo,null,2)}"
+      for k,v of update
+        if userInfo[k] != v
+          logger.debug "updating #{uid}:#{k} with #{v}"
+          changed = true
+          userInfo[k] = v
+
+      if changed
+        # If anything has changed, call the update
+        logger.debug "updating #{uid}:\n#{JSON.stringify(userInfo,null,2)}"
+        crowd.user.update(uid, userInfo, (err, res) ->
+          if err
+            callback(err)
+          else
+            # SUCCESS
+            callback()
+        )
+      else
+        # Nothing was different.
+        logger.debug "nothing to update for #{uid}"
+        callback()
+  )
+
 #
 # Initialize Global variables
 #
@@ -156,7 +193,7 @@ if typeof global.crowdutil.crhelper.defaultCrowd == 'undefined'
   global.crowdutil.crhelper.defaultCrowd = null
 
 if typeof global.crowdutil.crhelper.crowds == 'undefined'
-  global.crowdutil.crhelper.crowds = {"some": true}
+  global.crowdutil.crhelper.crowds = {}
 
 setupCROWD = () ->
   #
@@ -209,3 +246,4 @@ exports.emptyGroup = emptyGroup
 exports.setupCROWD = setupCROWD
 exports.getCROWD = getCROWD
 exports.setDefaultCrowd = setDefaultCrowd
+exports.updateUser = updateUser

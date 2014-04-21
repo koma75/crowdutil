@@ -25,46 +25,44 @@
   THE SOFTWARE.
 ###
 
-###
-Operetta implementation
-###
+#
+# Operetta implementation
+#
 
 defaultOpts = (cmd) ->
   cmd.parameters(['-D', '--directory'], "target directory [optional]")
   cmd.options(['-v', '--verbose'], "verbose mode")
   return
 
-###
-callback(opts): common initialization function. connects to crowd
-to add a new command, use the following snippet:
+# callback(opts): common initialization function. connects to crowd
+# to add a new command, use the following snippet:
+#
+#  operetta.command(
+#    'command-name',
+#    'command description',
+#    (cmd) ->
+#      cmd
+#        .banner = "crowdutil: command-name\n" +
+#          "command description.\n\n"
+#      defaultOpts(cmd)  # add default set of flags(-D and -v)
+#      cmd.parameters(['-p','--param'],
+#        "parameter flag which takes input")
+#      cmd.options(['-o','--option'],
+#        "options flag which takes no input")
+#      cmd.start(
+#        (opts) ->
+#          if callback(opts)
+#            require('./command-name').run(opts)
+#          else
+#            logger.error 'initialization failed'
+#          return
+#      )
+#      return
+#  )
+#
+# change the command-name, command description and the parameters/options.
+# leave everything else intact!!
 
-  operetta.command(
-    'command-name',
-    'command description',
-    (cmd) ->
-      cmd
-        .banner = "crowdutil: command-name\n" +
-          "command description.\n\n"
-      defaultOpts(cmd)  # add default set of flags(-D and -v)
-      cmd.parameters(['-p','--param'],
-        "parameter flag which takes input")
-      cmd.options(['-o','--option'],
-        "options flag which takes no input")
-      cmd.start(
-        (opts) ->
-          if callback(opts)
-            require('./command-name').run(opts)
-          else
-            logger.error 'initialization failed'
-          return
-      )
-      return
-  )
-
-change the command-name, command description and the parameters/options.
-leave everything else intact!!
-
-###
 start = (callback) ->
   Operetta = require('operetta').Operetta
   operetta = new Operetta()
@@ -114,6 +112,38 @@ start = (callback) ->
         (opts) ->
           if callback(opts)
             require('./create-user').run(opts)
+          else
+            logger.error 'initialization failed'
+          return
+      )
+      return
+  )
+
+  # UPDATE USER
+  operetta.command(
+    'update-user',
+    'update user in selected Directory',
+    (cmd) ->
+      cmd
+        .banner = "crowdutil: test-connect\n" +
+          "update user in selected directory\n\n"
+      defaultOpts(cmd)
+      cmd.parameters(['-f','--first'],
+        "user's first name [optional]")
+      cmd.parameters(['-l','--last'],
+        "user's last name [optional]")
+      cmd.parameters(['-d','--dispname'],
+        "user's display name [optional]")
+      cmd.parameters(['-e','--email'],
+        "user's email address [optional]")
+      cmd.parameters(['-u','--uid'],
+        "target user ID to update")
+      cmd.parameters(['-a','--active'],
+        "user's account active status (true|false)[optional]")
+      cmd.start(
+        (opts) ->
+          if callback(opts)
+            require('./update-user').run(opts)
           else
             logger.error 'initialization failed'
           return

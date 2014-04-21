@@ -307,28 +307,28 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
 
 * create-user
     * ユーザーを作成
-    * params: directory,first,last,disp,email,uid,pass
+    * params: directory,uid,pass,first,last,disp,email
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
               or the defaultDirectory specified in crowdutil.json
+        * uid: user ID
+        * pass: password (optional)
         * first: first name
         * last: last name
         * disp: display name (optional)
         * email: email address
-        * uid: user ID
-        * pass: password (optional)
 * update-user
     * ユーザー情報を更新する
-    * params: directory,active,first,last,disp,email,uid
+    * params: directory,uid,active,first,last,disp,email
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
               or the defaultDirectory specified in crowdutil.json
+        * uid: user ID to update
         * active: state of the user. [true|false], (optional)
         * first: first name (optional)
         * last: last name (optional)
         * disp: display name (optional)
         * email: email address (optional)
-        * uid: user ID to update
 * create-group
     * グループを作成
     * params: directory,name,desc

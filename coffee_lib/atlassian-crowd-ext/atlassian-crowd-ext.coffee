@@ -41,7 +41,7 @@ AtlassianCrowd.prototype.user.update = (username, userObj, callback) ->
     error = new Error "missing input"
     error.type = "BAD_REQUEST"
   else if(
-    typeof userObj.name != 'string' ||
+    typeof userObj["name"] != 'string' ||
     typeof userObj["first-name"] != 'string' ||
     typeof userObj["last-name"] != 'string' ||
     typeof userObj["display-name"] != 'string' ||
