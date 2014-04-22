@@ -499,6 +499,8 @@ Change History
 
 Date        | Version   | Changes
 :--         | --:       | :--
+2014.04.22  | 0.5.0     | added update-user command
+            |           | changed the parameter ordering in the create-user batch file command to match the new update-user command.
 2014.04.15  | 0.4.0     | added batch-exec command
             |           | added create-config command
             |           | fixed a few README documentation errors
