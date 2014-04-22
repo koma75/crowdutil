@@ -387,15 +387,17 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
 不正な例:
 
 ~~~
-create-user,john,doe,joed@example.com,joed
+create-user,joed,john,doe,joed@example.com
 ~~~
 
 正常な例:
 
 ~~~
-create-user,,john,doe,,joed@example.com,joed
-           ^         ^                      ^
-           スキップは出来ません.       最後のオプションは省略可能
+create-user,,joed,,john,doe,,joed@example.com
+           ^     ^         ^
+           スキップは出来ません.
+update-user,,joed,true
+                      ^ 最後のオプションは省略可能
 empty-group,,groupname,foo,bar,baz,,,
            ^          ^ ここから以降の余剰パラメータは無視
            スキップは出来ません。
@@ -442,6 +444,8 @@ Change History
 
 Date        | Version   | Changes
 :--         | --:       | :--
+2014.04.22  | 0.5.0     | added update-user command
+            |           | changed the parameter ordering in the create-user batch file command to match the new update-user command.
 2014.04.15  | 0.4.0     | added batch-exec command
             |           | added create-config command
             |           | fixed a few README documentation errors

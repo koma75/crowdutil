@@ -388,15 +388,17 @@ optional parameters at the very end).  All excess parameters are ignored.
 Invalid:
 
 ~~~
-create-user,john,doe,joed@example.com,joed
+create-user,joed,john,doe,joed@example.com
 ~~~
 
 Valid:
 
 ~~~
-create-user,,john,doe,,joed@example.com,joed
-           ^         ^                      ^
-           these cannot be skipped.       trailing options can be skipped
+create-user,,joed,,john,doe,,joed@example.com
+           ^     ^         ^
+           these cannot be skipped.
+update-user,,joed,true
+                      ^ all trailing options can be omitted
 empty-group,,groupname,foo,bar,baz,,,
            ^          ^ these are all ignored
            cannot be skipped
