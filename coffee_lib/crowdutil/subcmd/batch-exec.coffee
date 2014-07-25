@@ -69,7 +69,8 @@ exports.run = (options) ->
   #
   # Notify crhelper about the default selection of the directory
   #
-  crhelp.setDefaultCrowd(options['-D'][0])
+  if options['-D'] && options['-D'][0]
+    crhelp.setDefaultCrowd(options['-D'][0])
 
   #
   # Initialize the batch execution framework

@@ -450,7 +450,8 @@ Change History
 
 Date        | Version   | Changes
 :--         | --:       | :--
-2014.07.25  | 0.5.1     | fixed issue for batch exec not using proper directory
+2014.07.25  | 0.5.2     | fixed issue for batch exec not using proper directory
+            |           | fixed parameter check bug
 2014.04.22  | 0.5.0     | added update-user command
             |           | changed the parameter ordering in the create-user batch file command to match the new update-user command.
 2014.04.15  | 0.4.0     | added batch-exec command
@@ -498,4 +499,3 @@ THE SOFTWARE.
 
 This readme file by Yasuhiro Okuno is licensed under CC-BY 3.0 international
 license.
-

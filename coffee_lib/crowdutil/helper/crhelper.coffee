@@ -203,7 +203,7 @@ getCROWD = (directory) ->
 
   if !cfg['directories'][directory]
     logger.debug("getCROWD: using default directory")
-    directory = global.crowdutil.crhelper.defaultCrowd
+    directory = global.crowdutil.crhelper.defaultCrowd || cfg['defaultDirectory']
 
   logger.debug(
     "getCROWD: using #{directory}"
