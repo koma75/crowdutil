@@ -195,41 +195,33 @@ if typeof global.crowdutil.crhelper.defaultCrowd == 'undefined'
 if typeof global.crowdutil.crhelper.crowds == 'undefined'
   global.crowdutil.crhelper.crowds = {}
 
-setupCROWD = () ->
-  #
-  # Setup Global for Batch execution helper
-  #
-  logger.trace "setupCROWD"
+getCROWD = (directory) ->
+  logger.trace "getCROWD"
   cfg = require process.cwd() + '/crowdutil.json'
   AtlassianCrowd = require '../../atlassian-crowd-ext/atlassian-crowd-ext'
+  crowd = null
 
-  for directory,options of cfg['directories']
-    logger.debug(
-      "setupCROWD: adding #{directory}\n#{JSON.stringify(options,null,2)}"
+  if !cfg['directories'][directory]
+    logger.debug("getCROWD: using default directory")
+    directory = global.crowdutil.crhelper.defaultCrowd
+
+  logger.debug(
+    "getCROWD: using #{directory}"
+  )
+  logger.debug(
+    "getCROWD: #{JSON.stringify(cfg['directories'][directory],null,2)}"
+  )
+  try
+    crowd = new AtlassianCrowd(
+      cfg['directories'][directory]
     )
-    try
-      global.crowdutil.crhelper.crowds[directory] = new AtlassianCrowd(
-        options
-      )
-    catch err
-      logger.warn err.message
-  logger.debug "#{JSON.stringify(global.crowdutil.crhelper)}"
+  catch err
+    logger.warn err.message
 
-getCROWD = (directory) ->
-  defaultCrowd = global.crowdutil.crhelper.defaultCrowd
-  crowds = global.crowdutil.crhelper.crowds
-
-  logger.trace "getCROWD: #{directory}"
-  logger.debug "getCROWD: #{JSON.stringify(crowds)}"
-  if typeof crowds[directory] == 'object'
-    logger.debug "getCROWD: using #{directory}"
-    return crowds[directory]
-  else
-    logger.debug "getCROWD: using default directory"
-    return defaultCrowd
+  return crowd
 
 setDefaultCrowd = (crowd) ->
-  if typeof crowd == 'object'
+  if typeof crowd == 'string'
     global.crowdutil.crhelper.defaultCrowd = crowd
   return
 
@@ -243,7 +235,6 @@ exports.findGroupMembers = findGroupMembers
 exports.addUserToGroup = addUserToGroup
 exports.rmUserFromGroup = rmUserFromGroup
 exports.emptyGroup = emptyGroup
-exports.setupCROWD = setupCROWD
 exports.getCROWD = getCROWD
 exports.setDefaultCrowd = setDefaultCrowd
 exports.updateUser = updateUser

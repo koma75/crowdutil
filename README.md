@@ -40,11 +40,11 @@ See [Atlassian Crowd Documentation (Adding an Application)](https://confluence.a
 2. Select the Application menu
 3. Add Application for each directory
     1. Details
-        * Select Generic Application for Application Type 
+        * Select Generic Application for Application Type
         * Type the name
         * set the password to use.
     2. Connection
-        * URL should be the host name of one of your hosts you will use 
+        * URL should be the host name of one of your hosts you will use
           crowdutil on.
     3. Directories
         * Select one directory to associate to
@@ -54,7 +54,7 @@ See [Atlassian Crowd Documentation (Adding an Application)](https://confluence.a
         * confirm and add application
 4. Go to Search Applications and select the application you have made
 5. select the Remote Addresses Tab
-6. add all the remote addresses (IP or resolvable Hostname) that you 
+6. add all the remote addresses (IP or resolvable Hostname) that you
    plan to use crowdutil on.
 7. repeat steps 3-6 for all target directories.
 
@@ -66,21 +66,21 @@ current working directory where you invoke the command.
 the setting file is a hash table in the following format:
 
 * "directories" key that hosts hash object of different connection targets.
-    * the value of this key has key-value where the key is the name of 
+    * the value of this key has key-value where the key is the name of
       the directory
         * this name is used to specify which application the crowdutil
           will use to connect by the -D switch.
-    * value for each key is the application setting hash object 
+    * value for each key is the application setting hash object
       according to [atlassian-crowd npm](https://www.npmjs.org/package/atlassian-crowd)
         * the application name must match one of the application names
           you have setup in the "CROWD setup" section.
-* "defaultDirectory" key has a string specifying the default directory 
+* "defaultDirectory" key has a string specifying the default directory
   to use.  If this is specified and no -D option is provided, the directory
   with the same name as defaultDirectory will be used.
-* "logConfig" key may hold the configuration object to pass to 
+* "logConfig" key may hold the configuration object to pass to
   [log4js](https://www.npmjs.org/package/log4js) logging library.
     * if ommitted, the default values will be used
-    * appenders MUST have category: "crowdutil" to be used by crowdutil, 
+    * appenders MUST have category: "crowdutil" to be used by crowdutil,
       otherwise it will be ignored.
 
 #### Sample crowdutil.json
@@ -139,7 +139,7 @@ crowdutil create-user -D directory -f firstname -l lastname -d dispname \
 * -D, --directory
     * target directory application. needs to match one of the directory
       names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json, 
+    * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
@@ -172,7 +172,7 @@ crowdutil update-user -D directory -f firstname -l lastname -d dispname \
 * -D, --directory
     * target directory application. needs to match one of the directory
       names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json, 
+    * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
@@ -200,7 +200,7 @@ crowdutil create-group -D directory -n groupname -d "group description"
 * -D, --directory
     * target directory application. needs to match one of the directory
       names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json, 
+    * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
@@ -223,7 +223,7 @@ crowdutil add-to-groups -D directory -g group1,group2,group3 \
 * -D, --directory
     * target directory application. needs to match one of the directory
       names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json, 
+    * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
@@ -245,7 +245,7 @@ crowdutil rm-from-groups -D directory -g group1,group2,group3 \
 * -D, --directory
     * target directory application. needs to match one of the directory
       names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json, 
+    * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
@@ -266,7 +266,7 @@ crowdutil empty-groups -D directory -g group1,group2,group3
 * -D, --directory
     * target directory application. needs to match one of the directory
       names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json, 
+    * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
@@ -278,7 +278,7 @@ crowdutil empty-groups -D directory -g group1,group2,group3
 
 ### batch-exec
 
-Execute the specifies batch file (a csv based batch file).
+Execute the specified batch file (a csv based batch file).
 
 ~~~Shell
 crowdutil batch-exec -D directory -b path/to/batchfile.csv
@@ -287,7 +287,7 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
 * -D, --directory
     * target directory application. needs to match one of the directory
       names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json, 
+    * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
@@ -296,12 +296,12 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
 * -f, --force
     * if set, batch-exec will try to continue processing the batch
       even on errors.
-    * optional: if not set, the batch execution will stop as error 
+    * optional: if not set, the batch execution will stop as error
       is reported from the dispatched command.
 
 #### batchfile format
 
-Basic format of the batch file is based on 
+Basic format of the batch file is based on
 [Jglr](https://www.npmjs.org/package/jglr)
 
 The following cmmands can be used:
@@ -374,10 +374,10 @@ The following cmmands can be used:
     * wait for commands to finish and set to parallel execution mode
     * params: numParallel
         * numParallel (optional)
-            * any integer value to set how many parallel connections to 
+            * any integer value to set how many parallel connections to
               CROWD is allowed.  Defaults to 10.
-            * WARNING: if this number is set higher than the database 
-              connection pool or the capacity of CROWD web interface, 
+            * WARNING: if this number is set higher than the database
+              connection pool or the capacity of CROWD web interface,
               the batch process may fail.
 * wait
     * wait for commands to finish
@@ -415,7 +415,7 @@ crowdutil test-connect -D directory
 * -D, --directory
     * target directory application. needs to match one of the directory
       names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json, 
+    * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
@@ -439,6 +439,12 @@ Known issues & Bugs
 ------------------------------------------------------------------------
 
 * has not been tested rigorousely yet.
+* when using parallel execution, the following limitations apply
+    * you cannot have a mix of target directories in a single parallel operation
+    * even when --force is enabled, a single set of parallel batch will halt on
+      a single error.  Which will result in unpredictable results (no control
+      over what is and what isn't executed)
+
 
 Development
 ------------------------------------------------------------------------
@@ -476,7 +482,7 @@ accessed via the command.js script.
       master, or merge all the latest changes in master to the feature branch
       and make sure there are no conflicts right before sending a pull request.
     * set references to issues if relevant with the pull request
-      by adding a line in the comment in the form of "resolves #issuenum" 
+      by adding a line in the comment in the form of "resolves #issuenum"
       where issuenum is the relevant issue number.
 * master branches may be altered by owner for purposes of releases (i.e.
   bumping versions in package.json, fixing README), or for minor fixes (i.e.
@@ -488,11 +494,11 @@ accessed via the command.js script.
 ### Versioning
 
 We will follow the [semver2.0](http://semver.org/) versioning scheme.  
-With initial development phase starting at 0.1.0 and increasing 
-minor/patch versions until we deploy the tool to production 
+With initial development phase starting at 0.1.0 and increasing
+minor/patch versions until we deploy the tool to production
 (and reach 1.0.0).
 
-The interface relevant to versioning is whatever defined in this 
+The interface relevant to versioning is whatever defined in this
 document's "Usage" section (includes all subcommands, their cli arguments,
 the format of the configuration file "crowdutil.json").
 
@@ -501,6 +507,7 @@ Change History
 
 Date        | Version   | Changes
 :--         | --:       | :--
+2014.07.25  | 0.5.1     | fixed issue for batch exec not using proper directory
 2014.04.22  | 0.5.0     | added update-user command
             |           | changed the parameter ordering in the create-user batch file command to match the new update-user command.
 2014.04.15  | 0.4.0     | added batch-exec command

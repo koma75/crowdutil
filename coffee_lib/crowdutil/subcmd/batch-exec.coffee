@@ -67,10 +67,9 @@ exports.run = (options) ->
   logger.debug "executing batch!"
 
   #
-  # Setup crhelper so all the possible crowd connections are ready
+  # Notify crhelper about the default selection of the directory
   #
-  crhelp.setDefaultCrowd(options['crowd'])
-  crhelp.setupCROWD()
+  crhelp.setDefaultCrowd(options['-D'][0])
 
   #
   # Initialize the batch execution framework

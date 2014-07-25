@@ -26,7 +26,7 @@ npm install https://github.com/koma75/crowdutil.git
 
 ツールを利用するためにはまず設定ファイルを作成する必要があります。
 設定ファイルの名前は「crowdutil.json」で、コマンドラインツールを実行した
-作業ディレクトリに存在しなければなりません。サンプルのcrowdutil.json 
+作業ディレクトリに存在しなければなりません。サンプルのcrowdutil.json
 ファイルは `crowdutil create-config -o crowdutil.json` で生成可能です。
 
 #### CROWD setup
@@ -52,7 +52,7 @@ CROWDに接続するためには、設定対象のディレクトリ毎にCROWD�
         * 空欄
     5. Confirmation
         * 内容確認し作成
-4. Search Applications に移動し、作成したアプリケーションを選択 
+4. Search Applications に移動し、作成したアプリケーションを選択
 5. Remote Addresses タブを選択
 6. crowdutilを利用するマシンのIPアドレス又はホスト名を全て追加
 7. 3から6のステップを操作対象のディレクトリ毎に繰り返し実施
@@ -438,12 +438,19 @@ Known issues & Bugs
 ------------------------------------------------------------------------
 
 * ひと通り動作確認はしていますが、現状テスト不十分です。
+* 並列実行をしている場合、以下の制約事項があります
+    * 同時に実行されるバッチ部分に複数のディレクトリを指定することは出来ません（意図しないディレクトリ
+      に対してコマンドが実行されてしまう可能性があります。
+    * --force を使っている場合、並列実行中のコマンドがひとつエラーとなると、その他の同時実行対象の
+      内、未発行のコマンドは実行されません。並列実行をする場合は--forceを利用しないことをおすすめ
+      します。
 
 Change History
 ------------------------------------------------------------------------
 
 Date        | Version   | Changes
 :--         | --:       | :--
+2014.07.25  | 0.5.1     | fixed issue for batch exec not using proper directory
 2014.04.22  | 0.5.0     | added update-user command
             |           | changed the parameter ordering in the create-user batch file command to match the new update-user command.
 2014.04.15  | 0.4.0     | added batch-exec command
