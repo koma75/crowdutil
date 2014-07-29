@@ -478,9 +478,8 @@ accessed via the command.js script.
       before we send pull requests to master.
 * pull requests in github will be used for review of a feature branch
   before merging
-    * for smooth merging, please re-base the feature branch to the latest
-      master, or merge all the latest changes in master to the feature branch
-      and make sure there are no conflicts right before sending a pull request.
+    * for smooth merging, please merge all the latest changes in master to your
+      feature branch and make sure there are no conflicts right before sending a pull request.
     * set references to issues if relevant with the pull request
       by adding a line in the comment in the form of "resolves #issuenum"
       where issuenum is the relevant issue number.
