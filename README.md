@@ -506,6 +506,7 @@ Change History
 
 Date        | Version   | Changes
 :--         | --:       | :--
+2014.08.16  | 0.5.3     | fixed issue with new line character
 2014.07.25  | 0.5.2     | fixed issue for batch exec not using proper directory
             |           | fixed parameter check bug
 2014.04.22  | 0.5.0     | added update-user command
