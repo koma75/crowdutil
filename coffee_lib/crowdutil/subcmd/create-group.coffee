@@ -57,7 +57,7 @@ exports.run = (options) ->
     options['-d'][0],
     (err) ->
       if err
-        logger.warn err.message
+        logger.error err.message
         console.log "E, failed to create #{options['-n'][0]}"
       else
         # check if group is created as intended

@@ -86,7 +86,7 @@ isOptOK = (cmds) ->
   )
     logger.info "batch-exec: password not supplied"
     cmds[3] = help.randPass()
-    console.log "W, create-user: password not supplied... using #{cmds[3]}"
+    console.log "I, create-user: password not supplied... using #{cmds[3]}"
 
   return rc
 

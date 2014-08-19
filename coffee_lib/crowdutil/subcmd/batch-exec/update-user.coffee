@@ -146,7 +146,6 @@ exports.run = (cmds, done) ->
         console.log "E, update-user: FAIL: #{uid} (#{cmds[1]})"
         done(err)
       else
-        logger.info " * update user #{uid}, done."
         logger.info "batch-exec:update-user: DONE: #{uid} (#{cmds[1]})"
         console.log "I, update-user: DONE: #{uid} (#{cmds[1]})"
         done()
