@@ -87,12 +87,7 @@ initLogger = (opts, cfg) ->
           backups: 2
           category: 'crowdutil'
         }
-        {
-          type: 'console'
-          category: 'crowdutil'
-        }
       ]
-      replaceConsole: true
 
   log4js.configure(logConfig)
   global.logger = log4js.getLogger('crowdutil')

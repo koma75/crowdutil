@@ -51,12 +51,7 @@ crowdutilJSON =
         backups: 2
         category: "crowdutil"
       }
-      {
-        type: "console"
-        category: "crowdutil"
-      }
     ]
-    replaceConsole: true
 
 exports.run = (options) ->
   if(
@@ -71,7 +66,7 @@ exports.run = (options) ->
     else if options['-o'][0] != ''
       file = process.cwd() + '/' + options['-o'][0]
     else
-      console.log "invalid filename"
+      console.log "E, invalid filename"
   else
     file = process.cwd() + '/crowdutil.json'
 

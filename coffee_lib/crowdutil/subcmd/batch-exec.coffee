@@ -40,6 +40,7 @@ isOptOK = (opts) ->
   )
     rc = false
     logger.error "invalid file: #{opts['-b']}"
+    console.log "E, invalid file: #{opts['-b']}"
   if !help.opIsType(opts, '-f', 'boolean')
     opts['-f'] = [ false ]
 
@@ -62,7 +63,6 @@ exports.run = (options) ->
   logger.debug "options: \n#{JSON.stringify(options, null, 2)}"
 
   if !isOptOK(options)
-    logger.error 'parameter invalid!'
     return
   logger.debug "executing batch!"
 
@@ -94,7 +94,9 @@ exports.run = (options) ->
     (err) ->
       if err
         logger.error err.message
+        console.log "E, There was an error processing #{options['-b'][0]}.  Check the log for details."
       logger.info "finished processing #{options['-b'][0]}"
+      console.log "I, finished processing #{options['-b'][0]}"
       return
     , !options['-f'][0]
   )

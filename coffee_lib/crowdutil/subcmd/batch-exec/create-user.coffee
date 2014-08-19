@@ -42,6 +42,7 @@ isOptOK = (cmds) ->
   # cmds[7] email
   if cmds.length < 7
     logger.warn "batch-exec: not enough parameters"
+    console.log "E, create-user: not enough params"
     rc = false
 
   if(
@@ -49,12 +50,14 @@ isOptOK = (cmds) ->
     !help.isName(cmds[4], false)
   )
     logger.warn "batch-exec: first name not valid"
+    console.log "E, create-user: first name not valid"
     rc = false
   if(
     typeof cmds[5] != 'string' ||
     !help.isName(cmds[5], false)
   )
     logger.warn "batch-exec: last name not valid"
+    console.log "E, create-user: last name not valid"
     rc = false
   if(
     typeof cmds[6] != 'string' ||
@@ -62,17 +65,20 @@ isOptOK = (cmds) ->
   )
     logger.info "batch-exec: display name not supplied"
     cmds[6] = "#{cmds[4]} #{cmds[5]}"
+    console.log "I, create-user: display name not supplied... using #{cmds[6]}"
   if(
     typeof cmds[7] != 'string' ||
     !help.isEmail(cmds[7])
   )
     logger.warn "batch-exec: email not valid"
+    console.log "E, create-user: email not valid"
     rc = false
   if(
     typeof cmds[2] != 'string' ||
     !help.isName(cmds[2], false)
   )
     logger.warn "batch-exec: uid not valid"
+    console.log "E, create-user: uid not valid"
     rc = false
   if(
     typeof cmds[3] != 'string' ||
@@ -80,6 +86,7 @@ isOptOK = (cmds) ->
   )
     logger.info "batch-exec: password not supplied"
     cmds[3] = help.randPass()
+    console.log "W, create-user: password not supplied... using #{cmds[3]}"
 
   return rc
 
@@ -92,6 +99,7 @@ exports.run = (cmds, done) ->
   if !isOptOK(cmds)
     setTimeout(() ->
       logger.error "batch-exec: create-user parameter error"
+      console.log "E, create-user: param error: #{JSON.stringify(cmds)}"
       done(new Error("batch-exec: create-user parameter error"))
       return
     ,0)
@@ -110,8 +118,10 @@ exports.run = (cmds, done) ->
       (err) ->
         if err
           logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
+          console.log "E, create-user: FAIL: #{cmds[2]}, #{cmds[6]}, #{cmds[7]}, #{cmds[3]} (#{cmds[1]})"
           done(err)
         else
+          console.log "I, create-user: DONE: #{cmds[2]}, #{cmds[6]}, #{cmds[7]}, #{cmds[3]} (#{cmds[1]})"
           done()
       )
 

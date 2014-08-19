@@ -37,17 +37,20 @@ isOptOK = (opts) ->
   )
     rc = false
     logger.error 'first name not valid'
+    console.log 'E, first name not valid'
   if(
     !help.opIsType(opts, '-l', 'string') ||
     !help.isName(opts['-l'][0], false)
   )
     rc = false
     logger.error 'last name not supplied'
+    console.log 'E, last name not supplied'
   if(
     !help.opIsType(opts, '-d', 'string') ||
     !help.isName(opts['-d'][0], true)
   )
     logger.info 'disp name not supplied'
+    console.log 'I, disp name not supplied'
     opts['-d'] = []
     opts['-d'][0] = opts['-f'][0] +
       ' ' + opts['-l'][0]
@@ -57,19 +60,23 @@ isOptOK = (opts) ->
   )
     rc = false
     logger.error 'email not supplied or invalid'
+    console.log 'E, email not supplied or invalid'
   if(
     !help.opIsType(opts, '-u', 'string') ||
     !help.isName(opts['-u'][0], false)
   )
     rc = false
     logger.error 'uid not supplied'
+    console.log 'E, uid not supplied'
   if(
     !help.opIsType(opts, 'p', 'string') ||
     !help.isPass(opts['-p'][0])
   )
     logger.info 'password not supplied. using a random password.'
+    console.log 'I, password not supplied. using a random password.'
     opts['-p'] = []
     opts['-p'][0] = help.randPass()
+    console.log "I, using a random password: #{opts['-p'][0]}"
   return rc
 
 ###
@@ -79,7 +86,6 @@ exports.run = (options) ->
   logger.debug options
 
   if !isOptOK(options)
-    logger.error 'parameter invalid!'
     return
   logger.debug 'creating user with:\n' + JSON.stringify(options,null,2)
 
@@ -94,6 +100,7 @@ exports.run = (options) ->
     (err) ->
       if err
         logger.error err.message
+        console.log "E, user creation failed. See the log for details"
       else
         # check if user really was created
         try
@@ -101,7 +108,11 @@ exports.run = (options) ->
             uid: options['-u'][0]
           }, (res) ->
             logger.info JSON.stringify(res)
+            console.log "I, user created successfully:"
+            console.log JSON.stringify(res,null,2)
           )
         catch err
+          console.log "W, user creation returned success but could not be found."
+          console.log "W, Confirm at the Crowd admin console for assurance."
           logger.warn err.message
     )

@@ -37,10 +37,12 @@ isOptOK = (opt) ->
   if opt['-g'].length != 0
     for group in opt['-g']
       if !help.isName(group, false)
-        logger.warn 'invalid group name:' + group
+        logger.error 'invalid group name:' + group
+        console.log 'E, invalid group name:' + group
         rc = false
   else
-    logger.warn 'no groups supplied'
+    logger.error 'no groups supplied'
+    console.log 'E, no groups supplied'
     rc = false
   logger.debug '-g :\n' + JSON.stringify(opt['-g'], null, 2)
 
@@ -48,10 +50,12 @@ isOptOK = (opt) ->
   if opt['-u'].length != 0
     for user in opt['-u']
       if !help.isName(user, false)
-        logger.warn 'invalid uid:' + user
+        logger.error 'invalid uid:' + user
+        console.log 'E, invalid uid:' + user
         rc = false
   else
-    logger.warn 'no users supplied'
+    logger.error 'no users supplied'
+    console.log 'E, no users supplied'
     rc = false
   logger.debug '-u :\n' + JSON.stringify(opt['-u'], null, 2)
 
@@ -77,8 +81,10 @@ exports.run = (options) ->
             crhelp.addUserToGroup(crowd, user, group, (err) ->
               if err
                 logger.warn err.message
+                console.log 'W, FAIL: ' + group + ' + ' + user
               else
                 logger.info group + ' + ' + user
+                console.log 'I, DONE: ' + group + ' + ' + user
               uDone() # ignore error
             )
           catch err
@@ -88,6 +94,7 @@ exports.run = (options) ->
         , (err) ->
           # all user iterations done for a group
           logger.trace 'all users for group ' + group + ' Done'
+          console.log "I, finished processing #{group}"
           gDone(err)
           return
       ) # /USER ITERATION
@@ -97,8 +104,8 @@ exports.run = (options) ->
       if err
         logger.error err.message
       logger.info 'DONE'
+      console.log "I, DONE."
       return
   )
 
   return
-
