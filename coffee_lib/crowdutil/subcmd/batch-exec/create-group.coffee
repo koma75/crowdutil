@@ -38,6 +38,7 @@ isOptOK = (cmds) ->
   # cmds[3] Group Description
   if cmds.length < 3
     logger.warn "batch-exec: not enough parameters"
+    console.log "E, create-group: not enough params"
     rc = false
 
   if(
@@ -45,6 +46,7 @@ isOptOK = (cmds) ->
     !help.isName(cmds[2], false)
   )
     logger.warn "batch-exec: group name not valid"
+    console.log "E, create-group: group name not valid"
     rc = false
   if(
     typeof cmds[3] != 'string'
@@ -62,6 +64,7 @@ exports.run = (cmds, done) ->
   if !isOptOK(cmds)
     setTimeout(() ->
       logger.error "batch-exec:create-group param error"
+      console.log "E, create-group: param error: #{JSON.stringify(cmds)}"
       done(new Error("batch-exec:create-group param error"))
       return
     ,0)
@@ -76,8 +79,10 @@ exports.run = (cmds, done) ->
       (err) ->
         if err
           logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
+          console.log "E, create-group: FAIL: #{cmds[2]} (#{cmds[1]})"
           done(err)
         else
+          console.log "I, create-group: DONE: #{cmds[2]} (#{cmds[1]})"
           done()
     )
 

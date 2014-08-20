@@ -37,6 +37,7 @@ isOptOK = (cmds) ->
   # cmds[2] group name
   if cmds.length < 3
     logger.warn "batch-exec: not enough parameters"
+    console.log "E, remove-group: not enough params"
     rc = false
 
   if(
@@ -44,6 +45,7 @@ isOptOK = (cmds) ->
     !help.isName(cmds[2], false)
   )
     logger.warn "batch-exec: invalid group name"
+    console.log "E, remove-group: invalid group name"
     rc = false
 
   return rc
@@ -57,6 +59,7 @@ exports.run = (cmds, done) ->
   if !isOptOK(cmds)
     setTimeout(() ->
       logger.error "batch-exec:remove-group param error"
+      console.log "E, remove-group: param error: #{JSON.stringify(cmds)}"
       done(new Error("batch-exec:remove-group param error"))
       return
     ,0)
@@ -68,8 +71,10 @@ exports.run = (cmds, done) ->
     crowd.groups.remove(cmds[2], (err) ->
       if err
         logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
+        console.log "E, remove-group: FAIL: #{cmds[2]} (#{cmds[1]})"
         done(err)
       else
+        console.log "I, remove-group: DONE: #{cmds[2]} (#{cmds[1]})"
         done()
     )
 

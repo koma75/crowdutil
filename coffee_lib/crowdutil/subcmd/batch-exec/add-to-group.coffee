@@ -38,6 +38,7 @@ isOptOK = (cmds) ->
   # cmds[3] Group name
   if cmds.length < 4
     logger.warn "batch-exec: not enough parameters"
+    console.log "E, add-to-group: not enough parameters"
     rc = false
 
   if(
@@ -45,12 +46,14 @@ isOptOK = (cmds) ->
     !help.isName(cmds[2], false)
   )
     logger.warn 'batch-exec: invalid uid'
+    console.log "E, add-to-group: invalid uid"
     rc = false
   if(
     typeof cmds[3] != 'string' ||
     !help.isName(cmds[3], false)
   )
     logger.warn 'batch-exec: invalid group name'
+    console.log "E, add-to-group: invalid group name"
     rc = false
 
   return rc
@@ -64,6 +67,7 @@ exports.run = (cmds, done) ->
   if !isOptOK(cmds)
     setTimeout(() ->
       logger.debug("batch-exec:add-to-group param error")
+      console.log "E, add-to-group: param error: #{JSON.stringify(cmds)}"
       done(new Error("batch-exec:add-to-group param error"))
       return
     ,0)
@@ -76,9 +80,11 @@ exports.run = (cmds, done) ->
       crhelp.addUserToGroup(crowd, cmds[2], cmds[3], (err) ->
         if err
           logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
+          console.log "E, add-to-group: FAIL: #{cmds[3]} + #{cmds[2]} (#{cmds[1]})"
           done(err)
         else
           logger.info cmds[3] + ' + ' + cmds[2]
+          console.log "I, add-to-group: DONE: #{cmds[3]} + #{cmds[2]} (#{cmds[1]})"
           done()
       )
     catch err

@@ -116,13 +116,9 @@ the setting file is a hash table in the following format:
         "maxLogSize": "204800",
         "backups": 2,
         "category": "crowdutil"
-      },
-      {
-        "type": "console",
-        "category": "crowdutil"
       }
     ],
-    "replaceConsole": true
+    "replaceConsole": false
   }
 }
 ~~~
@@ -506,6 +502,7 @@ Change History
 
 Date        | Version   | Changes
 :--         | --:       | :--
+2014.xx.xx  | 0.6.0     | added STDOUT messages separately from log message for use with other cli tools
 2014.08.16  | 0.5.3     | fixed issue with new line character
 2014.07.25  | 0.5.2     | fixed issue for batch exec not using proper directory
             |           | fixed parameter check bug

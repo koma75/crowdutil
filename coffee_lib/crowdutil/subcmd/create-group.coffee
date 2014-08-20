@@ -36,6 +36,7 @@ isOptOK = (opts) ->
     !help.isName(opts['-n'][0], false)
   )
     logger.warn 'invalid group name'
+    console.log 'E, invalid group name'
     rc = false
   if !help.opIsType(opts, '-d', 'string')
     # just put an empty string
@@ -56,7 +57,8 @@ exports.run = (options) ->
     options['-d'][0],
     (err) ->
       if err
-        logger.warn err.message
+        logger.error err.message
+        console.log "E, failed to create #{options['-n'][0]}"
       else
         # check if group is created as intended
         try
@@ -67,7 +69,11 @@ exports.run = (options) ->
             },
             (res) ->
               logger.debug JSON.stringify(res)
+              console.log "I, group created successfully"
+              console.log JSON.stringify(res,null,2)
           )
         catch err
+          console.log "W, group creation returned success but could not be found."
+          console.log "W, Confirm at the Crowd admin console for assurance."
           logger.warn err.message
   )

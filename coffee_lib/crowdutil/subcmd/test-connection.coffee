@@ -32,7 +32,8 @@ exports.run = (options) ->
   options['crowd'].ping( (err,res) ->
     if err
       logger.error err.message
+      console.log err.message
     else
       logger.info 'Connection Pass: \n' + JSON.stringify(res, null, 2)
+      console.log 'Connection Pass: \n' + JSON.stringify(res, null, 2)
   )
-

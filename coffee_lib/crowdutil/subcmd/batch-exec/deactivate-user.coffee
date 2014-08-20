@@ -37,6 +37,7 @@ isOptOK = (cmds) ->
   # cmds[2] uid
   if cmds.length < 3
     logger.warn "batch-exec: not enough parameters"
+    console.log "deactivate-user: not enough params"
     rc = false
 
   return rc
@@ -50,6 +51,7 @@ exports.run = (cmds, done) ->
   if !isOptOK(cmds)
     setTimeout(() ->
       logger.error "batch-exec:deactivate-user param error"
+      console.log "E, deactivate-user: param error: #{JSON.stringify(cmds)}"
       done(new Error("batch-exec:deactivate-user param error"))
       return
     ,0)

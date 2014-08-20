@@ -37,6 +37,7 @@ isOptOK = (cmds) ->
   # cmds[2] Group name
   if cmds.length < 3
     logger.warn "batch-exec: not enough parameters"
+    console.log "E, empty-group: not enough params"
     rc = false
 
   if(
@@ -44,6 +45,7 @@ isOptOK = (cmds) ->
     !help.isName(cmds[2], false)
   )
     logger.warn "batch-exec: invalid group name"
+    console.log "E, empty-group: invalid group name"
     rc = false
 
   return rc
@@ -57,6 +59,7 @@ exports.run = (cmds, done) ->
   if !isOptOK(cmds)
     setTimeout(() ->
       logger.error "batch-exec:empty-group param error"
+      console.log "E, empty-group: param error: #{JSON.stringify(cmds)}"
       done(new Error("batch-exec:empty-group param error"))
       return
     ,0)
@@ -68,8 +71,10 @@ exports.run = (cmds, done) ->
     crhelp.emptyGroup(crowd, cmds[2], 1, (err) ->
       if err
         logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
+        console.log "E, empty-group: FAIL: #{cmds[2]} (#{cmds[1]})"
         done(err)
       else
+        console.log "I, empty-group: DONE: #{cmds[2]} (#{cmds[1]})"
         done()
     )
 

@@ -37,6 +37,7 @@ isOptOK = (cmds) ->
   # cmds[2] uid
   if cmds.length < 3
     logger.warn "batch-exec: not enough parameters"
+    console.log "E, remove-user: not enough params"
     rc = false
 
   if(
@@ -44,6 +45,7 @@ isOptOK = (cmds) ->
     !help.isName(cmds[2], false)
   )
     logger.warn "batch-exec: invalid uid"
+    console.log "E, remove-user: invalid uid"
     rc = false
 
   return rc
@@ -57,6 +59,7 @@ exports.run = (cmds, done) ->
   if !isOptOK(cmds)
     setTimeout(() ->
       logger.error "batch-exec:remove-user param error"
+      console.log "E, remove-user: param error: #{JSON.stringify(cmds)}"
       done(new Error("batch-exec:remove-user param error"))
       return
     ,0)
@@ -68,8 +71,10 @@ exports.run = (cmds, done) ->
     crowd.user.remove(cmds[2], (err) ->
       if err
         logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
+        console.log "E, remove-user: FAIL: #{cmds[2]} (#{cmds[1]})"
         done(err)
       else
+        console.log "I, remove-user: DONE: #{cmds[2]} (#{cmds[1]})"
         done()
     )
 

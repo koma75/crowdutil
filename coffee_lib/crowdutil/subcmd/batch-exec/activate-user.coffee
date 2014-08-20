@@ -37,6 +37,7 @@ isOptOK = (cmds) ->
   # cmds[2] uid
   if cmds.length < 3
     logger.warn "batch-exec: not enough parameters"
+    console.log "E, activate-user: not enough params: #{JSON.stringify(cmds)}"
     rc = false
 
   return rc

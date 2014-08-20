@@ -38,9 +38,11 @@ isOptOK = (opt) ->
     for group in opt['-g']
       if !help.isName(group, false)
         logger.error 'invalid group name:' + group
+        console.log 'E, invalid group name:' + group
         rc = false
   else
     logger.error 'no groups supplied'
+    console.log 'E, no groups supplied'
     rc = false
 
   if !help.opIsType(opt, '-f', 'boolean')
@@ -59,8 +61,10 @@ emptyGroup = (crowd, group) ->
             crhelp.rmUserFromGroup(crowd, user, group, (err) ->
               if err
                 logger.warn err.message
+                console.log "W, FAIL: " + group + ' - ' + user
               else
                 logger.info group + ' - ' + user
+                console.log "I, DONE: " + group + ' - ' + user
               uDone() # ignore error
             )
           catch err
@@ -72,6 +76,7 @@ emptyGroup = (crowd, group) ->
             logger.warn err.meesage
           else
             logger.info "DONE emptying " + group
+            console.log "I, finished processing #{group}"
           return
       )
     )
@@ -106,11 +111,9 @@ exports.run = (options) ->
 
   rl.setPrompt('> ')
 
-  logger.warn(
-    "Are you sure you want to empty the following groups?:"
-  )
+  console.log "Are you sure you want to empty the following groups?:"
   for v in options['-g']
-    logger.warn("  * " + v)
+    console.log "  * #{v}"
 
   rl.prompt()
 
@@ -118,10 +121,11 @@ exports.run = (options) ->
     (answer) ->
       if answer.trim() == "yes"
         logger.info 'removing users'
+        console.log 'removing users'
         for v in options['-g']
           emptyGroup(crowd, v)
       else
         logger.info 'abort'
+        console.log 'abort'
       rl.close()
   )
-
