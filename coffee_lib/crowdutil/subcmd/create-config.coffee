@@ -52,6 +52,7 @@ crowdutilJSON =
         category: "crowdutil"
       }
     ]
+    replaceConsole: false
 
 exports.run = (options) ->
   if(
