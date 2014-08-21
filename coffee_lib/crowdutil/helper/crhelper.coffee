@@ -59,27 +59,21 @@ findUser = (crowd, opts, callback) ->
 
 listUsersGroup = (crowd, uid, callback) ->
   if uid == "" || typeof uid == "undefined"
-    myErr = new Error("invalid user name")
-    throw myErr
+    setTimeout(() ->
+      myErr = new Error("invalid user name")
+      callback(myErr, null)
+    , 0)
   else
-    crowd.user.groups(uid, (err, res) ->
-      if err
-        logger.warn err.message
-      else
-        callback(res)
-    )
+    crowd.user.groups(uid, callback)
 
 findGroupMembers = (crowd, group, callback) ->
   if group == "" || typeof group == "undefined"
-    myErr = new Error("findGroupMembers: invalid input")
-    throw myError
+    setTimeout(() ->
+      myErr = new Error("findGroupMembers: invalid input")
+      callback(myErr, null)
+    , 0)
   else
-    crowd.groups.directmembers(group, (err, res) ->
-      if err
-        logger.warn err.message
-      else
-        callback(res)
-    )
+    crowd.groups.directmembers(group, callback)
 
 addUserToGroup = (crowd, uid, group, callback) ->
   if (
@@ -88,12 +82,12 @@ addUserToGroup = (crowd, uid, group, callback) ->
     group == "" ||
     typeof group == "undefined"
   )
-    myErr = new Error("addUserToGroup: invalid input")
-    throw myErr
+    setTimeout(() ->
+      myErr = new Error("addUserToGroup: invalid input")
+      callback(myErr, null)
+    , 0)
   else
-    crowd.groups.addmember(uid, group, (err) ->
-      callback(err)
-    )
+    crowd.groups.addmember(uid, group, callback)
   return
 
 rmUserFromGroup = (crowd, uid, group, callback) ->
@@ -103,12 +97,12 @@ rmUserFromGroup = (crowd, uid, group, callback) ->
     group == "" ||
     typeof group == "undefined"
   )
-    myErr = new Error("rmUserFromGroup: invalide input")
-    throw myErr
+    setTimeout(() ->
+      myErr = new Error("rmUserFromGroup: invalide input")
+      callback(myErr, null)
+    , 0)
   else
-    crowd.groups.removemember(uid, group, (err) ->
-      callback(err)
-    )
+    crowd.groups.removemember(uid, group, callback)
   return
 
 emptyGroup = (crowd, group, limit, callback) ->

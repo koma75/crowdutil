@@ -77,19 +77,15 @@ exports.run = (options) ->
       async.each(options['-u'],
         (user, uDone) ->
           logger.trace group + ' + ' + user
-          try
-            crhelp.addUserToGroup(crowd, user, group, (err) ->
-              if err
-                logger.warn err.message
-                console.log 'W, FAIL: ' + group + ' + ' + user
-              else
-                logger.info group + ' + ' + user
-                console.log 'I, DONE: ' + group + ' + ' + user
-              uDone() # ignore error
-            )
-          catch err
-            logger.error err.message
-            uDone()
+          crhelp.addUserToGroup(crowd, user, group, (err) ->
+            if err
+              logger.warn err.message
+              console.log 'W, FAIL: ' + group + ' + ' + user
+            else
+              logger.info group + ' + ' + user
+              console.log 'I, DONE: ' + group + ' + ' + user
+            uDone() # ignore error
+          )
           return
         , (err) ->
           # all user iterations done for a group

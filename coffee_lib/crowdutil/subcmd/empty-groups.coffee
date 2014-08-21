@@ -51,37 +51,33 @@ isOptOK = (opt) ->
   return rc
 
 emptyGroup = (crowd, group) ->
-  try
-    crhelp.findGroupMembers(crowd, group, (res) ->
-      logger.debug res
-      # res [ 'uid1' , 'uid2' ]
-      async.each(res,
-        (user, uDone) ->
-          try
-            crhelp.rmUserFromGroup(crowd, user, group, (err) ->
-              if err
-                logger.warn err.message
-                console.log "W, FAIL: " + group + ' - ' + user
-              else
-                logger.info group + ' - ' + user
-                console.log "I, DONE: " + group + ' - ' + user
-              uDone() # ignore error
-            )
-          catch err
-            logger.warn err.message
-            uDone()
-          return
-        , (err) ->
+  crhelp.findGroupMembers(crowd, group, (err, res) ->
+    if err
+      logger.warn err.message
+      return
+    logger.debug res
+    # res [ 'uid1' , 'uid2' ]
+    async.each(res,
+      (user, uDone) ->
+        crhelp.rmUserFromGroup(crowd, user, group, (err) ->
           if err
-            logger.warn err.meesage
+            logger.warn err.message
+            console.log "W, FAIL: " + group + ' - ' + user
           else
-            logger.info "DONE emptying " + group
-            console.log "I, finished processing #{group}"
-          return
-      )
+            logger.info group + ' - ' + user
+            console.log "I, DONE: " + group + ' - ' + user
+          uDone() # ignore error
+        )
+        return
+      , (err) ->
+        if err
+          logger.warn err.meesage
+        else
+          logger.info "DONE emptying " + group
+          console.log "I, finished processing #{group}"
+        return
     )
-  catch err
-    logger.warn err.message
+  )
   return
 
 exports.run = (options) ->

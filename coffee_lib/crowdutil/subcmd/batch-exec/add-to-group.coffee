@@ -76,20 +76,15 @@ exports.run = (cmds, done) ->
     crowd = crhelp.getCROWD(cmds[1])
 
     # Run the command
-    try
-      crhelp.addUserToGroup(crowd, cmds[2], cmds[3], (err) ->
-        if err
-          logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
-          console.log "E, add-to-group: FAIL: #{cmds[3]} + #{cmds[2]} (#{cmds[1]})"
-          done(err)
-        else
-          logger.info cmds[3] + ' + ' + cmds[2]
-          console.log "I, add-to-group: DONE: #{cmds[3]} + #{cmds[2]} (#{cmds[1]})"
-          done()
-      )
-    catch err
+    crhelp.addUserToGroup(crowd, cmds[2], cmds[3], (err) ->
       if err
         logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
+        console.log "E, add-to-group: FAIL: #{cmds[3]} + #{cmds[2]} (#{cmds[1]})"
         done(err)
+      else
+        logger.info cmds[3] + ' + ' + cmds[2]
+        console.log "I, add-to-group: DONE: #{cmds[3]} + #{cmds[2]} (#{cmds[1]})"
+        done()
+    )
 
   return

@@ -76,19 +76,15 @@ exports.run = (cmds, done) ->
     crowd = crhelp.getCROWD(cmds[1])
 
     # Run the command
-    try
-      crhelp.rmUserFromGroup(crowd, cmds[2], cmds[3], (err) ->
-        if err
-          logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
-          console.log "E, rm-from-group: FAIL: #{cmds[3]} - #{cmds[2]} (#{cmds[1]})"
-          done(err)
-        else
-          logger.info cmds[3] + ' - ' + cmds[2]
-          console.log "I, rm-from-group: DONE: #{cmds[3]} - #{cmds[2]} (#{cmds[1]})"
-          done()
-      )
-    catch err
-      logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
-      done(err)
+    crhelp.rmUserFromGroup(crowd, cmds[2], cmds[3], (err) ->
+      if err
+        logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
+        console.log "E, rm-from-group: FAIL: #{cmds[3]} - #{cmds[2]} (#{cmds[1]})"
+        done(err)
+      else
+        logger.info cmds[3] + ' - ' + cmds[2]
+        console.log "I, rm-from-group: DONE: #{cmds[3]} - #{cmds[2]} (#{cmds[1]})"
+        done()
+    )
 
   return
