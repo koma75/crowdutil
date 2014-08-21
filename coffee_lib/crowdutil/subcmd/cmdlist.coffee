@@ -199,6 +199,28 @@ start = (callback) ->
       return
   )
 
+  # LIST GROUP MEMBERS
+  operetta.command(
+    'list-member',
+    'list members of the group',
+    (cmd) ->
+      cmd
+        .banner = "crowdutil: list-member\n" +
+          "list members of the specified group.\n\n"
+      defaultOpts(cmd)
+      cmd.parameters(['-g','--group'],
+        "group to find members of.")
+      cmd.start(
+        (opts) ->
+          if callback(opts)
+            require('./list-member').run(opts)
+          else
+            logger.error 'initialization failed'
+          return
+      )
+      return
+  )
+
   # REMOVE USERS FROM GROUPS
   operetta.command(
     'rm-from-groups',
@@ -229,7 +251,7 @@ start = (callback) ->
     'empty the specified group',
     (cmd) ->
       cmd
-        .banner = "crowdutil: test-connect\n" +
+        .banner = "crowdutil: empty-groups\n" +
           "remove all direct members from the list of groups.\n" +
           "If no -f option is supplied, you must answer 'yes' to proceed.\n\n"
       defaultOpts(cmd)
@@ -310,4 +332,3 @@ start = (callback) ->
   return
 
 exports.start = start
-
