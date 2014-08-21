@@ -106,12 +106,7 @@ init = (opts) ->
   cfg = readConfig()
 
   rc = true
-  try
-    initLogger(opts, cfg)
-  catch err
-    if err
-      console.log err.message
-      rc = false
+  initLogger(opts, cfg)
 
   logger.info "==============================================="
   logger.info "crowdutil: Atlassian CROWD cli utility tool"
@@ -138,4 +133,3 @@ exports.run = () ->
   cmdlist.start(init)
 
   return
-

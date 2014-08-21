@@ -32,12 +32,7 @@ findGroup = (crowd, opts, callback) ->
   name = opts.name || "*"
 
   query = 'name="' + name + '"'
-  crowd.search('group', query, (err, res) ->
-    if err
-      logger.warn err.message
-    else
-      callback(res)
-  )
+  crowd.search('group', query, callback)
 
 findUser = (crowd, opts, callback) ->
   opts = opts || {}
@@ -50,12 +45,7 @@ findUser = (crowd, opts, callback) ->
   query = query + ' and firstName="' + fname + '"'
   query = query + ' and lastName="' + lname + '"'
   query = query + ' and email="' + email + '"'
-  crowd.search('user', query, (err, res) ->
-    if err
-      logger.warn err.message
-    else
-      callback(res)
-  )
+  crowd.search('user', query, callback)
 
 listUsersGroup = (crowd, uid, callback) ->
   if uid == "" || typeof uid == "undefined"
@@ -106,35 +96,31 @@ rmUserFromGroup = (crowd, uid, group, callback) ->
   return
 
 emptyGroup = (crowd, group, limit, callback) ->
-  try
-    findGroupMembers(crowd, group, (res) ->
-      logger.debug res
-      # res [ 'uid1' , 'uid2' ]
-      async.eachLimit(res, limit
-        (user, uDone) ->
-          try
-            rmUserFromGroup(crowd, user, group, (err) ->
-              if err
-                logger.warn err.message
-              else
-                logger.info group + ' - ' + user
-              uDone() # ignore error
-            )
-          catch err
-            logger.warn err.message
-            uDone()
-          return
-        , (err) ->
+  findGroupMembers(crowd, group, (err, res) ->
+    if err
+      callback(err)
+      return
+    logger.debug res
+    # res [ 'uid1' , 'uid2' ]
+    async.eachLimit(res, limit
+      (user, uDone) ->
+        rmUserFromGroup(crowd, user, group, (err) ->
           if err
-            callback(err)
+            logger.warn err.message
           else
-            logger.info "DONE emptying " + group
-            callback()
-          return
-      )
+            logger.info group + ' - ' + user
+          uDone() # ignore error
+        )
+        return
+      , (err) ->
+        if err
+          callback(err)
+        else
+          logger.info "DONE emptying " + group
+          callback()
+        return
     )
-  catch err
-    callback(err)
+  )
   return
 
 updateUser = (crowd, uid, update, callback) ->
@@ -205,12 +191,9 @@ getCROWD = (directory) ->
   logger.debug(
     "getCROWD: #{JSON.stringify(cfg['directories'][directory],null,2)}"
   )
-  try
-    crowd = new AtlassianCrowd(
-      cfg['directories'][directory]
-    )
-  catch err
-    logger.warn err.message
+  crowd = new AtlassianCrowd(
+    cfg['directories'][directory]
+  )
 
   return crowd
 

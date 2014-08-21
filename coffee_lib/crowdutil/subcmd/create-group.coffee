@@ -61,19 +61,19 @@ exports.run = (options) ->
         console.log "E, failed to create #{options['-n'][0]}"
       else
         # check if group is created as intended
-        try
-          crhelp.findGroup(
-            crowd,
-            {
-              name: options['-n'][0]
-            },
-            (res) ->
-              logger.debug JSON.stringify(res)
-              console.log "I, group created successfully"
-              console.log JSON.stringify(res,null,2)
-          )
-        catch err
-          console.log "W, group creation returned success but could not be found."
-          console.log "W, Confirm at the Crowd admin console for assurance."
-          logger.warn err.message
+        crhelp.findGroup(
+          crowd,
+          {
+            name: options['-n'][0]
+          },
+          (err, res) ->
+            if err
+              console.log "W, group creation returned success but could not be found."
+              console.log "W, Confirm at the Crowd admin console for assurance."
+              logger.warn err.message
+              return
+            logger.debug JSON.stringify(res)
+            console.log "I, group created successfully"
+            console.log JSON.stringify(res,null,2)
+        )
   )

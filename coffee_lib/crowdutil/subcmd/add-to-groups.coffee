@@ -99,6 +99,7 @@ exports.run = (options) ->
       # all group iterations done
       if err
         logger.error err.message
+        console.log "E, There was an error processing the request. Check the log for details"
       logger.info 'DONE'
       console.log "I, DONE."
       return

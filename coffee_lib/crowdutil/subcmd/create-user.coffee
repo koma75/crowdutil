@@ -103,16 +103,16 @@ exports.run = (options) ->
         console.log "E, user creation failed. See the log for details"
       else
         # check if user really was created
-        try
-          crhelp.findUser(crowd, {
-            uid: options['-u'][0]
-          }, (res) ->
-            logger.info JSON.stringify(res)
-            console.log "I, user created successfully:"
-            console.log JSON.stringify(res,null,2)
-          )
-        catch err
-          console.log "W, user creation returned success but could not be found."
-          console.log "W, Confirm at the Crowd admin console for assurance."
-          logger.warn err.message
+        crhelp.findUser(crowd, {
+          uid: options['-u'][0]
+        }, (err, res) ->
+          if err
+            console.log "W, user creation returned success but could not be found."
+            console.log "W, Confirm at the Crowd admin console for assurance."
+            logger.warn err.message
+            return
+          logger.info JSON.stringify(res)
+          console.log "I, user created successfully:"
+          console.log JSON.stringify(res,null,2)
+        )
     )

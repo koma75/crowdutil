@@ -54,6 +54,7 @@ emptyGroup = (crowd, group) ->
   crhelp.findGroupMembers(crowd, group, (err, res) ->
     if err
       logger.warn err.message
+      console.log "E, could not find any members of #{group}"
       return
     logger.debug res
     # res [ 'uid1' , 'uid2' ]
@@ -72,6 +73,7 @@ emptyGroup = (crowd, group) ->
       , (err) ->
         if err
           logger.warn err.meesage
+          console.log "E, there was an error processing #{group}. Check log for details."
         else
           logger.info "DONE emptying " + group
           console.log "I, finished processing #{group}"
@@ -92,11 +94,7 @@ exports.run = (options) ->
   if options['-f'][0]
     logger.info 'removing users'
     for v in options['-g']
-      crhelp.emptyGroup(crowd, v, 3, (err) ->
-        if err
-          logger.warn err.message
-        return
-      )
+      emptyGroup(crowd, v)
     return
 
   rl = readline.createInterface({
