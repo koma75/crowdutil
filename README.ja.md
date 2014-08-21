@@ -448,6 +448,7 @@ Date        | Version   | Changes
 :--         | --:       | :--
 2014.xx.xx  | 0.6.0     | added STDOUT messages separately from log message for use with other cli tools
             |           | fixed error handling for asynchronous functions.
+            |           | added list-member command.
 2014.08.16  | 0.5.3     | fixed issue with new line character
 2014.07.25  | 0.5.2     | fixed issue for batch exec not using proper directory
             |           | fixed parameter check bug
