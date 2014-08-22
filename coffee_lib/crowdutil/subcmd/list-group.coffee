@@ -36,17 +36,17 @@ isOptOK = (opt) ->
   opIsType = (opt, flag, type) ->
 
   if(
-    !help.opIsType(opt, '-g', 'string') ||
-    !help.isName(opt['-g'][0], false)
+    !help.opIsType(opt, '-u', 'string') ||
+    !help.isName(opt['-u'][0], false)
   )
     rc = false
-    logger.error "invalid group name: #{opt['-g']}"
-    console.log "E, invalid group name: #{opt['-g']}"
+    logger.error "invalid uid: #{opt['-u']}"
+    console.log "E, invalid uid: #{opt['-u']}"
 
   return rc
 
 exports.run = (options) ->
-  logger.trace 'running : list-member\n\n\n'
+  logger.trace 'running : list-group\n\n\n'
   logger.debug options
 
   if !isOptOK(options)
@@ -54,15 +54,17 @@ exports.run = (options) ->
 
   crowd = options['crowd']
 
-  crhelp.findGroupMembers(crowd, options['-g'], (err, res) ->
+  crhelp.listUsersGroup(crowd, options['-u'][0], (err, res) ->
     if err
       logger.error err.message
-      console.log "E, failed to find members of #{options['-g'][0]}"
+      console.log "E, failed to find group membership of #{options['-u'][0]}"
     else
-      logger.info "#{options['-g'][0]}: \n#{JSON.stringify(res,null,2)}"
-      console.log "I, members of #{options['-g'][0]} are:"
-      for member in res
-        console.log "#{member}"
+      logger.info "#{options['-u'][0]}: \n#{JSON.stringify(res,null,2)}"
+      console.log "I, #{options['-u'][0]} is in the following groups:"
+      for group in res
+        console.log "#{group}"
       console.log "I, DONE"
     return
   )
+
+  return

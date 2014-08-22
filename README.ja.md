@@ -251,6 +251,24 @@ crowdutil add-to-groups -D directory -g group1,group2,group3 \
 * -u, --uid
     * カンマ区切りのuidのリスト
 
+### list-group
+
+指定されたユーザーの所属グループを検索します。
+
+~~~Shell
+crowdutil list-member -D directory -u uid
+~~~
+
+* -D, --directory
+    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+      key のどれかと一致する必要あり。
+    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+      にて指定したディレクトリが利用されます
+* -v, --verbose
+    * 省略可能: デバッグ出力を出力するようになります
+* -u, --uid
+    * 検索するユーザーID
+
 ### list-member
 
 指定されたグループのメンバーを検索します。
@@ -518,6 +536,7 @@ Change History
 
 Date        | Version   | Changes
 :--         | --:       | :--
+2014.08.22  | 0.6.1     | added list-group command.
 2014.08.22  | 0.6.0     | added STDOUT messages separately from log message for use with other cli tools
             |           | fixed error handling for asynchronous functions.
             |           | added search-user command.

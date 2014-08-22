@@ -255,6 +255,24 @@ crowdutil add-to-groups -D directory -g group1,group2,group3 \
 * -u, --uid
     * comma separated list of usernames/uids to add to the groups
 
+### list-group
+
+list the group membership of the specified user
+
+~~~Shell
+crowdutil list-member -D directory -u uid
+~~~
+
+* -D, --directory
+    * target directory application. needs to match one of the directory
+      names specified in crowdutil.json file
+    * optional: if defaultdirectory is defined in the crowdutil.json,
+      this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
+* -u, --uid
+    * uid to find membership of
+
 ### list-member
 
 list the members of the specified group
@@ -576,6 +594,7 @@ Change History
 
 Date        | Version   | Changes
 :--         | --:       | :--
+2014.08.22  | 0.6.1     | added list-group command.
 2014.08.22  | 0.6.0     | added STDOUT messages separately from log message for use with other cli tools
             |           | fixed error handling for asynchronous functions.
             |           | added search-user command.

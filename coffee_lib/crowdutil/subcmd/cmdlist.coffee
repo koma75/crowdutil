@@ -229,6 +229,28 @@ start = (callback) ->
 
   # LIST GROUP MEMBERS
   operetta.command(
+    'list-group',
+    'list group membership of a user',
+    (cmd) ->
+      cmd
+        .banner = "crowdutil: list-group\n" +
+          "list group membership of a user.\n\n"
+      defaultOpts(cmd)
+      cmd.parameters(['-u','--uid'],
+        "uid to find group membership of.")
+      cmd.start(
+        (opts) ->
+          if callback(opts)
+            require('./list-group').run(opts)
+          else
+            logger.error 'initialization failed'
+          return
+      )
+      return
+  )
+
+  # LIST GROUP MEMBERS
+  operetta.command(
     'list-member',
     'list members of the group',
     (cmd) ->
