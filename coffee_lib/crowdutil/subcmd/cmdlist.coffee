@@ -249,6 +249,30 @@ start = (callback) ->
       return
   )
 
+  # CHECK MEMBERSIHP OF USERS IN GROUPS
+  operetta.command(
+    'is-member',
+    'check membership of users in groups',
+    (cmd) ->
+      cmd
+        .banner = "crowdutil: is-member\n" +
+          "check membership of users in groups.\n\n"
+      defaultOpts(cmd)
+      cmd.parameters(['-g','--group'],
+        "comma separated list of groups")
+      cmd.parameters(['-u','--uid'],
+        "comma separated list of users")
+      cmd.start(
+        (opts) ->
+          if callback(opts)
+            require('./is-member').run(opts)
+          else
+            logger.error 'initialization failed'
+          return
+      )
+      return
+  )
+
   # REMOVE USERS FROM GROUPS
   operetta.command(
     'rm-from-groups',

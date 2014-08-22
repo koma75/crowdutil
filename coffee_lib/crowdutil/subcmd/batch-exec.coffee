@@ -51,6 +51,7 @@ CommandList =
   'update-user': require('./batch-exec/update-user').run
   'create-group': require('./batch-exec/create-group').run
   'add-to-group': require('./batch-exec/add-to-group').run
+  'is-member': require('./batch-exec/is-member').run
   'rm-from-group': require('./batch-exec/rm-from-group').run
   'empty-group': require('./batch-exec/empty-group').run
   'activate-user': require('./batch-exec/activate-user').run
