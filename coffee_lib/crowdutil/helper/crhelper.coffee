@@ -41,10 +41,10 @@ findUser = (crowd, opts, callback) ->
   lname = opts.lname || "*"
   email = opts.email || "*"
 
-  query = 'name="' + uid + '"'
-  query = query + ' and firstName="' + fname + '"'
-  query = query + ' and lastName="' + lname + '"'
-  query = query + ' and email="' + email + '"'
+  query = "name=\"#{uid}\""
+  query = "#{query} and firstName=\"#{fname}\""
+  query = "#{query} and lastName=\"#{lname}\""
+  query = "#{query} and email=\"#{email}\""
   crowd.search('user', query, callback)
 
 listUsersGroup = (crowd, uid, callback) ->

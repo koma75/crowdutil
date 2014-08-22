@@ -93,7 +93,7 @@ start = (callback) ->
     'create user in selected Directory',
     (cmd) ->
       cmd
-        .banner = "crowdutil: test-connect\n" +
+        .banner = "crowdutil: create-user\n" +
           "create user in selected directory\n\n"
       defaultOpts(cmd)
       cmd.parameters(['-f','--first'],
@@ -119,13 +119,41 @@ start = (callback) ->
       return
   )
 
+  # SEARCH USER
+  operetta.command(
+    'search-user',
+    'search user in selected Directory',
+    (cmd) ->
+      cmd
+        .banner = "crowdutil: search-user\n" +
+          "search user in selected directory\n\n"
+      defaultOpts(cmd)
+      cmd.parameters(['-f','--first'],
+        "user's first name")
+      cmd.parameters(['-l','--last'],
+        "user's last name")
+      cmd.parameters(['-e','--email'],
+        "user's email address")
+      cmd.parameters(['-u','--uid'],
+        "user's login ID")
+      cmd.start(
+        (opts) ->
+          if callback(opts)
+            require('./search-user').run(opts)
+          else
+            logger.error 'initialization failed'
+          return
+      )
+      return
+  )
+
   # UPDATE USER
   operetta.command(
     'update-user',
     'update user in selected Directory',
     (cmd) ->
       cmd
-        .banner = "crowdutil: test-connect\n" +
+        .banner = "crowdutil: update-user\n" +
           "update user in selected directory\n\n"
       defaultOpts(cmd)
       cmd.parameters(['-f','--first'],
@@ -157,7 +185,7 @@ start = (callback) ->
     'create group in selected Directory',
     (cmd) ->
       cmd
-        .banner = "crowdutil: test-connect\n" +
+        .banner = "crowdutil: create-group\n" +
           "create group in selected directory.\n\n"
       defaultOpts(cmd)
       cmd.parameters(['-n','--name'],
@@ -181,7 +209,7 @@ start = (callback) ->
     'add users to groups',
     (cmd) ->
       cmd
-        .banner = "crowdutil: test-connect\n" +
+        .banner = "crowdutil: add-to-groups\n" +
           "add list of users to list of groups.\n\n"
       defaultOpts(cmd)
       cmd.parameters(['-g','--group'],
@@ -227,7 +255,7 @@ start = (callback) ->
     'remove users from groups',
     (cmd) ->
       cmd
-        .banner = "crowdutil: test-connect\n" +
+        .banner = "crowdutil: rm-from-groups\n" +
           "remove list of users from list of groups.\n\n"
       defaultOpts(cmd)
       cmd.parameters(['-g','--group'],

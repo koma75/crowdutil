@@ -39,6 +39,17 @@ isPass = (str) ->
     return false
   return true
 
+isSearchString = (str) ->
+  pattern = /^[a-zA-Z0-9_\-.*@,]*$/
+
+  if typeof str != 'string'
+    return false
+  if str.length == 0
+    return false
+  if !str.match(pattern)
+    return false
+  return true
+
 isName = (str, allowSpace) ->
   if allowSpace
     pattern = /^[a-zA-Z0-9_\-. ]*$/
@@ -84,7 +95,7 @@ opSplitCsv = (opt, flag) ->
   if opIsAvail(opt, flag)
     for csv in opt[flag]
       arr = arr.concat(csv.split(","))
-  
+
   opt[flag] = arr
   return
 
@@ -93,6 +104,7 @@ exports
 ###
 exports.randPass = randPass
 exports.isEmail = isEmail
+exports.isSearchString = isSearchString
 exports.isName = isName
 exports.isPass = isPass
 exports.opIsAvail = opIsAvail
