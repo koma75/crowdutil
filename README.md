@@ -576,7 +576,7 @@ Change History
 
 Date        | Version   | Changes
 :--         | --:       | :--
-2014.xx.xx  | 0.6.0     | added STDOUT messages separately from log message for use with other cli tools
+2014.08.22  | 0.6.0     | added STDOUT messages separately from log message for use with other cli tools
             |           | fixed error handling for asynchronous functions.
             |           | added search-user command.
             |           | added list-member command.
