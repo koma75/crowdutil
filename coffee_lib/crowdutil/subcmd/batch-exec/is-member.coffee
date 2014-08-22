@@ -59,32 +59,40 @@ isOptOK = (cmds) ->
   return rc
 
 exports.run = (cmds, done) ->
-  logger.trace "batch-exec: add-to-group"
+  logger.trace "batch-exec: is-member"
   logger.debug "cmds = : \n#{JSON.stringify(cmds, null, 2)}"
 
   err = false
 
   if !isOptOK(cmds)
     setTimeout(() ->
-      logger.debug("batch-exec:add-to-group param error")
-      console.log "E, add-to-group: param error: #{JSON.stringify(cmds)}"
-      done(new Error("batch-exec:add-to-group param error"))
+      logger.debug("batch-exec:is-member param error")
+      console.log "E, is-member: param error: #{JSON.stringify(cmds)}"
+      done(new Error("batch-exec:is-member param error"))
       return
     ,0)
   else
     # select the crowd application
     crowd = crhelp.getCROWD(cmds[1])
 
-    # Run the command
-    crhelp.addUserToGroup(crowd, cmds[2], cmds[3], (err) ->
+    crhelp.listUsersGroup(crowd, cmds[2], (err, res) ->
       if err
-        logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
-        console.log "E, add-to-group: FAIL: #{cmds[3]} + #{cmds[2]} (#{cmds[1]})"
-        done(err)
+        logger.error err.message
+        console.log "E, failed to check membership of #{cmds[2]} in #{cmds[3]}"
       else
-        logger.info cmds[3] + ' + ' + cmds[2]
-        console.log "I, add-to-group: DONE: #{cmds[3]} + #{cmds[2]} (#{cmds[1]})"
-        done()
+        logger.info "#{JSON.stringify(res,null,2)}"
+        isMember = false
+        for v in res
+          if v == cmds[3]
+            isMember = true
+            break
+        if isMember
+          logger.info "I, = #{cmds[3]} : #{cmds[2]} (#{cmds[1]})"
+          console.log "I, = #{cmds[3]} : #{cmds[2]} (#{cmds[1]})"
+        else
+          logger.info "I, ! #{cmds[3]} : #{cmds[2]} (#{cmds[1]})"
+          console.log "I, ! #{cmds[3]} : #{cmds[2]} (#{cmds[1]})"
+      return
     )
 
   return

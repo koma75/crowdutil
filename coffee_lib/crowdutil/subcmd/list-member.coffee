@@ -1,4 +1,4 @@
-/*
+###
   @license
   crowdutil
 
@@ -23,5 +23,45 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
- */
-(function(){var a,b,c;a=require("../helper/crhelper"),b=require("../helper/helper"),c=function(a){var c;return c=!0,b.opIsType(a,"-n","string")&&b.isName(a["-n"][0],!1)||(logger.warn("invalid group name"),console.log("E, invalid group name"),c=!1),b.opIsType(a,"-d","string")||(a["-d"]=[""]),c},exports.run=function(b){var d;return logger.trace("running : create-group\n\n\n"),logger.debug(b),c(b)?(d=b.crowd,d.groups.create(b["-n"][0],b["-d"][0],function(c){return c?(logger.error(c.message),console.log("E, failed to create "+b["-n"][0])):a.findGroup(d,{name:b["-n"][0]},function(a,b){return a?(console.log("W, group creation returned success but could not be found."),console.log("W, Confirm at the Crowd admin console for assurance."),void logger.warn(a.message)):(logger.debug(JSON.stringify(b)),console.log("I, group created successfully"),console.log(JSON.stringify(b,null,2)))})})):void 0}}).call(this);
+###
+
+crhelp = require '../helper/crhelper'
+help = require '../helper/helper'
+readline = require 'readline'
+async = require 'async'
+
+isOptOK = (opt) ->
+  rc = true
+
+  opIsType = (opt, flag, type) ->
+
+  if(
+    !help.opIsType(opt, '-g', 'string') ||
+    !help.isName(opt['-g'][0], false)
+  )
+    rc = false
+    logger.error "invalid group name: #{opt['-g']}"
+    console.log "E, invalid group name: #{opt['-g']}"
+
+  return rc
+
+exports.run = (options) ->
+  logger.trace 'running : list-member\n\n\n'
+  logger.debug options
+
+  if !isOptOK(options)
+    return
+
+  crowd = options['crowd']
+
+  crhelp.findGroupMembers(crowd, options['-g'], (err, res) ->
+    if err
+      logger.error err.message
+      console.log "E, failed to find members of #{options['-g'][0]}"
+    else
+      logger.info "#{options['-g'][0]}: ¥n#{JSON.stringify(res,null,2)}"
+      console.log "I, members of #{options['-g'][0]} are:"
+      for member in res
+        console.log "#{member}"
+    return
+  )

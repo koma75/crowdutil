@@ -32,12 +32,7 @@ findGroup = (crowd, opts, callback) ->
   name = opts.name || "*"
 
   query = 'name="' + name + '"'
-  crowd.search('group', query, (err, res) ->
-    if err
-      logger.warn err.message
-    else
-      callback(res)
-  )
+  crowd.search('group', query, callback)
 
 findUser = (crowd, opts, callback) ->
   opts = opts || {}
@@ -46,40 +41,29 @@ findUser = (crowd, opts, callback) ->
   lname = opts.lname || "*"
   email = opts.email || "*"
 
-  query = 'name="' + uid + '"'
-  query = query + ' and firstName="' + fname + '"'
-  query = query + ' and lastName="' + lname + '"'
-  query = query + ' and email="' + email + '"'
-  crowd.search('user', query, (err, res) ->
-    if err
-      logger.warn err.message
-    else
-      callback(res)
-  )
+  query = "name=\"#{uid}\""
+  query = "#{query} and firstName=\"#{fname}\""
+  query = "#{query} and lastName=\"#{lname}\""
+  query = "#{query} and email=\"#{email}\""
+  crowd.search('user', query, callback)
 
 listUsersGroup = (crowd, uid, callback) ->
   if uid == "" || typeof uid == "undefined"
-    myErr = new Error("invalid user name")
-    throw myErr
+    setTimeout(() ->
+      myErr = new Error("invalid user name")
+      callback(myErr, null)
+    , 0)
   else
-    crowd.user.groups(uid, (err, res) ->
-      if err
-        logger.warn err.message
-      else
-        callback(res)
-    )
+    crowd.user.groups(uid, callback)
 
 findGroupMembers = (crowd, group, callback) ->
   if group == "" || typeof group == "undefined"
-    myErr = new Error("findGroupMembers: invalid input")
-    throw myError
+    setTimeout(() ->
+      myErr = new Error("findGroupMembers: invalid input")
+      callback(myErr, null)
+    , 0)
   else
-    crowd.groups.directmembers(group, (err, res) ->
-      if err
-        logger.warn err.message
-      else
-        callback(res)
-    )
+    crowd.groups.directmembers(group, callback)
 
 addUserToGroup = (crowd, uid, group, callback) ->
   if (
@@ -88,12 +72,12 @@ addUserToGroup = (crowd, uid, group, callback) ->
     group == "" ||
     typeof group == "undefined"
   )
-    myErr = new Error("addUserToGroup: invalid input")
-    throw myErr
+    setTimeout(() ->
+      myErr = new Error("addUserToGroup: invalid input")
+      callback(myErr, null)
+    , 0)
   else
-    crowd.groups.addmember(uid, group, (err) ->
-      callback(err)
-    )
+    crowd.groups.addmember(uid, group, callback)
   return
 
 rmUserFromGroup = (crowd, uid, group, callback) ->
@@ -103,44 +87,40 @@ rmUserFromGroup = (crowd, uid, group, callback) ->
     group == "" ||
     typeof group == "undefined"
   )
-    myErr = new Error("rmUserFromGroup: invalide input")
-    throw myErr
+    setTimeout(() ->
+      myErr = new Error("rmUserFromGroup: invalide input")
+      callback(myErr, null)
+    , 0)
   else
-    crowd.groups.removemember(uid, group, (err) ->
-      callback(err)
-    )
+    crowd.groups.removemember(uid, group, callback)
   return
 
 emptyGroup = (crowd, group, limit, callback) ->
-  try
-    findGroupMembers(crowd, group, (res) ->
-      logger.debug res
-      # res [ 'uid1' , 'uid2' ]
-      async.eachLimit(res, limit
-        (user, uDone) ->
-          try
-            rmUserFromGroup(crowd, user, group, (err) ->
-              if err
-                logger.warn err.message
-              else
-                logger.info group + ' - ' + user
-              uDone() # ignore error
-            )
-          catch err
-            logger.warn err.message
-            uDone()
-          return
-        , (err) ->
+  findGroupMembers(crowd, group, (err, res) ->
+    if err
+      callback(err)
+      return
+    logger.debug res
+    # res [ 'uid1' , 'uid2' ]
+    async.eachLimit(res, limit
+      (user, uDone) ->
+        rmUserFromGroup(crowd, user, group, (err) ->
           if err
-            callback(err)
+            logger.warn err.message
           else
-            logger.info "DONE emptying " + group
-            callback()
-          return
-      )
+            logger.info group + ' - ' + user
+          uDone() # ignore error
+        )
+        return
+      , (err) ->
+        if err
+          callback(err)
+        else
+          logger.info "DONE emptying " + group
+          callback()
+        return
     )
-  catch err
-    callback(err)
+  )
   return
 
 updateUser = (crowd, uid, update, callback) ->
@@ -211,12 +191,9 @@ getCROWD = (directory) ->
   logger.debug(
     "getCROWD: #{JSON.stringify(cfg['directories'][directory],null,2)}"
   )
-  try
-    crowd = new AtlassianCrowd(
-      cfg['directories'][directory]
-    )
-  catch err
-    logger.warn err.message
+  crowd = new AtlassianCrowd(
+    cfg['directories'][directory]
+  )
 
   return crowd
 

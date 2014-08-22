@@ -155,6 +155,33 @@ crowdutil create-user -D directory -f firstname -l lastname -d dispname \
     * optional: defaulting to a random string
         * useful for delegated directories (i.e. LDAP authentication)
 
+### search-user
+
+search a user in the specified directory.
+wildcards ( * ) can be used for each field.
+all fields are searched with an AND operator.
+
+~~~Shell
+crowdutil create-user -D directory -f firstname -l lastname \
+  -e email -u username
+~~~
+
+* -D, --directory
+    * target directory application. needs to match one of the directory
+      names specified in crowdutil.json file
+    * optional: if defaultdirectory is defined in the crowdutil.json,
+      this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
+* -f, --first
+    * optional: first name of the user
+* -l, --last
+    * optional: last name of the user
+* -e, --email
+    * optional: email address of the user
+* -u, --uid
+    * optional: username/uid of the user
+
 ### update-user
 
 update a user in the specified directory.  Any non-specified value
@@ -227,6 +254,45 @@ crowdutil add-to-groups -D directory -g group1,group2,group3 \
     * comma separated list of group names to add users to
 * -u, --uid
     * comma separated list of usernames/uids to add to the groups
+
+### list-member
+
+list the members of the specified group
+
+~~~Shell
+crowdutil list-member -D directory -g group1
+~~~
+
+* -D, --directory
+    * target directory application. needs to match one of the directory
+      names specified in crowdutil.json file
+    * optional: if defaultdirectory is defined in the crowdutil.json,
+      this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to console and log file
+* -g, --group
+    * group name to find members from
+
+### is-member
+
+Check if specified users are members of the specified groups
+
+~~~Shell
+crowdutil is-member -D directory -g group1,group2,group3 \
+  -u user1,user2,user3,user4
+~~~
+
+* -D, --directory
+    * target directory application. needs to match one of the directory
+      names specified in crowdutil.json file
+    * optional: if defaultdirectory is defined in the crowdutil.json,
+      this option can be ommited.
+* -v, --verbose
+    * optional: verbose mode.  outputs more info to log file
+* -g, --group
+    * comma separated list of groups to check
+* -u, --uid
+    * comma separated list of usernames/uids to check
 
 ### rm-from-groups
 
@@ -336,6 +402,14 @@ The following cmmands can be used:
         * desc
 * add-to-group
     * add a user to group
+    * params: directory,user,groupname
+        * directory: target crowd directory (optional)
+            * if ommitted it will default to the -D option
+              or the defaultDirectory specified in crowdutil.json
+        * user
+        * groupname
+* is-member
+    * check if user is a member of the group
     * params: directory,user,groupname
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
@@ -503,6 +577,10 @@ Change History
 Date        | Version   | Changes
 :--         | --:       | :--
 2014.xx.xx  | 0.6.0     | added STDOUT messages separately from log message for use with other cli tools
+            |           | fixed error handling for asynchronous functions.
+            |           | added search-user command.
+            |           | added list-member command.
+            |           | added is-member command/batch-command.
 2014.08.16  | 0.5.3     | fixed issue with new line character
 2014.07.25  | 0.5.2     | fixed issue for batch exec not using proper directory
             |           | fixed parameter check bug

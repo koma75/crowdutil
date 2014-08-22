@@ -154,6 +154,31 @@ crowdutil create-user -D directory -f firstname -l lastname -d dispname \
     * ユーザーのパスワード
     * 省略可能: 省略時はランダム生成の文字列になります。
 
+### search-user
+
+対象のディレクトリからユーザーを検索します。
+各フィールドに検索文字列を指定してください。ワイルドカード（ * ）が利用可能です。
+検索は全フィールドの AND で検索されます。
+
+~~~Shell
+crowdutil create-user -D directory -f firstname -l lastname \
+  -e email -u username
+~~~
+
+* -D, --directory
+    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+      key のどれかと一致する必要あり。
+    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+      にて指定したディレクトリが利用されます
+* -v, --verbose
+    * 省略可能: デバッグ出力を出力するようになります
+* -f, --first
+    * 省略可能: ユーザーの名前
+* -l, --last
+    * 省略可能: ユーザーの苗字
+* -e, --email
+    * 省略可能: ユーザーのe-mailアドレス
+
 ### update-user
 
 対象ディレクトリの指定ユーザー情報を更新する。指定のない値は変更しなません。
@@ -211,6 +236,45 @@ crowdutil create-group -D directory -n groupname -d "group description"
 
 ~~~Shell
 crowdutil add-to-groups -D directory -g group1,group2,group3 \
+  -u user1,user2,user3,user4
+~~~
+
+* -D, --directory
+    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+      key のどれかと一致する必要あり。
+    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+      にて指定したディレクトリが利用されます
+* -v, --verbose
+    * 省略可能: デバッグ出力を出力するようになります
+* -g, --group
+    * カンマ区切りのグループ名のリスト
+* -u, --uid
+    * カンマ区切りのuidのリスト
+
+### list-member
+
+指定されたグループのメンバーを検索します。
+
+~~~Shell
+crowdutil list-member -D directory -g group
+~~~
+
+* -D, --directory
+    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+      key のどれかと一致する必要あり。
+    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+      にて指定したディレクトリが利用されます
+* -v, --verbose
+    * 省略可能: デバッグ出力を出力するようになります
+* -g, --group
+    * グループ名
+
+### is-member
+
+指定したユーザーが指定したグループのメンバーかどうかを確認します。
+
+~~~Shell
+crowdutil is-member -D directory -g group1,group2,group3 \
   -u user1,user2,user3,user4
 ~~~
 
@@ -341,6 +405,14 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
               or the defaultDirectory specified in crowdutil.json
         * user
         * groupname
+* is-member
+    * ユーザーがグループのメンバーかどうかを確認
+    * params: directory,user,groupname
+        * directory: target crowd directory (optional)
+            * if ommitted it will default to the -D option
+              or the defaultDirectory specified in crowdutil.json
+        * user
+        * groupname
 * rm-from-group
     * ユーザーをグループから削除
     * params: directory,user,groupname
@@ -447,6 +519,10 @@ Change History
 Date        | Version   | Changes
 :--         | --:       | :--
 2014.xx.xx  | 0.6.0     | added STDOUT messages separately from log message for use with other cli tools
+            |           | fixed error handling for asynchronous functions.
+            |           | added search-user command.
+            |           | added list-member command.
+            |           | added is-member command/batch-command.
 2014.08.16  | 0.5.3     | fixed issue with new line character
 2014.07.25  | 0.5.2     | fixed issue for batch exec not using proper directory
             |           | fixed parameter check bug

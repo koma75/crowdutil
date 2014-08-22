@@ -30,6 +30,7 @@ help = require '../helper/helper'
 async = require 'async'
 
 isOptOK = (opt) ->
+  logger.trace 'checking opt'
   rc = true
 
   help.opSplitCsv(opt, '-g')
@@ -43,7 +44,7 @@ isOptOK = (opt) ->
     logger.error 'no groups supplied'
     console.log 'E, no groups supplied'
     rc = false
-  logger.debug 'groups: \n' + JSON.stringify(opt['-g'], null, 2)
+  logger.debug '-g :\n' + JSON.stringify(opt['-g'], null, 2)
 
   help.opSplitCsv(opt, '-u')
   if opt['-u'].length != 0
@@ -56,50 +57,52 @@ isOptOK = (opt) ->
     logger.error 'no users supplied'
     console.log 'E, no users supplied'
     rc = false
-  logger.debug 'users: \n' + JSON.stringify(opt['-u'], null, 2)
+  logger.debug '-u :\n' + JSON.stringify(opt['-u'], null, 2)
 
   return rc
 
 exports.run = (options) ->
-  logger.trace 'running : rm-from-groups\n\n\n'
+  logger.trace 'running : is-member\n\n\n'
   logger.debug options
 
   if !isOptOK(options)
     return
 
   crowd = options['crowd']
+  # uMembership.<uid> = [groupname, groupname ...]
+  uMembership = {}
 
-  async.each(options['-g'],
-    (group, gDone) ->
-      logger.trace 'processing ' + group
-      # Iterate over users
-      async.each(options['-u'],
-        (user, uDone) ->
-          logger.trace 'remove ' + user + ' from ' + group
-          crhelp.rmUserFromGroup(crowd, user, group, (err) ->
-            if err
-              logger.warn err.message
-              console.log "W, FAIL: " + group + ' - ' + user
-            else
-              logger.info group + ' - ' + user
-              console.log "I, DONE: " + group + ' - ' + user
-            uDone() # ignore error
-          )
-          return
-        , (err) ->
-          # all user iterations done for a group
-          logger.trace 'all users in ' + group + ' done.'
-          console.log "I, finished processing #{group}"
-          gDone(err)
-          return
-      ) # /USER ITERATION
+  # TODO: first, get the users group list
+  async.eachLimit(options['-u'],1,
+    (user, Done) ->
+      logger.trace "searching for users group memberships"
+      crhelp.listUsersGroup(crowd, user, (err, res) ->
+        if err
+          Done(err)
+        else
+          logger.info "#{JSON.stringify(res,null,2)}"
+          uMembership[user] = res
+          Done()
+        return
+      )
       return
     , (err) ->
-      # all group iterations done
       if err
-        logger.warn err.message
-      logger.info 'DONE'
-      console.log 'I, DONE.'
+        logger.error err.message
+        console.log "E, failed to find user memberships"
+      else
+        for group in options['-g']
+          for uid,membership of uMembership
+            isMember = false
+            for v in membership
+              if v == group
+                isMember = true
+                break
+            if isMember
+              console.log "= #{group} : #{uid}"
+            else
+              console.log "! #{group} : #{uid}"
       return
   )
+
   return
