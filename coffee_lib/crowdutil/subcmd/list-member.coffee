@@ -1,4 +1,4 @@
-/*
+###
   @license
   crowdutil
 
@@ -23,5 +23,45 @@
   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
   THE SOFTWARE.
- */
-(function(){var a,b,c;a=require("../../helper/crhelper"),b=require("../../helper/helper"),c=function(a){var b;return b=!0,a.length<3&&(logger.warn("batch-exec: not enough parameters"),console.log("deactivate-user: not enough params"),b=!1),b},exports.run=function(b,d){var e,f;logger.trace("batch-exec: deactivate-user"),logger.debug("cmds = : \n"+JSON.stringify(b,null,2)),f=!1,c(b)?(e=a.getCROWD(b[1]),setTimeout(function(){logger.error("batch-exec:deactivate-user NOT IMPLEMENTED"),d(new Error("batch-exec:deactivate-user NOT IMPLEMENTED"))},0)):setTimeout(function(){logger.error("batch-exec:deactivate-user param error"),console.log("E, deactivate-user: param error: "+JSON.stringify(b)),d(new Error("batch-exec:deactivate-user param error"))},0)}}).call(this);
+###
+
+crhelp = require '../helper/crhelper'
+help = require '../helper/helper'
+readline = require 'readline'
+async = require 'async'
+
+isOptOK = (opt) ->
+  rc = true
+
+  opIsType = (opt, flag, type) ->
+
+  if(
+    !help.opIsType(opt, '-g', 'string') ||
+    !help.isName(opt['-g'][0], false)
+  )
+    rc = false
+    logger.error "invalid group name: #{opt['-g']}"
+    console.log "E, invalid group name: #{opt['-g']}"
+
+  return rc
+
+exports.run = (options) ->
+  logger.trace 'running : list-member\n\n\n'
+  logger.debug options
+
+  if !isOptOK(options)
+    return
+
+  crowd = options['crowd']
+
+  crhelp.findGroupMembers(crowd, options['-g'], (err, res) ->
+    if err
+      logger.error err.message
+      console.log "E, failed to find members of #{options['-g'][0]}"
+    else
+      logger.info "#{options['-g'][0]}: ¥n#{JSON.stringify(res,null,2)}"
+      console.log "I, members of #{options['-g'][0]} are:"
+      for member in res
+        console.log "#{member}"
+    return
+  )

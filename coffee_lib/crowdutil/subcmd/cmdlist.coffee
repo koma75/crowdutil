@@ -93,7 +93,7 @@ start = (callback) ->
     'create user in selected Directory',
     (cmd) ->
       cmd
-        .banner = "crowdutil: test-connect\n" +
+        .banner = "crowdutil: create-user\n" +
           "create user in selected directory\n\n"
       defaultOpts(cmd)
       cmd.parameters(['-f','--first'],
@@ -119,13 +119,41 @@ start = (callback) ->
       return
   )
 
+  # SEARCH USER
+  operetta.command(
+    'search-user',
+    'search user in selected Directory',
+    (cmd) ->
+      cmd
+        .banner = "crowdutil: search-user\n" +
+          "search user in selected directory\n\n"
+      defaultOpts(cmd)
+      cmd.parameters(['-f','--first'],
+        "user's first name")
+      cmd.parameters(['-l','--last'],
+        "user's last name")
+      cmd.parameters(['-e','--email'],
+        "user's email address")
+      cmd.parameters(['-u','--uid'],
+        "user's login ID")
+      cmd.start(
+        (opts) ->
+          if callback(opts)
+            require('./search-user').run(opts)
+          else
+            logger.error 'initialization failed'
+          return
+      )
+      return
+  )
+
   # UPDATE USER
   operetta.command(
     'update-user',
     'update user in selected Directory',
     (cmd) ->
       cmd
-        .banner = "crowdutil: test-connect\n" +
+        .banner = "crowdutil: update-user\n" +
           "update user in selected directory\n\n"
       defaultOpts(cmd)
       cmd.parameters(['-f','--first'],
@@ -157,7 +185,7 @@ start = (callback) ->
     'create group in selected Directory',
     (cmd) ->
       cmd
-        .banner = "crowdutil: test-connect\n" +
+        .banner = "crowdutil: create-group\n" +
           "create group in selected directory.\n\n"
       defaultOpts(cmd)
       cmd.parameters(['-n','--name'],
@@ -181,7 +209,7 @@ start = (callback) ->
     'add users to groups',
     (cmd) ->
       cmd
-        .banner = "crowdutil: test-connect\n" +
+        .banner = "crowdutil: add-to-groups\n" +
           "add list of users to list of groups.\n\n"
       defaultOpts(cmd)
       cmd.parameters(['-g','--group'],
@@ -199,13 +227,59 @@ start = (callback) ->
       return
   )
 
+  # LIST GROUP MEMBERS
+  operetta.command(
+    'list-member',
+    'list members of the group',
+    (cmd) ->
+      cmd
+        .banner = "crowdutil: list-member\n" +
+          "list members of the specified group.\n\n"
+      defaultOpts(cmd)
+      cmd.parameters(['-g','--group'],
+        "group to find members of.")
+      cmd.start(
+        (opts) ->
+          if callback(opts)
+            require('./list-member').run(opts)
+          else
+            logger.error 'initialization failed'
+          return
+      )
+      return
+  )
+
+  # CHECK MEMBERSIHP OF USERS IN GROUPS
+  operetta.command(
+    'is-member',
+    'check membership of users in groups',
+    (cmd) ->
+      cmd
+        .banner = "crowdutil: is-member\n" +
+          "check membership of users in groups.\n\n"
+      defaultOpts(cmd)
+      cmd.parameters(['-g','--group'],
+        "comma separated list of groups")
+      cmd.parameters(['-u','--uid'],
+        "comma separated list of users")
+      cmd.start(
+        (opts) ->
+          if callback(opts)
+            require('./is-member').run(opts)
+          else
+            logger.error 'initialization failed'
+          return
+      )
+      return
+  )
+
   # REMOVE USERS FROM GROUPS
   operetta.command(
     'rm-from-groups',
     'remove users from groups',
     (cmd) ->
       cmd
-        .banner = "crowdutil: test-connect\n" +
+        .banner = "crowdutil: rm-from-groups\n" +
           "remove list of users from list of groups.\n\n"
       defaultOpts(cmd)
       cmd.parameters(['-g','--group'],
@@ -229,7 +303,7 @@ start = (callback) ->
     'empty the specified group',
     (cmd) ->
       cmd
-        .banner = "crowdutil: test-connect\n" +
+        .banner = "crowdutil: empty-groups\n" +
           "remove all direct members from the list of groups.\n" +
           "If no -f option is supplied, you must answer 'yes' to proceed.\n\n"
       defaultOpts(cmd)
@@ -310,4 +384,3 @@ start = (callback) ->
   return
 
 exports.start = start
-

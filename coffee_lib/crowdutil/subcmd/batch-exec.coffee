@@ -40,6 +40,7 @@ isOptOK = (opts) ->
   )
     rc = false
     logger.error "invalid file: #{opts['-b']}"
+    console.log "E, invalid file: #{opts['-b']}"
   if !help.opIsType(opts, '-f', 'boolean')
     opts['-f'] = [ false ]
 
@@ -50,6 +51,7 @@ CommandList =
   'update-user': require('./batch-exec/update-user').run
   'create-group': require('./batch-exec/create-group').run
   'add-to-group': require('./batch-exec/add-to-group').run
+  'is-member': require('./batch-exec/is-member').run
   'rm-from-group': require('./batch-exec/rm-from-group').run
   'empty-group': require('./batch-exec/empty-group').run
   'activate-user': require('./batch-exec/activate-user').run
@@ -62,7 +64,6 @@ exports.run = (options) ->
   logger.debug "options: \n#{JSON.stringify(options, null, 2)}"
 
   if !isOptOK(options)
-    logger.error 'parameter invalid!'
     return
   logger.debug "executing batch!"
 
@@ -94,7 +95,9 @@ exports.run = (options) ->
     (err) ->
       if err
         logger.error err.message
+        console.log "E, There was an error processing #{options['-b'][0]}.  Check the log for details."
       logger.info "finished processing #{options['-b'][0]}"
+      console.log "I, finished processing #{options['-b'][0]}"
       return
     , !options['-f'][0]
   )

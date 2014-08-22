@@ -42,6 +42,7 @@ isOptOK = (cmds) ->
   # cmds[7] email
   if cmds.length < 4
     logger.warn "batch-exec: not enough parameters"
+    console.log "E, update-user: not enough params"
     rc = false
 
   if(
@@ -49,6 +50,7 @@ isOptOK = (cmds) ->
     !help.isName(cmds[2], false)
   )
     logger.warn "batch-exec: uid not valid"
+    console.log "E, update-user: uid not valid"
     rc = false
   if(
     typeof cmds[3] == 'string' &&
@@ -56,6 +58,7 @@ isOptOK = (cmds) ->
     !help.isName(cmds[3], false)
   )
     logger.info "batch-exec: active flag not valid"
+    console.log "E, update-user: active flag not valid"
     rc = false
   if(
     typeof cmds[4] == 'string' &&
@@ -63,6 +66,7 @@ isOptOK = (cmds) ->
     !help.isName(cmds[4], false)
   )
     logger.warn "batch-exec: first name not valid"
+    console.log "E, update-user: first name not valid"
     rc = false
   if(
     typeof cmds[5] == 'string' &&
@@ -70,6 +74,7 @@ isOptOK = (cmds) ->
     !help.isName(cmds[5], false)
   )
     logger.warn "batch-exec: last name not valid"
+    console.log "E, update-user: last name not valid"
     rc = false
   if(
     typeof cmds[6] == 'string' &&
@@ -77,6 +82,7 @@ isOptOK = (cmds) ->
     !help.isName(cmds[6], true)
   )
     logger.info "batch-exec: display name not valid"
+    console.log "E, update-user: display name not valid"
     rc = false
   if(
     typeof cmds[7] == 'string' &&
@@ -84,6 +90,7 @@ isOptOK = (cmds) ->
     !help.isEmail(cmds[7])
   )
     logger.warn "batch-exec: email not valid"
+    console.log "E, update-user: email not valid"
     rc = false
 
   return rc
@@ -97,6 +104,7 @@ exports.run = (cmds, done) ->
   if !isOptOK(cmds)
     setTimeout(() ->
       logger.error "batch-exec: update-user parameter error"
+      console.log "E, update-user: param error: #{JSON.stringify(cmds)}"
       done(new Error("batch-exec: update-user parameter error"))
       return
     ,0)
@@ -117,12 +125,13 @@ exports.run = (cmds, done) ->
         update['active'] = true
       if cmds[3] == 'false'
         update['active'] = false
-    
+
     uid = cmds[2]
-    
+
     # If there was no input, ignore
     if Object.getOwnPropertyNames(update).length == 0
       logger.info "nothing to update!"
+      console.log "I, update-user: nothings to update! #{JSON.stringify(cmds)}"
       setTimeout(done, 0)
       return
 
@@ -134,9 +143,11 @@ exports.run = (cmds, done) ->
       if err
         logger.error "batch-exec:update-user:error processing #{uid}:\n" +
           "#{err.message}"
+        console.log "E, update-user: FAIL: #{uid} (#{cmds[1]})"
         done(err)
       else
-        logger.info " * update user #{uid}, done."
+        logger.info "batch-exec:update-user: DONE: #{uid} (#{cmds[1]})"
+        console.log "I, update-user: DONE: #{uid} (#{cmds[1]})"
         done()
     )
 

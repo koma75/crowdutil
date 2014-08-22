@@ -37,6 +37,7 @@ isOptOK = (cmds) ->
   # cmds[2] PARAM
   if cmds.length < 3
     logger.warn "batch-exec: not enough parameters"
+    console.log "TEMPLATECMD: not enough params"
     rc = false
 
   return rc
@@ -49,6 +50,8 @@ exports.run = (cmds, done) ->
 
   if !isOptOK(cmds)
     setTimeout(() ->
+      logger.error "batch-exec: TEMPLATECMD parameter error"
+      console.log "E, TEMPLATECMD: param error: #{JSON.stringify(cmds)}"
       done(new Error("batch-exec:TEMPLATECMD param error"))
       return
     ,0)

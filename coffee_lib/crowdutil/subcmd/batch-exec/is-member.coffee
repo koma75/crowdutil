@@ -34,48 +34,65 @@ isOptOK = (cmds) ->
   # CHECK CMDS
   # cmds[0] command
   # cmds[1] Directory
-  # cmds[2] uid
-  if cmds.length < 3
+  # cmds[2] UID
+  # cmds[3] Group name
+  if cmds.length < 4
     logger.warn "batch-exec: not enough parameters"
-    console.log "E, remove-user: not enough params"
+    console.log "E, add-to-group: not enough parameters"
     rc = false
 
   if(
     typeof cmds[2] != 'string' ||
     !help.isName(cmds[2], false)
   )
-    logger.warn "batch-exec: invalid uid"
-    console.log "E, remove-user: invalid uid"
+    logger.warn 'batch-exec: invalid uid'
+    console.log "E, add-to-group: invalid uid"
+    rc = false
+  if(
+    typeof cmds[3] != 'string' ||
+    !help.isName(cmds[3], false)
+  )
+    logger.warn 'batch-exec: invalid group name'
+    console.log "E, add-to-group: invalid group name"
     rc = false
 
   return rc
 
 exports.run = (cmds, done) ->
-  logger.trace "batch-exec: remove-user"
+  logger.trace "batch-exec: is-member"
   logger.debug "cmds = : \n#{JSON.stringify(cmds, null, 2)}"
 
   err = false
 
   if !isOptOK(cmds)
     setTimeout(() ->
-      logger.error "batch-exec:remove-user param error"
-      console.log "E, remove-user: param error: #{JSON.stringify(cmds)}"
-      done(new Error("batch-exec:remove-user param error"))
+      logger.debug("batch-exec:is-member param error")
+      console.log "E, is-member: param error: #{JSON.stringify(cmds)}"
+      done(new Error("batch-exec:is-member param error"))
       return
     ,0)
   else
     # select the crowd application
     crowd = crhelp.getCROWD(cmds[1])
 
-    # Run the command
-    crowd.user.remove(cmds[2], (err) ->
+    crhelp.listUsersGroup(crowd, cmds[2], (err, res) ->
       if err
-        logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
-        console.log "E, remove-user: FAIL: #{cmds[2]} (#{cmds[1]})"
-        done(err)
+        logger.error err.message
+        console.log "E, failed to check membership of #{cmds[2]} in #{cmds[3]}"
       else
-        console.log "I, remove-user: DONE: #{cmds[2]} (#{cmds[1]})"
-        done()
+        logger.info "#{JSON.stringify(res,null,2)}"
+        isMember = false
+        for v in res
+          if v == cmds[3]
+            isMember = true
+            break
+        if isMember
+          logger.info "I, = #{cmds[3]} : #{cmds[2]} (#{cmds[1]})"
+          console.log "I, = #{cmds[3]} : #{cmds[2]} (#{cmds[1]})"
+        else
+          logger.info "I, ! #{cmds[3]} : #{cmds[2]} (#{cmds[1]})"
+          console.log "I, ! #{cmds[3]} : #{cmds[2]} (#{cmds[1]})"
+      return
     )
 
   return

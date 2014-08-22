@@ -38,9 +38,11 @@ isOptOK = (opt) ->
     for group in opt['-g']
       if !help.isName(group, false)
         logger.error 'invalid group name:' + group
+        console.log 'E, invalid group name:' + group
         rc = false
   else
     logger.error 'no groups supplied'
+    console.log 'E, no groups supplied'
     rc = false
 
   if !help.opIsType(opt, '-f', 'boolean')
@@ -49,34 +51,35 @@ isOptOK = (opt) ->
   return rc
 
 emptyGroup = (crowd, group) ->
-  try
-    crhelp.findGroupMembers(crowd, group, (res) ->
-      logger.debug res
-      # res [ 'uid1' , 'uid2' ]
-      async.each(res,
-        (user, uDone) ->
-          try
-            crhelp.rmUserFromGroup(crowd, user, group, (err) ->
-              if err
-                logger.warn err.message
-              else
-                logger.info group + ' - ' + user
-              uDone() # ignore error
-            )
-          catch err
-            logger.warn err.message
-            uDone()
-          return
-        , (err) ->
+  crhelp.findGroupMembers(crowd, group, (err, res) ->
+    if err
+      logger.warn err.message
+      console.log "E, could not find any members of #{group}"
+      return
+    logger.debug res
+    # res [ 'uid1' , 'uid2' ]
+    async.each(res,
+      (user, uDone) ->
+        crhelp.rmUserFromGroup(crowd, user, group, (err) ->
           if err
-            logger.warn err.meesage
+            logger.warn err.message
+            console.log "W, FAIL: " + group + ' - ' + user
           else
-            logger.info "DONE emptying " + group
-          return
-      )
+            logger.info group + ' - ' + user
+            console.log "I, DONE: " + group + ' - ' + user
+          uDone() # ignore error
+        )
+        return
+      , (err) ->
+        if err
+          logger.warn err.meesage
+          console.log "E, there was an error processing #{group}. Check log for details."
+        else
+          logger.info "DONE emptying " + group
+          console.log "I, finished processing #{group}"
+        return
     )
-  catch err
-    logger.warn err.message
+  )
   return
 
 exports.run = (options) ->
@@ -91,11 +94,7 @@ exports.run = (options) ->
   if options['-f'][0]
     logger.info 'removing users'
     for v in options['-g']
-      crhelp.emptyGroup(crowd, v, 3, (err) ->
-        if err
-          logger.warn err.message
-        return
-      )
+      emptyGroup(crowd, v)
     return
 
   rl = readline.createInterface({
@@ -106,11 +105,9 @@ exports.run = (options) ->
 
   rl.setPrompt('> ')
 
-  logger.warn(
-    "Are you sure you want to empty the following groups?:"
-  )
+  console.log "Are you sure you want to empty the following groups?:"
   for v in options['-g']
-    logger.warn("  * " + v)
+    console.log "  * #{v}"
 
   rl.prompt()
 
@@ -118,10 +115,11 @@ exports.run = (options) ->
     (answer) ->
       if answer.trim() == "yes"
         logger.info 'removing users'
+        console.log 'removing users'
         for v in options['-g']
           emptyGroup(crowd, v)
       else
         logger.info 'abort'
+        console.log 'abort'
       rl.close()
   )
-

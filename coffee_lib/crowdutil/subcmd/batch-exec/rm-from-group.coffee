@@ -38,6 +38,7 @@ isOptOK = (cmds) ->
   # cmds[3] Group name
   if cmds.length < 4
     logger.warn "batch-exec: not enough parameters"
+    console.log "E, rm-from-group: not enough params"
     rc = false
 
   if(
@@ -45,12 +46,14 @@ isOptOK = (cmds) ->
     !help.isName(cmds[2], false)
   )
     logger.error "batch-exec: invalid uid"
+    console.log "E, rm-from-group: invalid uid"
     rc = false
   if(
     typeof cmds[3] != 'string' ||
     !help.isName(cmds[3], false)
   )
     logger.error "batch-exec: invalid group name"
+    console.log "E, rm-from-group: invalid group name"
     rc = false
 
   return rc
@@ -64,6 +67,7 @@ exports.run = (cmds, done) ->
   if !isOptOK(cmds)
     setTimeout(() ->
       logger.error "batch-exec:rm-from-group param error"
+      console.log "E, rm-from-group: param error: #{JSON.stringify(cmds)}"
       done(new Error("batch-exec:rm-from-group param error"))
       return
     ,0)
@@ -72,17 +76,15 @@ exports.run = (cmds, done) ->
     crowd = crhelp.getCROWD(cmds[1])
 
     # Run the command
-    try
-      crhelp.rmUserFromGroup(crowd, cmds[2], cmds[3], (err) ->
-        if err
-          logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
-          done(err)
-        else
-          logger.info cmds[3] + ' - ' + cmds[2]
-          done()
-      )
-    catch err
-      logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
-      done(err)
+    crhelp.rmUserFromGroup(crowd, cmds[2], cmds[3], (err) ->
+      if err
+        logger.error "batch-exec: #{err.message}\n#{JSON.stringify(cmds)}"
+        console.log "E, rm-from-group: FAIL: #{cmds[3]} - #{cmds[2]} (#{cmds[1]})"
+        done(err)
+      else
+        logger.info cmds[3] + ' - ' + cmds[2]
+        console.log "I, rm-from-group: DONE: #{cmds[3]} - #{cmds[2]} (#{cmds[1]})"
+        done()
+    )
 
   return
