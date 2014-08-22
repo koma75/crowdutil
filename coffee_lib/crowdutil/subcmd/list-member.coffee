@@ -36,12 +36,12 @@ isOptOK = (opt) ->
   opIsType = (opt, flag, type) ->
 
   if(
-    !help.opIsType(opts, '-g', 'string') ||
-    !help.isName(opts['-g'][0], false)
+    !help.opIsType(opt, '-g', 'string') ||
+    !help.isName(opt['-g'][0], false)
   )
     rc = false
-    logger.error "invalid group name: #{opts['-g']}"
-    console.log "E, invalid group name: #{opts['-g']}"
+    logger.error "invalid group name: #{opt['-g']}"
+    console.log "E, invalid group name: #{opt['-g']}"
 
   return rc
 
@@ -54,7 +54,7 @@ exports.run = (options) ->
 
   crowd = options['crowd']
 
-  findGroupMembers(crowd, options['-g'], (err, res) ->
+  crhelp.findGroupMembers(crowd, options['-g'], (err, res) ->
     if err
       logger.error err.message
       console.log "E, failed to find members of #{options['-g'][0]}"
