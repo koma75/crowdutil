@@ -135,8 +135,12 @@ crowdutil create-user -D directory -f firstname -l lastname -d dispname \
 * -D, --directory
     * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
+* -c, --config
+    * 設定ファイルを指定して読み込みます
+    * 省略可能: 省略した場合は $PWD/crowdutil.json, $HOME/.crowdutil/config.json
+      の順でサーチして利用します。
 * -v, --verbose
     * 省略可能: デバッグ出力を出力するようになります
 * -f, --first
@@ -168,8 +172,12 @@ crowdutil search-user -D directory -f firstname -l lastname \
 * -D, --directory
     * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
+* -c, --config
+    * 設定ファイルを指定して読み込みます
+    * 省略可能: 省略した場合は $PWD/crowdutil.json, $HOME/.crowdutil/config.json
+      の順でサーチして利用します。
 * -v, --verbose
     * 省略可能: デバッグ出力を出力するようになります
 * -f, --first
@@ -191,8 +199,12 @@ crowdutil update-user -D directory -f firstname -l lastname -d dispname \
 * -D, --directory
     * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
+* -c, --config
+    * 設定ファイルを指定して読み込みます
+    * 省略可能: 省略した場合は $PWD/crowdutil.json, $HOME/.crowdutil/config.json
+      の順でサーチして利用します。
 * -v, --verbose
     * 省略可能: デバッグ出力を出力するようになります
 * -f, --first
@@ -219,8 +231,12 @@ crowdutil create-group -D directory -n groupname -d "group description"
 * -D, --directory
     * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
+* -c, --config
+    * 設定ファイルを指定して読み込みます
+    * 省略可能: 省略した場合は $PWD/crowdutil.json, $HOME/.crowdutil/config.json
+      の順でサーチして利用します。
 * -v, --verbose
     * 省略可能: デバッグ出力を出力するようになります
 * -n, --name
@@ -242,8 +258,12 @@ crowdutil add-to-groups -D directory -g group1,group2,group3 \
 * -D, --directory
     * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
+* -c, --config
+    * 設定ファイルを指定して読み込みます
+    * 省略可能: 省略した場合は $PWD/crowdutil.json, $HOME/.crowdutil/config.json
+      の順でサーチして利用します。
 * -v, --verbose
     * 省略可能: デバッグ出力を出力するようになります
 * -g, --group
@@ -262,8 +282,12 @@ crowdutil list-group -D directory -u uid
 * -D, --directory
     * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
+* -c, --config
+    * 設定ファイルを指定して読み込みます
+    * 省略可能: 省略した場合は $PWD/crowdutil.json, $HOME/.crowdutil/config.json
+      の順でサーチして利用します。
 * -v, --verbose
     * 省略可能: デバッグ出力を出力するようになります
 * -u, --uid
@@ -280,8 +304,12 @@ crowdutil list-member -D directory -g group
 * -D, --directory
     * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
+* -c, --config
+    * 設定ファイルを指定して読み込みます
+    * 省略可能: 省略した場合は $PWD/crowdutil.json, $HOME/.crowdutil/config.json
+      の順でサーチして利用します。
 * -v, --verbose
     * 省略可能: デバッグ出力を出力するようになります
 * -g, --group
@@ -299,8 +327,12 @@ crowdutil is-member -D directory -g group1,group2,group3 \
 * -D, --directory
     * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
+* -c, --config
+    * 設定ファイルを指定して読み込みます
+    * 省略可能: 省略した場合は $PWD/crowdutil.json, $HOME/.crowdutil/config.json
+      の順でサーチして利用します。
 * -v, --verbose
     * 省略可能: デバッグ出力を出力するようになります
 * -g, --group
@@ -321,8 +353,12 @@ crowdutil rm-from-groups -D directory -g group1,group2,group3 \
 * -D, --directory
     * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
+* -c, --config
+    * 設定ファイルを指定して読み込みます
+    * 省略可能: 省略した場合は $PWD/crowdutil.json, $HOME/.crowdutil/config.json
+      の順でサーチして利用します。
 * -v, --verbose
     * 省略可能: デバッグ出力を出力するようになります
 * -g, --group
@@ -341,8 +377,12 @@ crowdutil empty-groups -D directory -g group1,group2,group3
 * -D, --directory
     * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
+* -c, --config
+    * 設定ファイルを指定して読み込みます
+    * 省略可能: 省略した場合は $PWD/crowdutil.json, $HOME/.crowdutil/config.json
+      の順でサーチして利用します。
 * -v, --verbose
     * 省略可能: デバッグ出力を出力するようになります
 * -g, --group
@@ -364,8 +404,12 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
 * -D, --directory
     * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
+* -c, --config
+    * 設定ファイルを指定して読み込みます
+    * 省略可能: 省略した場合は $PWD/crowdutil.json, $HOME/.crowdutil/config.json
+      の順でサーチして利用します。
 * -v, --verbose
     * 省略可能: デバッグ出力を出力するようになります
 * -b, --batch
@@ -500,8 +544,12 @@ crowdutil test-connect -D directory
 * -D, --directory
     * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能： 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
+* -c, --config
+    * 設定ファイルを指定して読み込みます
+    * 省略可能: 省略した場合は $PWD/crowdutil.json, $HOME/.crowdutil/config.json
+      の順でサーチして利用します。
 * -v, --verbose
     * 省略可能: デバッグ出力を出力するようになります
 
@@ -514,7 +562,8 @@ crowdutil create-config -o sample.json
 ~~~
 
 * -o, --out
-    * 出力ファイル名。デフォルトは crowdutil.jsonになります
+    * 出力ファイル名。デフォルトは $HOME/.crowdutil/config.jsonになります
+        * Windows の場合は %USERPROFILE%\.crowdutil\config.json になります
     * stdout と設定することで標準出力に出力します。
 * -f, --force
     * このフラグを設定した場合、ファイルを上書きします。指定しない場合は
@@ -536,6 +585,9 @@ Change History
 
 Date        | Version   | Changes
 :--         | --:       | :--
+            | 0.6.2     | added --config option
+            |           | default config path set to $HOME/.crowdutil/config.json
+            |           | changed create-config to default to $HOME/.crowdutil/config.json
 2014.08.22  | 0.6.1     | added list-group command.
 2014.08.22  | 0.6.0     | added STDOUT messages separately from log message for use with other cli tools
             |           | fixed error handling for asynchronous functions.

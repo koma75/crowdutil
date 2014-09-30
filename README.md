@@ -137,6 +137,10 @@ crowdutil create-user -D directory -f firstname -l lastname -d dispname \
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
+* -c, --config
+    * specify the config file to use.
+    * optional: if not set, crowdutil will search for config file in the
+      following order: $PWD/crowdutil.json, $HOME/.crowdutil/config.json
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
 * -f, --first
@@ -171,6 +175,10 @@ crowdutil search-user -D directory -f firstname -l lastname \
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
+* -c, --config
+    * specify the config file to use.
+    * optional: if not set, crowdutil will search for config file in the
+      following order: $PWD/crowdutil.json, $HOME/.crowdutil/config.json
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
 * -f, --first
@@ -197,6 +205,10 @@ crowdutil update-user -D directory -f firstname -l lastname -d dispname \
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
+* -c, --config
+    * specify the config file to use.
+    * optional: if not set, crowdutil will search for config file in the
+      following order: $PWD/crowdutil.json, $HOME/.crowdutil/config.json
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
 * -f, --first
@@ -225,6 +237,10 @@ crowdutil create-group -D directory -n groupname -d "group description"
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
+* -c, --config
+    * specify the config file to use.
+    * optional: if not set, crowdutil will search for config file in the
+      following order: $PWD/crowdutil.json, $HOME/.crowdutil/config.json
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
 * -n, --name
@@ -248,6 +264,10 @@ crowdutil add-to-groups -D directory -g group1,group2,group3 \
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
+* -c, --config
+    * specify the config file to use.
+    * optional: if not set, crowdutil will search for config file in the
+      following order: $PWD/crowdutil.json, $HOME/.crowdutil/config.json
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
 * -g, --group
@@ -268,6 +288,10 @@ crowdutil list-group -D directory -u uid
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
+* -c, --config
+    * specify the config file to use.
+    * optional: if not set, crowdutil will search for config file in the
+      following order: $PWD/crowdutil.json, $HOME/.crowdutil/config.json
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
 * -u, --uid
@@ -286,6 +310,10 @@ crowdutil list-member -D directory -g group1
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
+* -c, --config
+    * specify the config file to use.
+    * optional: if not set, crowdutil will search for config file in the
+      following order: $PWD/crowdutil.json, $HOME/.crowdutil/config.json
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
 * -g, --group
@@ -305,6 +333,10 @@ crowdutil is-member -D directory -g group1,group2,group3 \
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
+* -c, --config
+    * specify the config file to use.
+    * optional: if not set, crowdutil will search for config file in the
+      following order: $PWD/crowdutil.json, $HOME/.crowdutil/config.json
 * -v, --verbose
     * optional: verbose mode.  outputs more info to log file
 * -g, --group
@@ -327,6 +359,10 @@ crowdutil rm-from-groups -D directory -g group1,group2,group3 \
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
+* -c, --config
+    * specify the config file to use.
+    * optional: if not set, crowdutil will search for config file in the
+      following order: $PWD/crowdutil.json, $HOME/.crowdutil/config.json
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
 * -g, --group
@@ -348,6 +384,10 @@ crowdutil empty-groups -D directory -g group1,group2,group3
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
+* -c, --config
+    * specify the config file to use.
+    * optional: if not set, crowdutil will search for config file in the
+      following order: $PWD/crowdutil.json, $HOME/.crowdutil/config.json
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
 * -g, --group
@@ -369,6 +409,10 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
+* -c, --config
+    * specify the config file to use.
+    * optional: if not set, crowdutil will search for config file in the
+      following order: $PWD/crowdutil.json, $HOME/.crowdutil/config.json
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
 * -b, --batch
@@ -505,6 +549,10 @@ crowdutil test-connect -D directory
       names specified in crowdutil.json file
     * optional: if defaultdirectory is defined in the crowdutil.json,
       this option can be ommited.
+* -c, --config
+    * specify the config file to use.
+    * optional: if omitted, crowdutil will search for config file in the
+      following order: $PWD/crowdutil.json, $HOME/.crowdutil/config.json
 * -v, --verbose
     * optional: verbose mode.  outputs more info to console and log file
 
@@ -517,7 +565,8 @@ crowdutil create-config -o sample.json
 ~~~
 
 * -o, --out
-    * output filename. defaults to crowdutil.json if set without any value
+    * optional: output filename. defaults to $HOME/.crowdutil/config.json
+        * default value is %USERPROFILE%\.crowdutil\config.json for Windows
     * set to stdout to print the results to console
 * -f, --force
     * force overwriting the file.  If not set, the command will not overwrite
@@ -594,6 +643,9 @@ Change History
 
 Date        | Version   | Changes
 :--         | --:       | :--
+            | 0.6.2     | added --config option
+            |           | default config path set to $HOME/.crowdutil/config.json
+            |           | changed create-config to default to $HOME/.crowdutil/config.json
 2014.08.22  | 0.6.1     | added list-group command.
 2014.08.22  | 0.6.0     | added STDOUT messages separately from log message for use with other cli tools
             |           | fixed error handling for asynchronous functions.

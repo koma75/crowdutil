@@ -54,12 +54,15 @@ crowdutilJSON =
     ]
     replaceConsole: false
 
+getUserHome = () ->
+  return process.env.USERPROFILE || process.env.HOME
+
 exports.run = (options) ->
   if(
     typeof options['-o'] != 'undefined' &&
     typeof options['-o'][0] == 'string'
   )
-    if options['-o'][0][0] == '/'
+    if options['-o'][0][0] == '/' || options['-o'][0][1] == ':'
       file = options['-o'][0]
     else if options['-o'][0] == 'stdout'
       console.log JSON.stringify(crowdutilJSON, null, 2)
@@ -69,7 +72,9 @@ exports.run = (options) ->
     else
       console.log "E, invalid filename"
   else
-    file = process.cwd() + '/crowdutil.json'
+    if !fs.existsSync(getUserHome() + '/.crowdutil')
+      fs.mkdirSync(getUserHome() + '/.crowdutil', (0o777 & (~process.umask())))
+    file = getUserHome() + '/.crowdutil/config.json'
 
   if(
     options['-f'] ||

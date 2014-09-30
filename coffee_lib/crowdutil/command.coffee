@@ -30,13 +30,46 @@
 log4js = require 'log4js'
 AtlassianCrowd = require '../atlassian-crowd-ext/atlassian-crowd-ext'
 cmdlist = require './subcmd/cmdlist'
+fs = require 'fs'
+
+getUserHome = () ->
+  # since %HOME% may exist in some Windows environments, we first check for
+  # %USERPROFILE% then look for $HOME
+  return process.env.USERPROFILE || process.env.HOME
 
 ###
 read config file from current working directory
 ###
-readConfig = () ->
-  #  read from where the command was invoked
-  require process.cwd() + '/crowdutil.json'
+readConfig = (opts) ->
+  path = null
+  # TODO: CHECK opts['-c']
+  if(
+    typeof opts['-c'] == 'object' &&
+    typeof opts['-c'][0] == 'string'
+    )
+    if fs.existsSync(opts['-c'][0])
+      path = opts['-c'][0]
+    else
+      console.log "E, file #{opts['-c'][0]} NOT FOUND!"
+      return null
+
+  # TODO: CHECK process.cwd() + '/crowdutil.json'
+  if(
+    fs.existsSync(process.cwd() + '/crowdutil.json')
+    )
+    path = process.cwd() + '/crowdutil.json'
+
+  # TODO: CHECK getUserHome() + '/.crowdutil/config.json'
+  if(
+    path == null &&
+    fs.existsSync(getUserHome() + '/.crowdutil/config.json')
+    )
+    path = getUserHome() + '/.crowdutil/config.json'
+
+  if path != null
+    return require path
+
+  return null
 
 ###
 Connect to Crowd service and save connection object in opts['crowd']
@@ -103,7 +136,12 @@ initLogger = (opts, cfg) ->
   return
 
 init = (opts) ->
-  cfg = readConfig()
+  cfg = readConfig(opts)
+
+  # could not find any valid config file
+  if cfg == null
+    console.log "E, could not load config file"
+    return false
 
   rc = true
   initLogger(opts, cfg)
