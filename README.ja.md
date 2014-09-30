@@ -161,7 +161,7 @@ crowdutil create-user -D directory -f firstname -l lastname -d dispname \
 検索は全フィールドの AND で検索されます。
 
 ~~~Shell
-crowdutil create-user -D directory -f firstname -l lastname \
+crowdutil search-user -D directory -f firstname -l lastname \
   -e email -u username
 ~~~
 
@@ -256,7 +256,7 @@ crowdutil add-to-groups -D directory -g group1,group2,group3 \
 指定されたユーザーの所属グループを検索します。
 
 ~~~Shell
-crowdutil list-member -D directory -u uid
+crowdutil list-group -D directory -u uid
 ~~~
 
 * -D, --directory

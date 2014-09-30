@@ -162,7 +162,7 @@ wildcards ( * ) can be used for each field.
 all fields are searched with an AND operator.
 
 ~~~Shell
-crowdutil create-user -D directory -f firstname -l lastname \
+crowdutil search-user -D directory -f firstname -l lastname \
   -e email -u username
 ~~~
 
@@ -260,7 +260,7 @@ crowdutil add-to-groups -D directory -g group1,group2,group3 \
 list the group membership of the specified user
 
 ~~~Shell
-crowdutil list-member -D directory -u uid
+crowdutil list-group -D directory -u uid
 ~~~
 
 * -D, --directory
@@ -564,7 +564,7 @@ accessed via the command.js script.
     * branch names shall be feature/featurename
     * we may use a develop branch to merge several feature branches
       before we send pull requests to master.
-* pull requests in github will be used for review of a feature branch
+* pull requests in github will be used for review of a feature branch (or fork)
   before merging
     * for smooth merging, please merge all the latest changes in master to your
       feature branch and make sure there are no conflicts right before sending a pull request.
