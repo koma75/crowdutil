@@ -26,8 +26,8 @@ npm install https://github.com/koma75/crowdutil.git
 
 You will need to create a settings file that hosts the directory options
 for crowd (with login information) to supply to the tool.
-The config file is a json file "crowdutil.json" and **needs to be present
-in the working directory** where you execute the command.
+The config file is a json file "crowdutil.json" and **needs to be provided**
+via command-line, $PWD/crowdutil.json or $HOME/.crowdutil/config.json.
 
 #### CROWD setup
 
@@ -58,12 +58,14 @@ See [Atlassian Crowd Documentation (Adding an Application)](https://confluence.a
    plan to use crowdutil on.
 7. repeat steps 3-6 for all target directories.
 
-#### crowdutil.json
+#### Configuration file
 
-crowdutil.json hosts the settings for the tool and must reside in the
-current working directory where you invoke the command.
+Configuration file hosts the settings for the tool.  You may specify the
+configuration file to read from the command line option --config (-c) or
+crowdutil will check $PWD/crowdutil.json, then $HOME/.crowdutil/config.json
+for possible configuration file to read from if not option is omitted.
 
-the setting file is a hash table in the following format:
+the configuration file is a hash table in the following format:
 
 * "directories" key that hosts hash object of different connection targets.
     * the value of this key has key-value where the key is the name of
@@ -83,7 +85,7 @@ the setting file is a hash table in the following format:
     * appenders MUST have category: "crowdutil" to be used by crowdutil,
       otherwise it will be ignored.
 
-#### Sample crowdutil.json
+#### Sample configuration file
 
 ~~~JSON
 {
@@ -134,8 +136,8 @@ crowdutil create-user -D directory -f firstname -l lastname -d dispname \
 
 * -D, --directory
     * target directory application. needs to match one of the directory
-      names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json,
+      names specified in configuration file
+    * optional: if defaultdirectory is defined in the configuration,
       this option can be ommited.
 * -c, --config
     * specify the config file to use.
@@ -172,8 +174,8 @@ crowdutil search-user -D directory -f firstname -l lastname \
 
 * -D, --directory
     * target directory application. needs to match one of the directory
-      names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json,
+      names specified in configuration file
+    * optional: if defaultdirectory is defined in the configuration,
       this option can be ommited.
 * -c, --config
     * specify the config file to use.
@@ -202,8 +204,8 @@ crowdutil update-user -D directory -f firstname -l lastname -d dispname \
 
 * -D, --directory
     * target directory application. needs to match one of the directory
-      names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json,
+      names specified in configuration file
+    * optional: if defaultdirectory is defined in the configuration,
       this option can be ommited.
 * -c, --config
     * specify the config file to use.
@@ -234,8 +236,8 @@ crowdutil create-group -D directory -n groupname -d "group description"
 
 * -D, --directory
     * target directory application. needs to match one of the directory
-      names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json,
+      names specified in configuration file
+    * optional: if defaultdirectory is defined in the configuration,
       this option can be ommited.
 * -c, --config
     * specify the config file to use.
@@ -261,8 +263,8 @@ crowdutil add-to-groups -D directory -g group1,group2,group3 \
 
 * -D, --directory
     * target directory application. needs to match one of the directory
-      names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json,
+      names specified in configuration file
+    * optional: if defaultdirectory is defined in the configuration,
       this option can be ommited.
 * -c, --config
     * specify the config file to use.
@@ -285,8 +287,8 @@ crowdutil list-group -D directory -u uid
 
 * -D, --directory
     * target directory application. needs to match one of the directory
-      names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json,
+      names specified in configuration file
+    * optional: if defaultdirectory is defined in the configuration,
       this option can be ommited.
 * -c, --config
     * specify the config file to use.
@@ -307,8 +309,8 @@ crowdutil list-member -D directory -g group1
 
 * -D, --directory
     * target directory application. needs to match one of the directory
-      names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json,
+      names specified in configuration file
+    * optional: if defaultdirectory is defined in the configuration,
       this option can be ommited.
 * -c, --config
     * specify the config file to use.
@@ -330,8 +332,8 @@ crowdutil is-member -D directory -g group1,group2,group3 \
 
 * -D, --directory
     * target directory application. needs to match one of the directory
-      names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json,
+      names specified in configuration file
+    * optional: if defaultdirectory is defined in the configuration,
       this option can be ommited.
 * -c, --config
     * specify the config file to use.
@@ -356,8 +358,8 @@ crowdutil rm-from-groups -D directory -g group1,group2,group3 \
 
 * -D, --directory
     * target directory application. needs to match one of the directory
-      names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json,
+      names specified in configuration file
+    * optional: if defaultdirectory is defined in the configuration,
       this option can be ommited.
 * -c, --config
     * specify the config file to use.
@@ -381,8 +383,8 @@ crowdutil empty-groups -D directory -g group1,group2,group3
 
 * -D, --directory
     * target directory application. needs to match one of the directory
-      names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json,
+      names specified in configuration file
+    * optional: if defaultdirectory is defined in the configuration,
       this option can be ommited.
 * -c, --config
     * specify the config file to use.
@@ -406,8 +408,8 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
 
 * -D, --directory
     * target directory application. needs to match one of the directory
-      names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json,
+      names specified in configuration file
+    * optional: if defaultdirectory is defined in the configuration,
       this option can be ommited.
 * -c, --config
     * specify the config file to use.
@@ -435,7 +437,7 @@ The following cmmands can be used:
     * params: directory,uid,pass,first,last,disp,email
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
+              or the defaultDirectory specified in configuration file
         * uid: user ID
         * pass: password (optional)
         * first: first name
@@ -447,7 +449,7 @@ The following cmmands can be used:
     * params: directory,uid,active,first,last,disp,email
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
+              or the defaultDirectory specified in configuration file
         * uid: user ID to update
         * active: state of the user. [true|false], (optional)
         * first: first name (optional)
@@ -459,7 +461,7 @@ The following cmmands can be used:
     * params: directory,name,desc
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
+              or the defaultDirectory specified in configuration file
         * name
         * desc
 * add-to-group
@@ -467,7 +469,7 @@ The following cmmands can be used:
     * params: directory,user,groupname
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
+              or the defaultDirectory specified in configuration file
         * user
         * groupname
 * is-member
@@ -475,7 +477,7 @@ The following cmmands can be used:
     * params: directory,user,groupname
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
+              or the defaultDirectory specified in configuration file
         * user
         * groupname
 * rm-from-group
@@ -483,7 +485,7 @@ The following cmmands can be used:
     * params: directory,user,groupname
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
+              or the defaultDirectory specified in configuration file
         * user
         * groupname
 * empty-group
@@ -491,14 +493,14 @@ The following cmmands can be used:
     * params: directory,groupname
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
+              or the defaultDirectory specified in configuration file
         * groupname
 * remove-group
     * remove group from target directory
     * params: directory,groupname
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
+              or the defaultDirectory specified in configuration file
         * groupname
 * seq
     * wait for commands to finish and set to sequential execution mode
@@ -546,8 +548,8 @@ crowdutil test-connect -D directory
 
 * -D, --directory
     * target directory application. needs to match one of the directory
-      names specified in crowdutil.json file
-    * optional: if defaultdirectory is defined in the crowdutil.json,
+      names specified in configuratoin file
+    * optional: if defaultdirectory is defined in the configuratoin,
       this option can be ommited.
 * -c, --config
     * specify the config file to use.

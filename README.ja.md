@@ -25,8 +25,9 @@ npm install https://github.com/koma75/crowdutil.git
 ### 初期セットアップ
 
 ツールを利用するためにはまず設定ファイルを作成する必要があります。
-設定ファイルの名前は「crowdutil.json」で、コマンドラインツールを実行した
-作業ディレクトリに存在しなければなりません。サンプルのcrowdutil.json
+設定ファイルは、コマンドラインオプションで指定する、コマンドラインツール
+を実行した作業ディレクトリのcrowdutil.json、もしくは
+$HOME/.crowdutil/config.json ファイルを参照します。サンプルのcrowdutil.json
 ファイルは `crowdutil create-config -o crowdutil.json` で生成可能です。
 
 #### CROWD setup
@@ -42,7 +43,7 @@ CROWDに接続するためには、設定対象のディレクトリ毎にCROWD�
 3. 設定を行う対象のディレクトリ毎にアプリケーションを作成
     1. Details
         * Generic Application を選択
-        * 名前を入力（crowdutil.jsonファイルで対象を指定する際に利用します）
+        * 名前を入力（設定ファイルで対象を指定する際に利用します）
         * パスワードを入力
     2. Connection
         * URL はcrowdutilを利用するマシンのホスト名を入力
@@ -57,11 +58,13 @@ CROWDに接続するためには、設定対象のディレクトリ毎にCROWD�
 6. crowdutilを利用するマシンのIPアドレス又はホスト名を全て追加
 7. 3から6のステップを操作対象のディレクトリ毎に繰り返し実施
 
-#### crowdutil.json
+#### 設定ファイル
 
-crowdutil.json ファイルにはツールの設定を記述します。crowdutilはコマンドを
-実行した作業ディレクトリ内にある crowdutil.json ファイルを自動で読み込み
-利用します。
+設定ファイルにはツールの設定を記述します。設定ファイルは --config (-c)
+コマンドラインオプションで指定するか、現在の実行ディレクトリに
+$PWD/crowdutil.json を置くか、$HOME/.crowdutil/config.json に置くか
+することでcrowdutilに渡す必要があります。参照優先順序は前述の記述の
+順序の通りとなります。
 
 設定ファイルはJSONファイルで以下のキーが記載されます
 the setting file is a hash table in the following format:
@@ -83,7 +86,7 @@ the setting file is a hash table in the following format:
     * 省略可能。
     * appendersの値は必ず "crowdutil" とすること
 
-#### crowdutil.json のサンプル
+#### 設定ファイルのサンプル
 
 ~~~JSON
 {
@@ -133,9 +136,9 @@ crowdutil create-user -D directory -f firstname -l lastname -d dispname \
 ~~~
 
 * -D, --directory
-    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+    * 設定を実施するディレクトリ。設定ファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は 設定ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
 * -c, --config
     * 設定ファイルを指定して読み込みます
@@ -170,9 +173,9 @@ crowdutil search-user -D directory -f firstname -l lastname \
 ~~~
 
 * -D, --directory
-    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+    * 設定を実施するディレクトリ。設定ファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は 設定ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
 * -c, --config
     * 設定ファイルを指定して読み込みます
@@ -197,9 +200,9 @@ crowdutil update-user -D directory -f firstname -l lastname -d dispname \
 ~~~
 
 * -D, --directory
-    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+    * 設定を実施するディレクトリ。設定ファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は 設定 ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
 * -c, --config
     * 設定ファイルを指定して読み込みます
@@ -229,9 +232,9 @@ crowdutil create-group -D directory -n groupname -d "group description"
 ~~~
 
 * -D, --directory
-    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+    * 設定を実施するディレクトリ。設定ファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は 設定 ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
 * -c, --config
     * 設定ファイルを指定して読み込みます
@@ -256,9 +259,9 @@ crowdutil add-to-groups -D directory -g group1,group2,group3 \
 ~~~
 
 * -D, --directory
-    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+    * 設定を実施するディレクトリ。設定ファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は 設定 ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
 * -c, --config
     * 設定ファイルを指定して読み込みます
@@ -280,9 +283,9 @@ crowdutil list-group -D directory -u uid
 ~~~
 
 * -D, --directory
-    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+    * 設定を実施するディレクトリ。設定ファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は 設定 ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
 * -c, --config
     * 設定ファイルを指定して読み込みます
@@ -302,9 +305,9 @@ crowdutil list-member -D directory -g group
 ~~~
 
 * -D, --directory
-    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+    * 設定を実施するディレクトリ。設定ファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は 設定 ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
 * -c, --config
     * 設定ファイルを指定して読み込みます
@@ -325,9 +328,9 @@ crowdutil is-member -D directory -g group1,group2,group3 \
 ~~~
 
 * -D, --directory
-    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+    * 設定を実施するディレクトリ。設定ファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は 設定 ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
 * -c, --config
     * 設定ファイルを指定して読み込みます
@@ -351,9 +354,9 @@ crowdutil rm-from-groups -D directory -g group1,group2,group3 \
 ~~~
 
 * -D, --directory
-    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+    * 設定を実施するディレクトリ。設定ファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は 設定 ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
 * -c, --config
     * 設定ファイルを指定して読み込みます
@@ -375,9 +378,9 @@ crowdutil empty-groups -D directory -g group1,group2,group3
 ~~~
 
 * -D, --directory
-    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+    * 設定を実施するディレクトリ。設定ファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は 設定 ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
 * -c, --config
     * 設定ファイルを指定して読み込みます
@@ -402,9 +405,9 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
 ~~~
 
 * -D, --directory
-    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+    * 設定を実施するディレクトリ。設定ファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は 設定 ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
 * -c, --config
     * 設定ファイルを指定して読み込みます
@@ -432,7 +435,7 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
     * params: directory,uid,pass,first,last,disp,email
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
+              or the defaultDirectory specified in configuration file
         * uid: user ID
         * pass: password (optional)
         * first: first name
@@ -444,7 +447,7 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
     * params: directory,uid,active,first,last,disp,email
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
+              or the defaultDirectory specified in configuration file
         * uid: user ID to update
         * active: state of the user. [true|false], (optional)
         * first: first name (optional)
@@ -456,7 +459,7 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
     * params: directory,name,desc
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
+              or the defaultDirectory specified in configuration file
         * name
         * desc
 * add-to-group
@@ -464,7 +467,7 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
     * params: directory,user,groupname
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
+              or the defaultDirectory specified in configuration file
         * user
         * groupname
 * is-member
@@ -472,7 +475,7 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
     * params: directory,user,groupname
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
+              or the defaultDirectory specified in configuration file
         * user
         * groupname
 * rm-from-group
@@ -480,7 +483,7 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
     * params: directory,user,groupname
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
+              or the defaultDirectory specified in configuration file
         * user
         * groupname
 * empty-group
@@ -488,14 +491,14 @@ crowdutil batch-exec -D directory -b path/to/batchfile.csv
     * params: directory,groupname
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
+              or the defaultDirectory specified in configuration file
         * groupname
 * remove-group
     * グループを削除
     * params: directory,groupname
         * directory: target crowd directory (optional)
             * if ommitted it will default to the -D option
-              or the defaultDirectory specified in crowdutil.json
+              or the defaultDirectory specified in configuration file
         * groupname
 * seq
     * この行以前のコマンドが終了するのを待ち、以降のコマンドは1行ずつ
@@ -542,9 +545,9 @@ crowdutil test-connect -D directory
 ~~~
 
 * -D, --directory
-    * 設定を実施するディレクトリ。crowdutil.jsonファイルのdirectories内にある
+    * 設定を実施するディレクトリ。設定ファイルのdirectories内にある
       key のどれかと一致する必要あり。
-    * 省略可能: 省略した場合は crowdutil.json ファイルの defaultDirectory
+    * 省略可能: 省略した場合は 設定 ファイルの defaultDirectory
       にて指定したディレクトリが利用されます
 * -c, --config
     * 設定ファイルを指定して読み込みます
