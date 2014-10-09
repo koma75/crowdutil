@@ -177,7 +177,7 @@ if typeof global.crowdutil.crhelper.crowds == 'undefined'
 
 getCROWD = (directory) ->
   logger.trace "getCROWD"
-  cfg = require process.cwd() + '/crowdutil.json'
+  cfg = require global.crowdutil_cfg
   AtlassianCrowd = require '../../atlassian-crowd-ext/atlassian-crowd-ext'
   crowd = null
 

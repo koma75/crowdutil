@@ -30,6 +30,7 @@
 #
 
 defaultOpts = (cmd) ->
+  cmd.parameters(['-c', '--config'], "config file to use [optional]")
   cmd.parameters(['-D', '--directory'], "target directory [optional]")
   cmd.options(['-v', '--verbose'], "verbose mode")
   return
@@ -377,7 +378,7 @@ start = (callback) ->
         .banner = "crowdutil: create-config\n" +
           "create a sample config file.\n\n"
       cmd.parameters(['-o','--out'],
-        "output filename (default to crowdutil.json). stdout to print")
+        "output filename (default to $HOME/.crowdutil/config.json). stdout to print")
       cmd.options(['-f','--force'],
         "force overwriting file.")
       cmd.start(
