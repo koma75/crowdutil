@@ -42,7 +42,8 @@ read config file from current working directory
 ###
 readConfig = (opts) ->
   path = null
-  # TODO: CHECK opts['-c']
+
+  # PRIORITY 1: CHECK opts['-c']
   if(
     typeof opts['-c'] == 'object' &&
     typeof opts['-c'][0] == 'string'
@@ -53,13 +54,14 @@ readConfig = (opts) ->
       console.log "E, file #{opts['-c'][0]} NOT FOUND!"
       return null
 
-  # TODO: CHECK process.cwd() + '/crowdutil.json'
+  # PRIORITY 2: CHECK process.cwd() + '/crowdutil.json'
   if(
+    path == null &&
     fs.existsSync(process.cwd() + '/crowdutil.json')
     )
     path = process.cwd() + '/crowdutil.json'
 
-  # TODO: CHECK getUserHome() + '/.crowdutil/config.json'
+  # PRIORITY 3: CHECK getUserHome() + '/.crowdutil/config.json'
   if(
     path == null &&
     fs.existsSync(getUserHome() + '/.crowdutil/config.json')
@@ -67,6 +69,7 @@ readConfig = (opts) ->
     path = getUserHome() + '/.crowdutil/config.json'
 
   if path != null
+    global.crowdutil_cfg = path
     return require path
 
   return null

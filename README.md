@@ -645,7 +645,7 @@ Change History
 
 Date        | Version   | Changes
 :--         | --:       | :--
-            | 0.6.2     | added --config option
+2013.10.09  | 0.6.2     | added --config option
             |           | default config path set to $HOME/.crowdutil/config.json
             |           | changed create-config to default to $HOME/.crowdutil/config.json
 2014.08.22  | 0.6.1     | added list-group command.
