@@ -645,6 +645,7 @@ Change History
 
 Date        | Version   | Changes
 :--         | --:       | :--
+2015.03.23  | 0.6.3     | Fixed newline character for bin/crowdutil (from CRLF to LF)
 2013.10.09  | 0.6.2     | added --config option
             |           | default config path set to $HOME/.crowdutil/config.json
             |           | changed create-config to default to $HOME/.crowdutil/config.json
