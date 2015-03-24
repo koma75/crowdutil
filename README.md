@@ -84,6 +84,11 @@ the configuration file is a hash table in the following format:
     * if ommitted, the default values will be used
     * appenders MUST have category: "crowdutil" to be used by crowdutil,
       otherwise it will be ignored.
+* "cas" key may contain multiple certificate file paths.
+  * this certificate will be injected into the https connection and is useful
+    when connecting to crowd via https using a custom root CA certificate.
+  * this path is resolved relative to the config.json file location
+  * home directory shorthand "~" will not resolve. Use full path instead.
 
 #### Sample configuration file
 
@@ -121,7 +126,11 @@ the configuration file is a hash table in the following format:
       }
     ],
     "replaceConsole": false
-  }
+  },
+  "cas": [
+    "/path/to/root/ca/cert.pem",
+    "/you/can/add/multiple/cert.pem"
+  ]
 }
 ~~~
 

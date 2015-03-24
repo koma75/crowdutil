@@ -32,6 +32,7 @@
 defaultOpts = (cmd) ->
   cmd.parameters(['-c', '--config'], "config file to use [optional]")
   cmd.parameters(['-D', '--directory'], "target directory [optional]")
+  cmd.parameters(['-C', '--cert'], "root CA certificate to use [optional]")
   cmd.options(['-v', '--verbose'], "verbose mode")
   return
 

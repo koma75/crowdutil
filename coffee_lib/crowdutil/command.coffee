@@ -138,6 +138,36 @@ initLogger = (opts, cfg) ->
     logger.setLevel('INFO')
   return
 
+###
+inject CA certificates from option and config files if any are specified
+###
+injectCA = (opts, cfg) ->
+  https = require 'https'
+  path = require 'path'
+  options = https.globalAgent.options
+  options.ca = options.ca || []
+
+  # cfg.cas should resolve relative to the config.json file.
+  cfgpath = path.dirname(global.crowdutil_cfg)
+  for ca in cfg.cas
+    logger.debug "injecting: #{ca}"
+    capath = path.resolve(cfgpath, ca)
+    logger.debug "  full path: #{capath}"
+    if fs.existsSync(capath)
+      options.ca.push(fs.readFileSync(capath))
+
+  # -C specified file will resolve relative to process.cwd()
+  if(
+    typeof opts['-C'] == 'object' &&
+    typeof opts['-C'][0] == 'string'
+    )
+    logger.debug "injecting #{opts['-C'][0]}"
+    capath = path.resolve(opts['-C'][0])
+    if fs.existsSync(capath)
+      options.ca.push(fs.readFileSync(capath))
+
+  return
+
 init = (opts) ->
   cfg = readConfig(opts)
 
@@ -151,6 +181,9 @@ init = (opts) ->
 
   logger.info "==============================================="
   logger.info "crowdutil: Atlassian CROWD cli utility tool"
+
+  # try to inject custom root ca certificates if available through config or opt
+  injectCA(opts, cfg)
 
   try
     connectCrowd(opts, cfg)

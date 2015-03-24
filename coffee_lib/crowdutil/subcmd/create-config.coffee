@@ -53,6 +53,7 @@ crowdutilJSON =
       }
     ]
     replaceConsole: false
+  cas: []
 
 getUserHome = () ->
   return process.env.USERPROFILE || process.env.HOME

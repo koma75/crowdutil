@@ -85,6 +85,12 @@ the setting file is a hash table in the following format:
   設定を入力してください。
     * 省略可能。
     * appendersの値は必ず "crowdutil" とすること
+* "cas" キーには複数のCAルート証明書ファイルへのパスを記述できます
+  * ここで指定されたルート証明書ファイルはHTTPS接続をする際に利用されます。これらを利用することで
+    カスタムルートCAを利用したCrowdへの接続が可能となります。
+  * ここに記載するパスは相対パスで記述した場合、config.jsonファイルのパスにからの相対位置として
+    展開されます（コマンド実行パスではありません）
+  * "~" はホームディレクトリに展開されません。絶対パスで記載してください。
 
 #### 設定ファイルのサンプル
 
@@ -122,7 +128,11 @@ the setting file is a hash table in the following format:
       }
     ],
     "replaceConsole": false
-  }
+  },
+  "cas": [
+    "/path/to/root/ca/cert.pem",
+    "/you/can/add/multiple/cert.pem"
+  ]
 }
 ~~~
 
