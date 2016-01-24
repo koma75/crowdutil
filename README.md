@@ -7,7 +7,7 @@ About
 crowdutil is a set of utility command-line tool to help administer
 Atlassian Crowd users and groups.
 
-日本語ドキュメントは [こちら](https://github.com/koma75/crowdutil/blob/master/README_ja.md)
+譌･譛ｬ隱槭ラ繧ｭ繝･繝｡繝ｳ繝医�ｯ [縺薙■繧云(https://github.com/koma75/crowdutil/blob/master/README_ja.md)
 
 Usage
 ------------------------------------------------------------------------
@@ -647,6 +647,7 @@ Change History
 
 Date        | Version   | Changes
 :--         | --:       | :--
+2016.01.25  | 1.0.1     | Fix file encoding for README.md
 2016.01.22  | 1.0.0     | Release as 1.0.  Rename README.ja.md to README_ja.md for npmjs to properly show the english readme
 2015.03.23  | 0.6.3     | Fixed newline character for bin/crowdutil (from CRLF to LF)
 2013.10.09  | 0.6.2     | added --config option
