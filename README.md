@@ -647,6 +647,8 @@ Change History
 
 Date        | Version   | Changes
 :--         | --:       | :--
+2016.01.25  | 1.0.2     | Fix npm update issue for 1.0.0 and 1.0.1
+            |           | Manually remove .git folder from install location to fix
 2016.01.25  | 1.0.1     | Fix file encoding for README.md
 2016.01.22  | 1.0.0     | Release as 1.0.  Rename README.ja.md to README_ja.md for npmjs to properly show the english readme
 2015.03.23  | 0.6.3     | Fixed newline character for bin/crowdutil (from CRLF to LF)
